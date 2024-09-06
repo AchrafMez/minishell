@@ -1,0 +1,66 @@
+Minishell Parsing Cases
+
+command [options] [arguments] [< input_file] [> output_file] [>> append_file] [&] [| command2 [options] [arguments] [< input_file] [> output_file] [>> append_file] [&]]
+
+1. Simple Commands
+   - Input: ls
+   - Output: Command: ls, Arguments: []
+
+2. Command with Arguments
+   - Input: grep "text" file.txt
+   - Output: Command: grep, Arguments: ["text", "file.txt"]
+
+3. Pipes
+   - Input: ls | grep "text"
+   - Output: Pipes: [("ls", []), ("grep", ["text"])]
+
+4. Redirection (Input)
+   - Input: grep "text" < file.txt
+   - Output: Command: grep, Arguments: ["text"], Input Redirection: file.txt
+
+5. Redirection (Output)
+   - Input: ls > output.txt
+   - Output: Command: ls, Arguments: [], Output Redirection: output.txt
+
+6. Appending Output
+   - Input: echo "text" >> file.txt
+   - Output: Command: echo, Arguments: ["text"], Append Output: file.txt
+
+7. Background Execution
+   - Input: sleep 10 &
+   - Output: Command: sleep, Arguments: ["10"], Background: true
+
+8. Quotes
+   - Input: echo "Hello World"''
+   - Output: Command: echo, Arguments: ["Hello World"]
+
+9. Escaped Characters
+   - Input: echo \"Hello\\ World\"
+   - Output: Command: echo, Arguments: ["Hello\\ World"]
+
+10. Command Substitution
+    - Input: echo $(ls)
+    - Output: Command: echo, Arguments: [$(ls)]
+
+11. Complex Pipelines
+    - Input: cat file.txt | grep "text" | sort
+    - Output: Pipes: [("cat", ["file.txt"]), ("grep", ["text"]), ("sort", [])]
+
+12. Error Cases
+    - Input: ls | | grep "text"
+    - Output: Error: Invalid syntax near '|'
+
+13. Empty Command
+    - Input: 
+    - Output: Error: No command entered
+
+14. Invalid Redirection
+    - Input: ls >
+    - Output: Error: Missing file for output redirection
+
+15. Mixed Cases
+    - Input: echo "Hello" > file.txt | grep "Hello" >> output.txt &
+    - Output: Pipes: [("echo", ["Hello"]), ("grep", ["Hello"])]
+    - Output Redirection: file.txt
+    - Append Output: output.txt
+    - Background: true

@@ -1,0 +1,58 @@
+Simple Commands: Single command without arguments.
+
+Example: ls
+Commands with Arguments: Command followed by one or more arguments.
+
+Example: ls -l /home
+Piped Commands: Commands connected by pipes (|), where the output of one command serves as the input to the next.
+
+Example: ls -l | grep "txt"
+Redirection Commands: Commands that redirect input or output using >, <, >>.
+
+Example: ls -l > output.txt
+Example: cat < input.txt
+Example: echo "Hello" >> output.txt
+Background Commands: Commands that run in the background using &.
+
+Example: sleep 10 &
+Compound Commands: Commands combined using && or ||.
+
+Example: mkdir newdir && cd newdir
+Example: make || echo "Build failed"
+Subshell Commands: Commands executed in a subshell using parentheses ().
+
+Example: (cd /tmp && ls)
+Quoted Arguments: Commands with arguments that include spaces, enclosed in quotes.
+
+Example: echo "Hello World"
+Variable Assignment: Assigning values to variables.
+
+Example: VAR=value
+Command Substitution: Using the output of one command as an argument to another command.
+
+Example: echo $(ls)
+
+-------------------------------------------------------------------------------------------
+
+Certainly! In the context of a shell like minishell, a command typically consists of several components. Here's a breakdown of the structure of a command:
+
+Command Name: The name of the executable or built-in command.
+
+Example: ls, echo, grep
+Arguments: Options or parameters passed to the command.
+
+Example: -l, -a, file.txt
+Redirections: Input and output redirections.
+
+Example: >, <, >>
+Example: ls > output.txt, cat < input.txt
+Pipes: Used to pass the output of one command as input to another.
+
+Example: ls -l | grep "txt"
+Background Execution: Commands that run in the background.
+
+Example: sleep 10 &
+Compound Commands: Commands combined using logical operators.
+
+Example: mkdir newdir && cd newdir
+Example: make || echo "Build failed"

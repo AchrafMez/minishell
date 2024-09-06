@@ -1,0 +1,14 @@
+1. process identifier (PID) and parent process identifer (PPID)
+    - parent process is the process that create the child process
+    - PPID is the unique id of the parent process (parent id does not change)
+    - a process is every exucation program;
+    - pid is a unique integer of an Executing program;
+
+2. Executing a program (with execve system call)
+
+3. Creating process (with the fork system call)
+
+4. Suspending process (with the wait system call)
+
+5. file information (with the stat system call)
+
