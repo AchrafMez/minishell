@@ -127,29 +127,42 @@
 //    command->value = ft_substr(command->buf, *i, end);
 //}
 
-int getwordlen(char *buf, int *j)
+int getwordlen(char *buf, int i)
 {
-    int i = *j;
-    while((buf[i] >= 'a' && buf[i] <= 'z') || (buf[i] >= 'A' && buf[i] <= 'Z'))
+    int len = 0;
+    while(buf[i + len] != ' ' && ((buf[i + len] >= 'a' && buf[i + len] <= 'z') || (buf[i + len] >= 'A' && buf[i + len] <= 'Z') || (buf[i + len] >= '0' && buf[i + len] <= '9')))
+        len++;
+    return len;
+}
+int skip_spaces(t_command *command)
+{
+    int i = 0;
+    while(command->buf[i] != '\0' && (command->buf[i] == ' ' || command->buf[i] == '\t' || command->buf[i] == '\n' || command->buf[i] == '\v'))
         i++;
+    // command->value = ft_substr(command->buf, i, getwordlen(command->buf, i));
     return i;
 }
 
-void handel_input(t_command *command)
+void extract_command(t_command *command)
 {
-    int index = 0;
-//    int end = index;
-    int i = 0;
-    while(command->buf[i])
-    {
-        if(command->buf[index] == ' ' || command->buf[index] == '\t' || command->buf[index] == '\n' || command->buf[index] == '\v')
-            index++;
-        command->value = ft_substr(command->buf, index, getwordlen(command->buf, &index));
-        i++;
-    }
-//    store_word(command, &index);
-//    printf("%s\n", command->value);
+    int i = skip_spaces(command);
+    int word_len = getwordlen(command->buf, i);
+    command->value = ft_substr(command->buf, i, word_len);
 }
+// void handel_input(t_command *command)
+// {
+//     int index = 0;
+// //    int end = index;
+//     int i = skip_spaces(command);
+//     while(command->buf[i])
+//     {
+//         // if(command->buf[index] == ' ' || command->buf[index] == '\n')
+//         //     index++;
+//         i++;
+//     }
+// //    store_word(command, &index);
+// //    printf("%s\n", command->value);
+// }
 
 
 int main(int ac, char **av, char **env) {
@@ -162,7 +175,7 @@ int main(int ac, char **av, char **env) {
         {
             command.buf = readline("minishell> ");
             add_history(command.buf);
-            handel_input(&command);
+            extract_command(&command);
             printf("%s\n", command.value);
             free(command.buf);
         }
