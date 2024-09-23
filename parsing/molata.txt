@@ -1,14 +1,22 @@
-1. process identifier (PID) and parent process identifer (PPID)
-    - parent process is the process that create the child process
-    - PPID is the unique id of the parent process (parent id does not change)
-    - a process is every exucation program;
-    - pid is a unique integer of an Executing program;
+1. check syntax error
+    -finish it first!
 
-2. Executing a program (with execve system call)
+   Unmatched Quotes: If a command has an opening quote (either single ' or double "), but no matching closing quote, that's a syntax error.
 
-3. Creating process (with the fork system call)
+   Missing Command Name: If a command starts with a special character like |, >, <, ;, etc., but there's no command name before it, that's a syntax error.
 
-4. Suspending process (with the wait system call)
+   Missing Command Arguments: Some commands require arguments. If these are missing, it's a syntax error. For example, cd with no directory name.
 
-5. file information (with the stat system call)
+   Invalid Redirection: If a redirection operator (>, <, >>, 2>, etc.) is not followed by a filename, that's a syntax error.
 
+   Invalid Pipe Usage: If a pipe operator (|) is not surrounded by commands on both sides, that's a syntax error.
+
+   Invalid Command Chaining: If a semicolon (;) used for command chaining is not followed by a command, that's a syntax error.
+
+   Unrecognized Command: If a command is not recognized as a built-in command or an external command, that's a syntax error.
+
+   Invalid Variable Assignment: If a variable assignment does not follow the VARNAME=value format, that's a syntax error.
+
+   Invalid Use of Special Characters: If special characters like *, ?, [, ], {, }, etc., are used incorrectly, that's a syntax error.
+
+   Remember, the exact set of syntax errors you need to handle will depend on the specific requirements of your project and the syntax rules you've defined for your shell.

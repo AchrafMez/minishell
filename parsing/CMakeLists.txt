@@ -4,4 +4,5 @@ project(mysh C)
 target_compile_definitions(
         minishell.c
         minishell.h
+        lib_utils.c
 )
