@@ -134,6 +134,7 @@ int getwordlen(char *buf, int i)
         len++;
     return len;
 }
+
 int skip_spaces(t_command *command)
 {
     int i = 0;
@@ -142,13 +143,13 @@ int skip_spaces(t_command *command)
     // command->value = ft_substr(command->buf, i, getwordlen(command->buf, i));
     return i;
 }
-
 void extract_command(t_command *command)
 {
     int i = skip_spaces(command);
     int word_len = getwordlen(command->buf, i);
     command->value = ft_substr(command->buf, i, word_len);
 }
+
 // void handel_input(t_command *command)
 // {
 //     int index = 0;
@@ -165,21 +166,27 @@ void extract_command(t_command *command)
 // }
 
 
-int main(int ac, char **av, char **env) {
-    t_command command;
+int main(int ac, char **av, char **envp){
+    // t_command command;
+     t_env *env = malloc(sizeof(t_env));
     (void)av;
-    (void)env;
-    if(ac == 1)
-    {
-        while(1)
-        {
-            command.buf = readline("minishell> ");
-            add_history(command.buf);
-            extract_command(&command);
-            printf("%s\n", command.value);
-            free(command.buf);
-        }
+
+    if(ac == 1){
+        get_env(envp, &env);
     }
+    // get_env(envp, &env);
+//     if(ac == 1)
+//     {
+//         while(1)
+//         {
+//             command.buf = readline("minishell> ");
+//             add_history(command.buf);
+//             extract_command(&command);
+// //            printf("%s\n", command.value);
+//             free(command.buf);
+
+//         }
+//     }
     return 0;
 }
 

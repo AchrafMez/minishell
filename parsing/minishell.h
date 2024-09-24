@@ -19,6 +19,11 @@ typedef struct test {
 
 } test;
 
+typedef struct s_env{
+    char *key;
+     char *value;
+     struct s_env *next;
+} t_env;
 
 //typedef struct z_command
 //{
@@ -33,6 +38,22 @@ typedef struct test {
 //
 //} l_command;
 
+typedef struct s_token
+{
+    enum {
+        TOKEN_WHITESPACES,
+        TOKEN_SEMICOLON,
+        NEWLINE,
+        BACK_SLASH,
+        SINGLE_QUOTE,
+        DOUBLE_QUOTE,
+
+    } e_type;
+    char			*value; //token itself (;, word or string)
+    int				order;  //serves to have position of the token in the input
+}					t_token;
+
+
 typedef struct s_command
 {
     char *buf;
@@ -42,5 +63,7 @@ typedef struct s_command
 } t_command;
 
 char	**ft_taqsim(char *s, char c);
+void get_env(char **envp, t_env **env);
+
 
 #endif
