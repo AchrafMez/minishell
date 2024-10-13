@@ -6,19 +6,6 @@
 #include <stdlib.h>
 #include "./libft/libft.h"
 
-typedef struct red{
-    int type;
-    char *file;
-} red;
-
-typedef struct test {
-    char * command;
-    char **args ;
-    red *redir;
-    struct test *next;
-
-} test;
-
 typedef struct s_env{
     char *key;
      char *value;
@@ -53,17 +40,32 @@ typedef struct s_token
     int				order;  //serves to have position of the token in the input
 }					t_token;
 
+typedef struct s_cmd{
+    char **av;
+    char *left_red_file;
+    char *right_red_file;
+    char *heredoc_content;
+    struct s_cmd *next;
+    
+}t_cmd;
 
 typedef struct s_command
 {
+    struct s_command *cur;
+    int type;
     char *buf;
     char *value;
-    char **check;
     struct s_command *next;
 } t_command;
 
 char	**ft_taqsim(char *s, char c);
 void get_env(char **envp, t_env **env);
 
+
+//utils
+t_command* init_node();
+void add_node(t_command **command);
+void print_list(t_command **command);
+void free_list(t_command **command);
 
 #endif

@@ -6,70 +6,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
-//void simple_command(t_command *command)
-//{
-//	command->args = ft_taqsim(command->buf, ' ');
-//	command->name = command->args[0];
-//	printf("name:%s\n", command->name);
-//	int i = 0;
-//	while(command->args[i])
-//	{
-//		printf("arg:%s\n", command->args[i++]);
-//	}
-//}
-//
-////int check_pipes(char *buffer)
-////{
-////    int i = 0;
-//////    int j = 0;
-////    while(buffer[i])
-////    {
-////        if(buffer[i] == '|')
-////        {
-//////            j = i;
-////            while(i >= 0)
-////            {
-////                if(buffer[i] == '"' || buffer[i] == '\'')
-////                    return 1;
-////                i--;
-////            }
-////        }
-////        i++;
-////    }
-////
-////}
-//
-//int ret_pipes(char *buffer)
-//{
-//    int count = 0;
-//	while(*buffer)
-//	{
-//		if(*buffer == '|')
-//		    count++;
-//		buffer++;
-//	}
-//	return count;
-//}
-//
-//void pipes_commands(t_command *command)
-//{
-//    command->npipes = ret_pipes(command->buf);
-//    printf("pipes in buf: %d\n", command->npipes);
-//    command->spipe = ft_taqsim(command->buf, '|');
-//    int i = 0;
-//    while(command->spipe[i])
-//    {
-//        printf("spipe: %s\n", command->spipe[i]);
-//        i++;
-//    }
-//}
-//
-////void pipe_cmd(t_command *command)
-////{
-////
-////}
-//
 //char ret_first_quote(char *buf)
 //{
 //    int i = 0;
@@ -107,25 +43,7 @@
 //    return 0;
 // }
 
-// void init(t_command *command)
-// {
-//    int i = 0;
-//
-//    while(command->buf[i] != '\0')
-//    {
-//    }
-//
-// }
 
-
-//void store_word(t_command *command, int *i)
-//{
-////    int start = *i;
-//    int end = *i;
-//    while((command->buf[*i] >= 'a' && command->buf[*i] <= 'z') || (command->buf[*i] >= 'A' && command->buf[*i] <= 'Z'))
-//        end++;
-//    command->value = ft_substr(command->buf, *i, end);
-//}
 
 int getwordlen(char *buf, int i)
 {
@@ -135,64 +53,299 @@ int getwordlen(char *buf, int i)
     return len;
 }
 
-int skip_spaces(t_command *command)
+
+int is_space(t_command *command)
 {
     int i = 0;
-    while(command->buf[i] != '\0' && (command->buf[i] == ' ' || command->buf[i] == '\t' || command->buf[i] == '\n' || command->buf[i] == '\v'))
+    while(command->buf[i] != '0')
+    {
+        if(command->buf[i] == ' ' || command->buf[i] == '\t' || command->buf[i] == '\v' || command->buf[i] == '\n')
+            return 1;
         i++;
-    // command->value = ft_substr(command->buf, i, getwordlen(command->buf, i));
-    return i;
-}
-void extract_command(t_command *command)
-{
-    int i = skip_spaces(command);
-    int word_len = getwordlen(command->buf, i);
-    command->value = ft_substr(command->buf, i, word_len);
-}
-
-// void handel_input(t_command *command)
-// {
-//     int index = 0;
-// //    int end = index;
-//     int i = skip_spaces(command);
-//     while(command->buf[i])
-//     {
-//         // if(command->buf[index] == ' ' || command->buf[index] == '\n')
-//         //     index++;
-//         i++;
-//     }
-// //    store_word(command, &index);
-// //    printf("%s\n", command->value);
-// }
-
-
-int main(int ac, char **av, char **envp){
-    // t_command command;
-     t_env *env = malloc(sizeof(t_env));
-    (void)av;
-
-    if(ac == 1){
-        get_env(envp, &env);
     }
-    // get_env(envp, &env);
-//     if(ac == 1)
-//     {
-//         while(1)
-//         {
-//             command.buf = readline("minishell> ");
-//             add_history(command.buf);
-//             extract_command(&command);
-// //            printf("%s\n", command.value);
-//             free(command.buf);
-
-//         }
-//     }
     return 0;
 }
+t_command *ret_last(t_command **command)
+{
+    t_command *temp = *command;
+    while(temp->next != NULL)
+        temp = temp->next;
+    return temp;
+}
+void full_word(t_command **command, char *buf, int *index)
+{
+    int start = *index;
+    t_command *cur = ret_last(command);
+    while(((buf[(*index)] >= 'a' && buf[*index] <= 'z') || (buf[*index] >= 'A' && buf[*index] <= 'Z') || (buf[*index] >= '0' && buf[*index] <= '9')))
+        (*index)++;
+    int end = *index - start;
+    cur->value = ft_substr(buf, start, end);
+    // printf("command value -> %s\n", (*command)->value);
 
-//if(check_quote(command.buf) == 0)
-//printf("\nQuotes Error\n\n");
-//if(ret_pipes(command.buf) > 0)
-//pipes_commands(&command);
-//else
-//simple_command(&command);
+}
+
+
+void full_spaces(t_command **command, char *buf, int *index)
+{
+//    while((*command)->buf[(*command)->index] == ' ' || (*command)->buf[(*command)->index] == '\t' || (*command)->buf[(*command)->index] == '\v' || (*command)->buf[(*command)->index] == '\n')
+//    {
+    t_command *cur = ret_last(command);
+       if(buf[(*index)] == ' ')
+           cur->value = ft_strdup(" ");
+    //    else if(buf[(*index)] == '\t')
+        //    cur->value = ft_strdup("\t.tab");
+    //    else if(buf[(*index)] == '\n')
+    //        cur->value = ft_strdup("\n");
+    //    else if(buf[(*index)] == '\v')
+    //        cur->value = ft_strdup("\v");
+       // (*command)->next = NULL;
+//        (*command)->index++;
+//    }
+}
+void full_specail(t_command **command, char *buf, int *index)	
+{
+    t_command *cur = ret_last(command);
+    if(buf[(*index)] == '\'')
+        cur->value = ft_strdup("'");
+    if(buf[(*index)] == '\"')
+        cur->value = ft_strdup("\"");
+    if(buf[(*index)] == '<')
+        cur->value = ft_strdup("<");
+    if(buf[(*index)] == '>')
+        cur->value = ft_strdup(">");
+    if(buf[(*index)] == '|')
+        cur->value = ft_strdup("|");
+    if(buf[(*index)] == '.')
+        cur->value = ft_strdup(".");
+    if(buf[(*index)] == '-')
+        cur->value = ft_strdup("-");
+    if(buf[(*index)] == '_')
+        cur->value = ft_strdup("_");
+    if(buf[(*index)] == '$')
+        cur->value = ft_strdup("$");
+    
+}
+
+char* check_quote_type(char *str)
+{
+    if(!strcmp(str, "'") || !strcmp(str, "\""))
+        return str;
+    return NULL;
+}
+
+char *handle_quotes(t_command **command, char *buf)
+{
+    t_command *cur = *command;
+    char *quote_type = check_quote_type(cur->value);
+    cur = cur->next;
+    while(cur && strcmp(cur->value, quote_type))
+    {
+        buf = ft_strjoin(buf, cur->value);
+        cur = cur->next;
+    }
+    *command = cur;
+    if (!cur)
+        return NULL;
+    return buf;
+}
+void print_cmd(t_cmd *cmd_list)
+{
+    t_cmd *cur_cmd = cmd_list;
+    int i;
+
+    // while (cur_cmd)
+    // {
+        printf("Command:\n");
+        i = 0;
+        while (cur_cmd->av[i])
+        {
+            printf("  av[%d]: %s\n", i, cur_cmd->av[i]);
+            i++;
+        }
+        // cur_cmd = cur_cmd->next;
+        // if (cur_cmd)
+        //     printf("Next command:\n");
+    // }
+}
+
+t_cmd **check_quotes(t_command **command, t_cmd **cmd)
+{
+    t_command *cur = *command;
+    char *ret = "";
+    int i = 0;
+
+    // Allocate memory for cmd if it is NULL
+    if (*cmd == NULL) {
+        *cmd = malloc(sizeof(t_cmd));
+        (*cmd)->av = malloc(sizeof(char*) * 10);
+        memset((*cmd)->av, 0, sizeof(char*) * 10);
+    }
+
+    while (cur)
+    {
+        if (!strcmp(cur->value, " "))
+        {
+            cur = cur->next;
+            continue;
+        }
+        else if (check_quote_type(cur->value))
+        {
+            ret = handle_quotes(&cur, ret);
+            if (!ret) {
+                printf("unclosed quote?\n");
+            }
+            if ((cur && !cur->next) || (cur && cur->next && !strcmp(cur->next->value, " ")))
+            {
+                (*cmd)->av[i++] = ret;
+                ret = "";
+            }
+        }
+        else if (!strcmp(cur->value, "|")) {
+            return cmd;
+        }
+        else {
+            (*cmd)->av[i] = cur->value;
+            i++;
+        }
+        if (cur)
+            cur = cur->next;
+    }
+    return cmd;
+}
+// t_cmd **check_quotes(t_command **command, t_cmd **cmd)
+// {
+//     t_command *cur = *command;
+//     char *ret = "";
+//     char **argv = malloc(sizeof(char*) * 10);
+//     memset(argv, 0, sizeof(char*) * 10);
+//     int  i = 0;
+//     while(cur)
+//     {
+//         if(!strcmp(cur->value, " "))
+//         {
+//             cur = cur->next;
+//             continue;
+//         }
+//         else if(check_quote_type(cur->value))
+//         {
+//             ret = handle_quotes(&cur, ret);
+//             if (!ret) {
+//                 printf("unclosed quote?\n");
+//             }
+//             if((cur && !cur->next) || (cur && cur->next && !strcmp(cur->next->value, " ")))
+//             {
+//                 argv[i++] = ret;
+//                 ret = "";
+//             }
+//         }
+//         else if(!strcmp(cur->value, "|")) {
+//             return argv;
+//         }
+//         else {
+//             argv[i] = cur->value;
+//             i++;
+//         }
+//         if (cur)
+//             cur = cur->next;
+//     }
+//     return argv;
+// }
+
+void print_av(char **av)
+{
+    int i = 0;
+    while(av[i])
+    {
+        printf("av %d: %s\n", i, av[i]);
+        i++;
+    }
+}
+
+t_command **check_type(char *buf, t_command **command)
+{
+    int index = 0;
+    while(buf[index] != '\0')
+    {
+        if(((buf[index] >= 'a' && buf[index] <= 'z') || (buf[index] >= 'A' && buf[index] <= 'Z') || (buf[index] >= '0' && buf[index] <= '9')))
+        {
+            add_node(command);
+            full_word(command, buf, &index);
+        }
+       if(buf[index] == ' ' || buf[index] == '\t' || buf[index] == '\v' || buf[index] == '\n')
+       {
+            add_node(command);
+           full_spaces(command, buf, &index);
+       }
+
+       else if(buf[index] == '\"' || buf[index] == '\'' || buf[index] == '.' || buf[index] == '<' || buf[index] == '>' || buf[index] == '|' || buf[index] == '-' || buf[index] == '_' || buf[index] == '$')
+       {
+            add_node(command);
+            full_specail(command, buf, &index);
+       }
+        index++;
+        // printf("idx in check type -> %d \n", index);
+    }
+    return command;
+}
+
+char *skip_spaces(char *buf)
+{
+    if(!buf)
+        return NULL;
+    int i = 0;
+    while(buf[i] && (buf[i] == ' ' || buf[i] == '\t' || buf[i] == '\n' || buf[i] == '\v'))
+        i++;
+    return ft_substr(buf, i, ft_strlen(buf));
+}
+
+void free_cmd_list(t_cmd *cmd_list)
+{
+    t_cmd *cur_cmd = cmd_list;
+    // t_cmd *next_cmd;
+
+    // while (cur_cmd)
+    // {
+        // next_cmd = cur_cmd->next;
+        if (cur_cmd->av)
+        {
+            for (int i = 0; cur_cmd->av[i]; i++)
+            {
+                free(cur_cmd->av[i]);
+            }
+            // free(cur_cmd->av);
+        }
+        // free(cur_cmd);
+        // cur_cmd = next_cmd;
+    // }
+}
+
+void handel_input(void)
+{
+    char *temp;
+    t_command *command = NULL;
+    t_cmd *cmd = NULL;
+    // malloc(sizeof(t_command));
+    while(1)
+    {
+        temp = readline("minishell> ");
+        add_history(temp);
+        check_type(skip_spaces(temp), &command);
+        check_quotes(&command, &cmd);
+        print_cmd(cmd);
+        // free_cmd_list(cmd);
+        // print_av(ret);
+        free(temp);
+        // print_list(&command);
+        free_list(&command);
+    }
+}
+
+int main(int ac, char **av, char **envp){
+    (void)av;
+    (void)envp;
+    //  t_env *env = malloc(sizeof(t_env));
+    //  get_env(envp, &env);
+     if(ac == 1)
+         handel_input();
+    return 0;
+}
