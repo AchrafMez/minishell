@@ -48,8 +48,24 @@ int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_
     return 0;
 }
 
-void handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
+    if(!*token_list)
+    {
+        printf("syntax error near unexpected token '|'\n");
+        return 1;
+    }
+    t_token *temp = *token_list;
+    while(!strcmp(temp->value, " "))
+    {
+        temp = temp->next;
+        if(!strcmp(temp->value, "|"))
+        {
+            printf("syntax error near unexpected token '|'\n");
+            exit(1);
+            return 1; 
+        }
+    }
     if (*buf_idx > 0)
     {
         buffer[*buf_idx] = '\0';
@@ -58,9 +74,10 @@ void handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     }
     add_token(token_list, create_token("|", PIPE));
     (*cur)++;
+    return 0;
 }
 
-void handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
     if (*buf_idx > 0)
     {
@@ -76,9 +93,15 @@ void handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     else
         add_token(token_list, create_token("<", RED_IN));
     (*cur)++;
+    if(**cur == '<' || **cur == '>')
+    {
+        printf("syntax error near unexpected token '<' \n");
+        return 1;
+    }
+    return 0;
 }
 
-void handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
     if (*buf_idx > 0)
     {
@@ -94,6 +117,12 @@ void handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list
     else
         add_token(token_list, create_token(">", RED_OUT));
     (*cur)++;
+    if(**cur == '>' || **cur == '<')
+    {
+        printf("Syntax error near unexpected token '>' \n");
+        return 1;
+    }
+    return 0;
 }
 
 void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list)
@@ -136,11 +165,32 @@ t_token *tokenize_input(char *input)
             }        
         }
         else if (*cur == '|')
-            handle_pipe(&cur, buffer, &buf_idx, &token_list);
+            {
+                int pipe = handle_pipe(&cur, buffer, &buf_idx, &token_list);
+                if(pipe == 1)
+                {
+                    ft_tokens_free(token_list);
+                    return NULL;
+                }
+            }
         else if (*cur == '<')
-            handle_red_in(&cur, buffer, &buf_idx, &token_list);
+        {
+            int red_out = handle_red_in(&cur, buffer, &buf_idx, &token_list);
+            if(red_out == 1)
+            {
+                ft_tokens_free(token_list);
+                return NULL;
+            }
+        }
         else if (*cur == '>')
-            handle_red_out(&cur, buffer, &buf_idx, &token_list);
+        {
+            int red = handle_red_out(&cur, buffer, &buf_idx, &token_list);
+            if(red == 1)
+            {
+                ft_tokens_free(token_list);
+                return NULL;
+            }
+        }
         else if (*cur == '$')
             handle_dollar(&cur, buffer, &buf_idx, &token_list);
         else

@@ -38,9 +38,9 @@ void ft_tokens_free(t_token *token_list);
 void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 t_token *tokenize_input(char *input);
 
