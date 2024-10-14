@@ -9,7 +9,7 @@ void handl_input()
     {
         input = readline("minishell$ ");
         if (!input)
-            break;
+            break ;
         add_history(input);
         token_list = tokenize_input(input);
         print_tokens(token_list);
@@ -21,7 +21,8 @@ void handl_input()
 int main(int ac, char **av, char **env)
 {
     (void)av;
-    (void)env;
+    t_env *envp = malloc(sizeof(t_env));
+    get_env(env, &envp);
     if(ac == 1)
         handl_input();
     return 0;

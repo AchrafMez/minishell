@@ -36,13 +36,25 @@ void ft_tokens_free(t_token *token_list);
 
 //tokenizer
 void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 void handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 void handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 void handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 t_token *tokenize_input(char *input);
+
+
+//for the envirenment
+
+typedef struct s_env{
+    char *key;
+     char *value;
+     struct s_env *next;
+} t_env;
+
+void get_env(char **envp, t_env **env);
+void display_env(t_env *tmp);
 
 
 #endif

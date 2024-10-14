@@ -38,7 +38,7 @@ void print_tokens(t_token *token_list)
     printf("\n");
     while(cur)
     {
-        printf("token: '%s' token_type: '%u'\n", cur->value, cur->type);
+        printf("token: |%s| token_type: |%u|\n", cur->value, cur->type);
         cur = cur->next;
     }
 }

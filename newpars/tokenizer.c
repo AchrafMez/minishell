@@ -12,28 +12,40 @@ void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     (*cur)++;
 }
 
-void handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
     (*cur)++;
     while (**cur && **cur != '"')
         buffer[(*buf_idx)++] = *(*cur)++;
     buffer[*buf_idx] = '\0';
+    if(**cur == '\0')
+    {
+        printf("Error -> unclosed double quotes;\n");
+        return 1;
+    }
     add_token(token_list, create_token(buffer, D_QUOTE));
     *buf_idx = 0;
     if (**cur)
         (*cur)++;
+    return 0;
 }
 
-void handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
     (*cur)++;
     while (**cur && **cur != '\'')
         buffer[(*buf_idx)++] = *(*cur)++;
     buffer[*buf_idx] = '\0';
+        if (**cur == '\0')
+        {
+            printf("Error -> unnclosed single quote\n");
+            return 1;
+        }
     add_token(token_list, create_token(buffer, S_QUOTE));
     *buf_idx = 0;
     if (**cur)
         (*cur)++;
+    return 0;
 }
 
 void handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
@@ -56,7 +68,13 @@ void handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list)
         add_token(token_list, create_token(buffer, WORD));
         *buf_idx = 0;
     }
-    add_token(token_list, create_token("<", RED_IN));
+    if(*(*cur + 1) == '<')
+    {
+        add_token(token_list, create_token("<<", HERE_DOC));
+        (*cur)++;
+    }
+    else
+        add_token(token_list, create_token("<", RED_IN));
     (*cur)++;
 }
 
@@ -100,9 +118,23 @@ t_token *tokenize_input(char *input)
         if (*cur == ' ')
             handle_space(&cur, buffer, &buf_idx, &token_list);
         else if (*cur == '"')
-            handle_double_quote(&cur, buffer, &buf_idx, &token_list);
+        {
+            int dq = handle_double_quote(&cur, buffer, &buf_idx, &token_list);
+            if(dq == 1)
+            {
+                ft_tokens_free(token_list);
+                return NULL;
+            }
+        }
         else if (*cur == '\'')
-            handle_single_quote(&cur, buffer, &buf_idx, &token_list);
+        {
+            int ret = handle_single_quote(&cur, buffer, &buf_idx, &token_list);
+            if(ret == 1)
+            {
+                ft_tokens_free(token_list);
+                return NULL;
+            }        
+        }
         else if (*cur == '|')
             handle_pipe(&cur, buffer, &buf_idx, &token_list);
         else if (*cur == '<')
