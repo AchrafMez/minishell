@@ -45,7 +45,7 @@ void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 t_token *tokenize_input(char *input);
 
 
-//for the envirenment
+//for the environment
 
 typedef struct s_env{
     char *key;
@@ -53,8 +53,10 @@ typedef struct s_env{
      struct s_env *next;
 } t_env;
 
-void get_env(char **envp, t_env **env);
+void dup_env(char **envp, t_env **env);
 void display_env(t_env *tmp);
 
+//expanding tools
+char *get_env_value(t_env *env, char *searsh);
 
 #endif
