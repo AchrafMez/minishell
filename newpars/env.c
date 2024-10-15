@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+void ft_free_env(t_env *env)
+{
+    t_env *tmp = env;
+    t_env *next;
+    while(tmp)
+    {
+        next = tmp->next;
+        free(tmp->value);
+        free(tmp);
+        tmp = next;
+    }
+}
+
 void display_env(t_env *temp)
 {
     t_env *tmp = temp;
@@ -37,6 +50,6 @@ void dup_env(char **envp, t_env **env)
         } else
             tmp->next = NULL;
     }
-   display_env(*env);
+//    display_env(*env);
 }
 

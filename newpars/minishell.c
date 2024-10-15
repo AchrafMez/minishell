@@ -27,21 +27,21 @@ int check_syntax(t_token *token)
     return 0;
 }
 
-void handl_input()
+void handl_input(t_env **env)
 {
     char *input;
-    t_token *token_list;
-
+    t_token *token_list = NULL;
     while (1)
     {
         input = readline("minishell$ ");
         if (!input)
             break ;
         add_history(input);
-        token_list = tokenize_input(input);
+        token_list = tokenize_input(input, env);
         if(check_syntax(token_list) == 0)
             print_tokens(token_list);
         ft_tokens_free(token_list);
+        // ft_free_env(*env);
         free(input);
     }
 }
@@ -53,10 +53,7 @@ int main(int ac, char **av, char **envp)
     // (void)envp;
     t_env *env = NULL;
     dup_env(envp, &env);
-    char *searsh = get_env_value(env,"USER");
-    printf("searsh: %s\n", searsh);
-
-    // if(ac == 1)
-    //     handl_input();
+    if(ac == 1)
+        handl_input(&env);
     return 0;
 }

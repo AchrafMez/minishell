@@ -114,17 +114,44 @@ int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     return 0;
 }
 
-void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
 {
     buffer[(*buf_idx)++] = *(*cur)++;
     while (**cur && (ft_isalnum(**cur) || **cur == '_'))
         buffer[(*buf_idx)++] = *(*cur)++;
     buffer[*buf_idx] = '\0';
-    add_token(token_list, create_token(buffer, ENV));
+    display_env(*env);
+    char *key = strdup(buffer + 1);
+    char *expanded = NULL;
+    printf("key: %s\n", key);
+    if(key && ft_isalnum(*key))
+    {
+        printf("0\n");
+        expanded = get_env_value(*env, key);
+        printf("1\n");
+        if(expanded && *expanded != '\0')
+        {
+            printf("2\n");
+            add_token(token_list, create_token(expanded, ENV));
+        }
+        else
+        {
+            printf("3\n");
+            add_token(token_list, create_token("", ENV));
+            free(key);
+            return ;
+        }
+    }
+    else{
+        printf("4\n");
+        add_token(token_list, create_token(buffer, ENV));
+    }
+    // expanded = NULL;
+    free(key);
     *buf_idx = 0;
 }
 
-t_token *tokenize_input(char *input)
+t_token *tokenize_input(char *input, t_env **env)
 {
     t_token *token_list = NULL;
     char *cur = input;
@@ -181,7 +208,7 @@ t_token *tokenize_input(char *input)
             }
         }
         else if (*cur == '$')
-            handle_dollar(&cur, buffer, &buf_idx, &token_list);
+            handle_dollar(&cur, buffer, &buf_idx, &token_list, env);
         else
         {
             buffer[buf_idx++] = *cur;
