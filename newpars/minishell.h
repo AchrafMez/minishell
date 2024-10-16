@@ -22,7 +22,6 @@ typedef enum e_token_type {
 } t_token_type;
 
 
-
 typedef struct s_token{
     char *value;
     t_token_type type;
@@ -30,9 +29,7 @@ typedef struct s_token{
 } t_token;
 
 
-
 //for the environment
-
 typedef struct s_env{
     char *key;
     char *value;
@@ -53,12 +50,12 @@ void ft_tokens_free(t_token *token_list);
 
 //tokenizer
 void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env);
 int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env);
+void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env, int flag);
 t_token *tokenize_input(char *input, t_env **env);
 
 

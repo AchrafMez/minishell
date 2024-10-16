@@ -41,7 +41,6 @@ void handl_input(t_env **env)
         if(check_syntax(token_list) == 0)
             print_tokens(token_list);
         ft_tokens_free(token_list);
-        // ft_free_env(*env);
         free(input);
     }
 }

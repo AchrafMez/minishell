@@ -12,11 +12,16 @@ void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     (*cur)++;
 }
 
-int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list)
+int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
 {
     (*cur)++;
-    while (**cur && **cur != '"')
-        buffer[(*buf_idx)++] = *(*cur)++;
+    while (**cur && **cur != '"')       
+    {
+        if(**cur == '$')
+            handle_dollar(cur, buffer, buf_idx, token_list, env, 0);
+        else
+            buffer[(*buf_idx)++] = *(*cur)++;
+    }
     buffer[*buf_idx] = '\0';
     if(**cur == '\0')
     {
@@ -114,41 +119,40 @@ int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     return 0;
 }
 
-void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
+void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env, int flag)
 {
-    buffer[(*buf_idx)++] = *(*cur)++;
-    while (**cur && (ft_isalnum(**cur) || **cur == '_'))
-        buffer[(*buf_idx)++] = *(*cur)++;
-    buffer[*buf_idx] = '\0';
-    display_env(*env);
-    char *key = strdup(buffer + 1);
-    char *expanded = NULL;
-    printf("key: %s\n", key);
-    if(key && ft_isalnum(*key))
+    (*cur)++;
+    // char *key = ft_strdup(buffer + 1);
+    //char *zaba_w_shta_saba = NULL;
+    char key[64];
+    int key_idx = 0;
+    while(**cur && (ft_isalnum(**cur) || **cur == '_'))
+        key[key_idx++] = *(*cur)++;
+    key[key_idx] = '\0';
+    char *expanded = get_env_value(*env, key);
+    int i = 0;
+    if(expanded)
     {
-        printf("0\n");
-        expanded = get_env_value(*env, key);
-        printf("1\n");
-        if(expanded && *expanded != '\0')
+        while(expanded[i] != '\0')
+            buffer[(*buf_idx)++] = expanded[i++];
+        if(flag == 1)
         {
-            printf("2\n");
             add_token(token_list, create_token(expanded, ENV));
+            *buf_idx = 0;
         }
-        else
+    }
+    else
+    {
+        i = 0;
+        buffer[(*buf_idx)] = '$';
+        while(key[i] != '\0')
+            buffer[(*buf_idx)++] = key[i++];
+         if(flag == 1)
         {
-            printf("3\n");
-            add_token(token_list, create_token("", ENV));
-            free(key);
-            return ;
+            add_token(token_list, create_token(buffer, WORD));
+            *buf_idx = 0;
         }
     }
-    else{
-        printf("4\n");
-        add_token(token_list, create_token(buffer, ENV));
-    }
-    // expanded = NULL;
-    free(key);
-    *buf_idx = 0;
 }
 
 t_token *tokenize_input(char *input, t_env **env)
@@ -164,7 +168,7 @@ t_token *tokenize_input(char *input, t_env **env)
             handle_space(&cur, buffer, &buf_idx, &token_list);
         else if (*cur == '"')
         {
-            int dq = handle_double_quote(&cur, buffer, &buf_idx, &token_list);
+            int dq = handle_double_quote(&cur, buffer, &buf_idx, &token_list, env);
             if(dq == 1)
             {
                 ft_tokens_free(token_list);
@@ -208,7 +212,7 @@ t_token *tokenize_input(char *input, t_env **env)
             }
         }
         else if (*cur == '$')
-            handle_dollar(&cur, buffer, &buf_idx, &token_list, env);
+            handle_dollar(&cur, buffer, &buf_idx, &token_list, env, 1);
         else
         {
             buffer[buf_idx++] = *cur;
