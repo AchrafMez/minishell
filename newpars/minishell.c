@@ -16,7 +16,8 @@ int check_syntax(t_token *token)
         }
         else if(cur->type == RED_IN || cur->type == RED_OUT || cur->type == HERE_DOC ||cur->type == RED_APP)
         {
-            if(!cur->next || cur->next->type != WORD)
+            //cur.next != word || next != space
+            if(!cur->next || (cur->next->type != WORD && cur->next->type != SPACES))
             {
                 printf("syntax errer > < \n");
                 return 1;
