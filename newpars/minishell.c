@@ -17,7 +17,7 @@ int check_syntax(t_token *token)
         else if(cur->type == RED_IN || cur->type == RED_OUT || cur->type == HERE_DOC ||cur->type == RED_APP)
         {
             //cur.next != word || next != space
-            if(!cur->next || (cur->next->type != WORD && cur->next->type != SPACES))
+            if(!cur->next || (cur->next->type != WORD && cur->next->type != SPACES && cur->next->type != S_QUOTE && cur->next->type != D_QUOTE))
             {
                 printf("syntax errer > < \n");
                 return 1;
@@ -26,6 +26,55 @@ int check_syntax(t_token *token)
         cur = cur->next;
     }
     return 0;
+}
+
+// int check_unclosed_quotes(char *input) {
+//     int s_quotes = 0;
+//     int d_quotes = 0;
+
+//     while (*input) {
+//         if (*input && *input == '\'')
+//             s_quotes++;
+//         else if (*input && *input == '"')
+//             d_quotes++;
+//         input++;
+//     }
+//     if (s_quotes % 2 != 0)
+//     {
+//         printf("zaba w shta saba b singel quotes\n");
+//         return 1;
+//     }
+//     if (d_quotes % 2 != 0)
+//     {
+//         printf("zaba w shta saba b doubel quotes\n");
+//         return 1;
+//     }
+//     return 0;  
+// }
+int check_unclosed_quotes(char *input) {
+    int s_quotes = 0;
+    int d_quotes = 0;
+
+    while (*input)
+    {
+        if (*input == '\'' && !d_quotes)
+            s_quotes = !s_quotes;
+            else if (*input == '"' && !s_quotes)
+                d_quotes = !d_quotes;
+        input++;
+    }
+    if (s_quotes)
+    {
+        printf("singel quotes not closed\n");
+        return 1;
+    }
+    if(d_quotes)
+    {
+        printf("double quotes not closed\n");
+        return 1;
+    }
+
+    return 0;  
 }
 
 void handl_input(t_env **env)
@@ -38,6 +87,8 @@ void handl_input(t_env **env)
         if (!input)
             break ;
         add_history(input);
+        if(check_unclosed_quotes(input))
+            continue ;
         token_list = tokenize_input(input, env);
         if(check_syntax(token_list) == 0)
             print_tokens(token_list);

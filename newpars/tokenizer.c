@@ -12,6 +12,50 @@ void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     (*cur)++;
 }
 
+// int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
+// {
+//     (*cur)++;
+//     int count = 1;
+//     while (**cur && **cur != '"')       
+//     {
+//         if(**cur == '$')
+//             handle_dollar(cur, buffer, buf_idx, token_list, env, 0);
+//         else
+//             buffer[(*buf_idx)++] = *(*cur)++;
+//     }
+//     if(**cur && **cur == '\"' && (**cur+1 != ' ' || **cur+1 != '|'))
+//     {
+//         if(**cur && **cur == '"')
+//         {
+//             (*cur)++;
+//             count++;
+//         }
+//         while(**cur && **cur != ' ' && **cur != '|')
+//         {
+//             while(**cur && **cur == '"')
+//             {
+//                 (*cur)++;
+//                 count++;
+//             }
+//             if(**cur && **cur == '$')
+//                 handle_dollar(cur, buffer, buf_idx, token_list, env, 0);
+//             buffer[(*buf_idx)++] = *(*cur)++;
+//         }
+//     }
+//     buffer[*buf_idx] = '\0';
+//     // if(**cur == '\0')
+//     // {
+//     //     printf("Error -> unclosed double quotes;\n");
+//     //     return 1;
+//     // }
+//     add_token(token_list, create_token(buffer, D_QUOTE));
+//     *buf_idx = 0;
+//     if (**cur)
+//         (*cur)++;
+//     return 0;
+// }
+
+
 int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
 {
     (*cur)++;
@@ -35,52 +79,51 @@ int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_
     return 0;
 }
 
-int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env)
-{
+int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env) {
     (*cur)++;
-    int count = 1;
-    while (**cur && **cur != '\'')
+    while (**cur && **cur != '\'') {
         buffer[(*buf_idx)++] = *(*cur)++;
-    // while(**cur && **cur != ' ')
-    //     buffer[(*buf_idx)++] = *(*cur)++;
-    if(**cur && **cur == '\'' && (**cur+1 != ' ' || **cur+1 != '|'))
-    {
-        if(**cur && **cur == '\'')
-        {
-            (*cur)++;
-            count++;
-        }
-        while(**cur && **cur != ' ' && **cur != '|')
-        {
-            if(**cur && **cur == '$')
-                handle_dollar(cur, buffer, buf_idx, token_list, env, 0);
-            while(**cur && **cur == '\'')
-            {
-                (*cur)++;
-                count++;
-            }
-            buffer[(*buf_idx)++] = *(*cur)++;
-        }
     }
-    buffer[*buf_idx] = '\0';
-    printf("single count: %d\n", count);
-    if(count % 2 != 0)
-    {
-        printf("unclosed single quotes\n");
+    if (**cur == '\0') {
+        printf("Error -> unclosed single quote\n");
         return 1;
     }
-    // else if (**cur == '\0')
-    // {
-    //     printf("Error -> unnclosed single quote\n");
-    //     return 1;
-    // }
-    // else if(**cur != '\0' && **cur == '\'' && **cur+1 != ' ')
+    (*cur)++;
+    while (**cur && **cur != ' ' && **cur != '|')
+    {
+        if (**cur == '$')
+            handle_dollar(cur, buffer, buf_idx, token_list, env, 0);
+        else if (**cur == '\'')
+            (*cur)++;
+        else if (**cur == '\"')
+        {
+            buffer[*buf_idx] = '\0';
+            add_token(token_list, create_token(buffer, S_QUOTE));
+            *buf_idx = 0;
+            (*cur)++;
+            while (**cur && **cur != '\"')
+                buffer[(*buf_idx)++] = *(*cur)++;
+            if (**cur == '\0') {
+                printf("Error -> unclosed double quote\n");
+                return 1;
+            }
+            (*cur)++;
+            buffer[*buf_idx] = '\0';
+            add_token(token_list, create_token(buffer, D_QUOTE));
+            *buf_idx = 0;
+            return 0;
+        }
+        else
+            buffer[(*buf_idx)++] = *(*cur)++;
+    }
+
+    buffer[*buf_idx] = '\0';
     add_token(token_list, create_token(buffer, S_QUOTE));
     *buf_idx = 0;
-    if (**cur)
-        (*cur)++;
+
     return 0;
 }
+
 
 int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
@@ -153,18 +196,20 @@ void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list,
     (*cur)++;
     // char *key = ft_strdup(buffer + 1);
     //char *zaba_w_shta_saba = NULL;
-    printf("from single quote: %s\n", *cur);
+    // printf("from single quote: %s\n", *cur);
     char key[64];
     int key_idx = 0;
-    while(**cur && (ft_isalnum(**cur) || **cur == '_'))
+    while(**cur &&(ft_isalnum(**cur) || **cur == '_'))
         key[key_idx++] = *(*cur)++;
     key[key_idx] = '\0';
+    printf("key: %s\n", key);
     char *expanded = get_env_value(*env, key);
     int i = 0;
     if(expanded)
     {
         while(expanded[i] != '\0')
             buffer[(*buf_idx)++] = expanded[i++];
+        printf("expanded: %s\n", expanded);
         if(flag == 1)
         {
             add_token(token_list, create_token(expanded, ENV));
@@ -177,6 +222,7 @@ void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list,
         buffer[(*buf_idx)] = '$';
         while(key[i] != '\0')
             buffer[(*buf_idx)++] = key[i++];
+        printf("key2%s\n", key);
          if(flag == 1)
         {
             add_token(token_list, create_token(buffer, WORD));

@@ -9,16 +9,16 @@
 #include <readline/history.h>
 
 typedef enum e_token_type {
-    WORD,
-    S_QUOTE,
-    D_QUOTE,
-    SPACES,
-    ENV,
-    PIPE,
-    RED_IN,
-    RED_OUT,
-    RED_APP,
-    HERE_DOC
+    WORD, //0
+    S_QUOTE, //1
+    D_QUOTE, //2
+    SPACES, //3
+    ENV, //4
+    PIPE, //5
+    RED_IN, //6
+    RED_OUT, //7
+    RED_APP, //8
+    HERE_DOC //9
 } t_token_type;
 
 
