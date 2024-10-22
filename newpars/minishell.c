@@ -54,6 +54,57 @@ int check_unclosed_quotes(char *input)
     return 0;  
 }
 
+
+// t_command *handl_command(t_token **token_list)
+// {
+//     t_token *cur = *token_list;
+//     t_command *command = NULL;
+//     while(cur)
+//     {
+        
+//         cur = cur->next;
+//     }
+
+// }
+
+void delete_space(t_token **token_list)
+{
+    t_token *cur = *token_list;
+    t_token *prev = NULL;
+    if(cur && (cur->type == SPACES || strcmp(cur->value, "") == 0))
+    {
+        printf("1\n");
+        *token_list = cur->next;
+        free(cur->value);
+        free(cur);
+        return ;
+    }
+    while(cur != NULL && (cur->type != SPACES && strcmp(cur->value, "")))
+    {
+        printf("2\n");
+        prev = cur;
+        cur = cur->next;
+    }
+    if(cur != NULL)
+    {
+        printf("3\n");
+        prev->next = cur->next;
+        free(cur->value);
+        free(cur);
+    }
+}
+
+void tokens_edit(t_token **token_list)
+{
+    t_token *cur = *token_list;
+    printf("0\n");
+    while(cur)
+    {
+        if(cur->type == SPACES || cur->value[0] == '\0')
+            delete_space(token_list);
+        cur = cur->next;
+    }
+}
 void handl_input(t_env **env)
 {
     char *input;
@@ -68,7 +119,12 @@ void handl_input(t_env **env)
             continue ;
         token_list = tokenize_input(input, env);
         if(check_syntax(token_list) == 0)
+        {
             print_tokens(token_list);
+            printf("------------ after deleted ------------\n");
+            tokens_edit(&token_list);
+            print_tokens(token_list);
+        }
         ft_tokens_free(token_list);
         free(input);
     }

@@ -8,6 +8,20 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+typedef struct s_red{
+    char *in_file;
+    char *out_file;
+
+} t_red;
+
+typedef struct s_command{
+    char **args;
+    // t_red *red;
+    struct s_command *next;
+
+} t_command;
+
 typedef enum e_token_type {
     WORD, //0
     S_QUOTE, //1
@@ -26,6 +40,7 @@ typedef struct s_token{
     char *value;
     t_token_type type;
     struct s_token *next;
+
 } t_token;
 
 
