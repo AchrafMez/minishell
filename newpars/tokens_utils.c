@@ -46,7 +46,7 @@ void print_tokens(t_token *token_list)
 void ft_tokens_free(t_token *token_list)
 {
     t_token *cur = token_list;
-    t_token *next;
+    t_token *next ;
     while(cur)
     {
         next =  cur->next;

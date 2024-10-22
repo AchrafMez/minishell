@@ -105,6 +105,11 @@ void tokens_edit(t_token **token_list)
         cur = cur->next;
     }
 }
+
+void leaks()
+{
+    system("leaks minishell");
+}
 void handl_input(t_env **env)
 {
     char *input;
@@ -114,19 +119,26 @@ void handl_input(t_env **env)
         input = readline("minishell$ ");
         if (!input)
             break ;
-        add_history(input);
         if(check_unclosed_quotes(input))
+        {
+            free(input);
             continue ;
+        }
+        add_history(input);
         token_list = tokenize_input(input, env);
+        // ft_free_env(env);
         if(check_syntax(token_list) == 0)
         {
             print_tokens(token_list);
             printf("------------ after deleted ------------\n");
             tokens_edit(&token_list);
             print_tokens(token_list);
+        // ft_tokens_free(token_list);
         }
         ft_tokens_free(token_list);
         free(input);
+        system("leaks minishell");
+        atexit(leaks);
     }
 }
 
@@ -134,9 +146,9 @@ int main(int ac, char **av, char **envp)
 {
     (void)av;
     (void)ac;
-    // (void)envp;
+    (void)envp;
     t_env *env = NULL;
-    dup_env(envp, &env);
+    // dup_env(envp, &env);
     if(ac == 1)
         handl_input(&env);
     return 0;

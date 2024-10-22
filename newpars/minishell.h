@@ -53,7 +53,7 @@ typedef struct s_env{
 
 void dup_env(char **envp, t_env **env);
 void display_env(t_env *tmp);
-void ft_free_env(t_env *env);
+void ft_free_env(t_env **env);
 
 
 //token_utils

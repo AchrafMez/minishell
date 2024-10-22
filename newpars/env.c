@@ -1,13 +1,14 @@
 #include "minishell.h"
 
-void ft_free_env(t_env *env)
+void ft_free_env(t_env **env)
 {
-    t_env *tmp = env;
+    t_env *tmp = *env;
     t_env *next;
     while(tmp)
     {
         next = tmp->next;
         free(tmp->value);
+        free(tmp->key);
         free(tmp);
         tmp = next;
     }
