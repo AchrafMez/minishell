@@ -137,7 +137,7 @@ void handl_input(t_env **env)
         }
         ft_tokens_free(token_list);
         free(input);
-        // system("leaks minishell");
+        system("leaks minishell");
         atexit(leaks);
     }
 }
