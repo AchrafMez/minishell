@@ -77,4 +77,7 @@ t_token *tokenize_input(char *input, t_env **env);
 //expanding tools
 char *get_env_value(t_env *env, char *searsh);
 
+
+
+int ft_strcmp(char *str, char *target);
 #endif

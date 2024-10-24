@@ -137,7 +137,7 @@ void handl_input(t_env **env)
         }
         ft_tokens_free(token_list);
         free(input);
-        system("leaks minishell");
+        // system("leaks minishell");
         atexit(leaks);
     }
 }
@@ -148,7 +148,13 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     (void)envp;
     t_env *env = NULL;
-    // dup_env(envp, &env);
+    dup_env(envp, &env);
+    // display_env(env);
+    // ft_free_env(&env);
+    // system("leaks minishell");
+    // atexit(leaks);
+
+
     if(ac == 1)
         handl_input(&env);
     return 0;
