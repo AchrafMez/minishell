@@ -55,6 +55,33 @@ int check_unclosed_quotes(char *input)
 }
 
 
+int count_token(t_token *token_list)
+{
+    int i = 0;
+    t_token *cur = token_list;
+
+    while(cur)
+    {
+        if(cur->type == PIPE || cur->type == RED_IN || cur->type == RED_OUT || cur->type == RED_APP || cur->type == HERE_DOC)
+            break;
+        i++;
+        cur = cur->next;
+    }
+    return i;
+}
+
+// t_command *fill_command(t_token *token_list)
+// {
+//     t_token *cur = token_list;
+//     t_command *cmd = NULL;
+//     t_command *new = NULL;
+//     while(cur)
+//     {
+
+//     }
+
+// }
+
 // t_command *handl_command(t_token **token_list)
 // {
 //     t_token *cur = *token_list;
@@ -137,8 +164,8 @@ void handl_input(t_env **env)
         }
         ft_tokens_free(token_list);
         free(input);
-        system("leaks minishell");
-        atexit(leaks);
+        // system("leaks minishell");
+        // atexit(leaks);
     }
 }
 
@@ -149,11 +176,6 @@ int main(int ac, char **av, char **envp)
     (void)envp;
     t_env *env = NULL;
     dup_env(envp, &env);
-    // display_env(env);
-    // ft_free_env(&env);
-    // system("leaks minishell");
-    // atexit(leaks);
-
 
     if(ac == 1)
         handl_input(&env);

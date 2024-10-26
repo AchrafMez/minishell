@@ -17,7 +17,7 @@ typedef struct s_red{
 
 typedef struct s_command{
     char **args;
-    // t_red *red;
+    t_red *red;
     struct s_command *next;
 
 } t_command;

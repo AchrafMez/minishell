@@ -1,3 +1,0 @@
-first thing:
-    - check type of ech character in the sting and store it in a list;
-    -
