@@ -197,6 +197,7 @@ void free_cmd(t_command *command)
             free(cur->args[i]);
             i++;
         }
+        free(cur->args);
         t_red *red_tmp = cur->red;
         while(red_tmp)
         {
