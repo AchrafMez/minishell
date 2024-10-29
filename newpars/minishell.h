@@ -9,18 +9,6 @@
 #include <readline/history.h>
 
 
-typedef struct s_red{
-    char *in_file;
-    char *out_file;
-
-} t_red;
-
-typedef struct s_command{
-    char **args;
-    // t_red *red;
-    struct s_command *next;
-
-} t_command;
 
 typedef enum e_token_type {
     WORD, //0
@@ -51,6 +39,23 @@ typedef struct s_env{
     struct s_env *next;
 } t_env;
 
+
+
+typedef struct s_red{
+    char *value;
+    t_token_type type;
+    struct s_red *next;
+    
+} t_red;
+
+typedef struct s_command{
+    char **args;
+    t_red *red;
+    struct s_command *next;
+} t_command;
+
+
+
 void dup_env(char **envp, t_env **env);
 void display_env(t_env *tmp);
 void ft_free_env(t_env **env);
@@ -77,7 +82,10 @@ t_token *tokenize_input(char *input, t_env **env);
 //expanding tools
 char *get_env_value(t_env *env, char *searsh);
 
-
+//cmd utils
+t_command *create_command();
+void add_arg(char ***args, int *arg_count, char *value);
+void add_red(t_red **red_list, char *value, t_token_type type);
 
 int ft_strcmp(char *str, char *target);
 #endif

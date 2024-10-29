@@ -2,7 +2,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./libft
 LDFLAGS = -lreadline
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard *.c) ./tokenizer/tokenizer.c ./tokenizer/quotes.c ./tokenizer/reds.c
 LIBFT = ./libft/libft.a
 OBJS = $(SRCS:.c=.o)
 

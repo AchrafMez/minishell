@@ -30,7 +30,6 @@ void dup_env(char **envp, t_env **env)
 {
     *env = NULL;
     t_env *tmp = NULL;
-    // tmp = malloc(sizeof(t_env));
     int i = 0;
     int j = 0;
     while(envp[i])
@@ -52,12 +51,6 @@ void dup_env(char **envp, t_env **env)
         tmp = new;
         j = 0;
         i++;
-        // if(envp[i + 1] != NULL)
-        // {
-        //     // tmp->next = malloc(sizeof(t_env));
-        //     tmp = tmp->next;
-        // } else
-        //     tmp->next = NULL;
     }
 //    display_env(*env);
 }
