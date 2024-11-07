@@ -1,61 +1,56 @@
-#include <string.h>
-#include <unistd.h>
 
+#include "builtin.h"
 
-int	check_n(char *str)
+// Function to check if the argument is "-n"
+int	all_n(char	*tab)
 {
-	int i;
-
-	i = 0;
-	if (!str)
+	if (*tab != '-') // Check if it starts with '-'
 		return (0);
-	if (str[0] == '-')
-		i++;
-	while (str[i])
+	tab++; // Move to the next character
+	while (*tab) // Check all following characters
 	{
-		if (str[i] != 'n')
+		if (*tab != 'n') // If not 'n', return false
 			return (0);
-		i++;
+		tab++; // Move to the next character
 	}
-	return (1);
+	return (1); // All characters are 'n'
 }
 
-int	main(int argc, char *argv[], char **env)
+// Function to print the arguments
+void	print_arguments(char **arg)
 {
-	// i did this flag to check if the -n flag is set
-	int print_newline = 1;
+	int	i = 0; // Index for arguments
 
-	// check if the first argument is -n
-	if (argc > 1 && check_n(argv[1]) == 1)
+	while (arg[i])
 	{
-		print_newline = 0;
-		int i = 1;
-		while (i < argc - 1)
-		{
-			argv[i] = argv[i + 1];
-			i++;
-		}
-		argc--;
+		if (arg[i + 1]) // If not the last argument
+			printf("%s ", arg[i]); // Print with a space
+		else
+			printf("%s", arg[i]); // Print the last argument without a space
+		i++; // Move to the next argument
 	}
-
-	// so i print each arguments in the terminal
-	int i = 1;
-	while (i < argc)
-	{
-		size_t len = strlen(argv[i]);
-		write(1, argv[i], len);
-		if (i < argc - 1)
-		{
-			write(1, " ", 1);
-		}
-		i++;
-	}
-
-	if (print_newline)
-	{
-		write(1, "\n", 1);
-	}
-
-	return (0);
 }
+
+// Echo function implementation
+void	ft_echo(char **arg)
+{
+	int	i = 1; // Start from the first argument
+	int	no_line = 0; // Flag for new line
+
 	
+	if (!arg[1]) // If no arguments, print newline
+	{
+		printf("\n");
+		return;
+	}
+
+	// Check if the first argument is "-n"
+	if (all_n(arg[1]))
+		no_line = 1; // Set flag if it is
+	if (no_line)
+		i++; // Skip the "-n" argument
+
+	print_arguments(&arg[i]); // Print the remaining arguments
+	if (!no_line) // If not using -n
+		printf("\n"); // Print a newline at the end
+}

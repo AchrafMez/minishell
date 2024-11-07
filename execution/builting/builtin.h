@@ -1,16 +1,37 @@
-#ifndef BUILTING_H
-# define BUILTING_H
+#ifndef BUILTIN_H
+#define BUILTIN_H
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<string.h>
+#include<fcntl.h>
+#include <errno.h>
+#include <signal.h>
+#include <ctype.h>
 #include"./libft/libft.h"
-typedef struct my_env
-{
-	char *name;
-	char *value;
-	struct my_env *next;
+
+#define HERE_DOC 1
+typedef struct s_env {
+    char *key;  
+   char *value;  
+    struct s_env *next;   
 } t_env;
 
-typedef struct my_builtin
-{
-	t_env *env_list;
-} t_builtin;
+typedef struct s_cmd {
+    int type;             
+    char **args;        
+    struct s_cmd *next; 
+} t_cmd;
+
+
+
+int	cd_var(char *var, t_env **env);
+void	ft_echo(char **arg);
+t_env ft_env(char **env, char **arg);
+void	ft_exit(char **cmd);
+t_env	ft_export(char **argv, char **env);
+static void	process_heredocs(t_cmd *cmd, t_env *env);
+void	ft_pwd(t_env *env);
+void	ft_unset(t_env **env, t_cmd *cmd);
 
 #endif
