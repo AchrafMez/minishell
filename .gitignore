@@ -6,3 +6,7 @@ execution/*.o
 newpars/a.out
 newpars/*.o
 newpars/tokenizer/*.o
+newpars/CMakelists.txt
+newpars/CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
