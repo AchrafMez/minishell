@@ -1,0 +1,8 @@
+.DS_Store
+
+execution/a.ou
+execution/*.out
+execution/*.o
+newpars/a.out
+newpars/*.o
+newpars/tokenizer/*.o
