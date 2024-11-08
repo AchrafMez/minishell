@@ -121,7 +121,7 @@ void delete_space(t_token **token_list)
 {
     t_token *cur = *token_list;
     t_token *prev = NULL;
-    if(cur && (cur->type == SPACES || strcmp(cur->value, "") == 0))
+    if(cur && (cur->type == SPACES || ft_strcmp(cur->value, "") == 0))
     {
         // printf("1\n");
         *token_list = cur->next;
@@ -129,7 +129,7 @@ void delete_space(t_token **token_list)
         free(cur);
         return ;
     }
-    while(cur != NULL && (cur->type != SPACES && strcmp(cur->value, "")))
+    while(cur != NULL && (cur->type != SPACES && ft_strcmp(cur->value, "")))
     {
         // printf("2\n");
         prev = cur;
@@ -167,6 +167,7 @@ void print_cmd(t_command *command)
     while(cur)
     {
         int i = 0;
+        printf("cmd path: %s\n", cur->path);
         while(cur->args[i])
         {
             printf("arg: %s\n", cur->args[i]);
@@ -211,6 +212,56 @@ void free_cmd(t_command *command)
     }
 }
 
+void free_path(char **path)
+{
+    int i = 0;
+    while(path[i])
+    {
+        free(path[i]);
+        i++;
+    }
+    free(path);
+}
+char *get_path(char *target)
+{
+    // (void)target;
+    char **path = ft_split(getenv("PATH"),':');
+    int i = 0;
+    while(path[i])
+    {
+        char *slash_dir = ft_strjoin(path[i], "/");
+        char *full_path = ft_strjoin(slash_dir, target);
+        free(slash_dir);
+        // printf("heeeeerer\nnn");
+        if(access(full_path, X_OK) == 0)
+        {
+            free_path(path);
+            // printf("full path %s: \n", full_path);
+            return full_path;
+        }
+        // if(access(target, X))
+        free(full_path);
+        // printf("path: %s\n", path[i]);
+        i++;   
+    }
+    free_path(path);
+    return NULL;
+}
+void set_path(t_command **cmd)
+{
+    t_command *cur = *cmd;
+    while (cur)
+    {
+        printf("seet path\n");
+        if(get_path(cur->args[0]) != NULL)
+        {
+            cur->path = ft_strdup(get_path(cur->args[0]));
+        }
+        cur = cur->next;
+    }
+    
+}
+
 void handl_input(t_env **env)
 {
     char *input;
@@ -238,28 +289,36 @@ void handl_input(t_env **env)
             // int count = count_list(&token_list);
             // printf("count list: %d\n", count);
             cmd = fill_command(token_list);
+            set_path(&cmd);
             print_cmd(cmd);            
         // ft_tokens_free(token_list);
         }
         free_cmd(cmd);
         ft_tokens_free(token_list);
         free(input);
-        system("leaks minishell");
+        // system("leaks minishell");
         // atexit(leaks);
     }
 }
+
+
 
 int main(int ac, char **av, char **envp)
 {
     (void)av;
     (void)ac;
-    (void)envp;
+    // (void)envp;
     t_env *env = NULL;
     dup_env(envp, &env);
-
+    // display_env(env);
+    // char **path = ft_split(getenv("PATH"),':');
+    // for(int i = 0; path[i] != NULL; i++)
+    //     printf("path[i]: %s\n", path[i]);
+    
+    handle_signals();
     if(ac == 1)
         handl_input(&env);
     return 0;
-}
 
+}
 

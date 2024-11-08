@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env *env)
 {

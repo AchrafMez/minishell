@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {

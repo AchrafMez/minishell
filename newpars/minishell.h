@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+#include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@ typedef struct s_red{
 
 typedef struct s_command{
     char **args;
+    char *path;
     t_red *red;
     struct s_command *next;
 } t_command;
@@ -86,6 +88,10 @@ char *get_env_value(t_env *env, char *searsh);
 t_command *create_command();
 void add_arg(char ***args, int *arg_count, char *value);
 void add_red(t_red **red_list, char *value, t_token_type type);
+
+//signal
+void ctrl_c(int sig);
+void handle_signals(void);
 
 int ft_strcmp(char *str, char *target);
 #endif

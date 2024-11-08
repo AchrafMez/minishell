@@ -41,6 +41,7 @@ t_command *create_command()
     t_command *cmd = malloc(sizeof(t_command));
     cmd->args = malloc(sizeof(char *));
     cmd->args[0] = NULL;
+    cmd->path = NULL;
     cmd->red = NULL;
     cmd->next = NULL;
     return cmd;

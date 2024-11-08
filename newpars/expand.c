@@ -9,7 +9,7 @@ char *get_env_value(t_env *env, char *searsh)
     {
         if(searsh  == NULL || temp->key == NULL)
                 return "";
-        if(!strcmp(temp->key, searsh))
+        if(!ft_strcmp(temp->key, searsh))
             return temp->value;
         temp = temp->next;
     }
