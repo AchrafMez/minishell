@@ -8,7 +8,11 @@
 #include <errno.h>
 #include <signal.h>
 #include <ctype.h>
+<<<<<<< HEAD
 #include"./libft/libft.h"
+=======
+#include"../../newpars/libft/libft.h"
+>>>>>>> ae8c0bf (merge conf)
 
 #define HERE_DOC 1
 typedef struct s_env {
