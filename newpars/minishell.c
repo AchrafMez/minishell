@@ -199,6 +199,7 @@ void free_cmd(t_command *command)
             i++;
         }
         free(cur->args);
+        free(cur->path);
         t_red *red_tmp = cur->red;
         while(red_tmp)
         {
@@ -224,24 +225,31 @@ void free_path(char **path)
 }
 char *get_path(char *target)
 {
-    // (void)target;
     char **path = ft_split(getenv("PATH"),':');
+    if(!path)
+        return NULL;
     int i = 0;
     while(path[i])
     {
         char *slash_dir = ft_strjoin(path[i], "/");
+        if(!slash_dir)
+        {
+            free_path(path);
+            return NULL;
+        }
         char *full_path = ft_strjoin(slash_dir, target);
         free(slash_dir);
-        // printf("heeeeerer\nnn");
+        if(!full_path)
+        {
+            free_path(path);
+            return NULL;
+        }
         if(access(full_path, X_OK) == 0)
         {
             free_path(path);
-            // printf("full path %s: \n", full_path);
             return full_path;
         }
-        // if(access(target, X))
         free(full_path);
-        // printf("path: %s\n", path[i]);
         i++;   
     }
     free_path(path);
@@ -254,10 +262,11 @@ void set_path(t_command **cmd)
     while (cur)
     {
         printf("seet path\n");
-        if(get_path(cur->args[0]) != NULL)
+        char *path = get_path(cur->args[0]);
+        if(path!= NULL)
         {
             // found = 1;
-            cur->path = ft_strdup(get_path(cur->args[0]));
+            cur->path = path;
             free(cur->args[0]);
             cur->args[0] = ft_strdup(cur->path);
         }
@@ -297,14 +306,15 @@ void handl_input(t_env **env)
             cmd = fill_command(token_list);
             set_path(&cmd);
             print_cmd(cmd);
+            // free_cmd(cmd);
             // execute_cmds(cmd);
         // ft_tokens_free(token_list);
         }
         free_cmd(cmd);
         ft_tokens_free(token_list);
         free(input);
-        // system("leaks minishell");
-        // atexit(leaks);
+        system("leaks minishell");
+        atexit(leaks);
     }
 }
 
