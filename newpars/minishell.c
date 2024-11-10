@@ -250,13 +250,19 @@ char *get_path(char *target)
 void set_path(t_command **cmd)
 {
     t_command *cur = *cmd;
+    // int found = 0;
     while (cur)
     {
         printf("seet path\n");
         if(get_path(cur->args[0]) != NULL)
         {
+            // found = 1;
             cur->path = ft_strdup(get_path(cur->args[0]));
+            free(cur->args[0]);
+            cur->args[0] = ft_strdup(cur->path);
         }
+        else
+            cur->path = ft_strdup(cur->args[0]);
         cur = cur->next;
     }
     
@@ -290,7 +296,8 @@ void handl_input(t_env **env)
             // printf("count list: %d\n", count);
             cmd = fill_command(token_list);
             set_path(&cmd);
-            print_cmd(cmd);            
+            print_cmd(cmd);
+            // execute_cmds(cmd);
         // ft_tokens_free(token_list);
         }
         free_cmd(cmd);
