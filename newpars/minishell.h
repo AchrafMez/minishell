@@ -8,7 +8,7 @@
 #include "./libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-
+// #include "../execution/builting/builtin.h"
 typedef enum e_token_type {
     WORD, //0
     S_QUOTE, //1
@@ -82,11 +82,9 @@ void display_env(t_env *tmp);
 void ft_free_env(t_env **env);
 
 
-
-
-
 //expanding tools
 char *get_env_value(t_env *env, char *searsh);
+
 
 //---------------------------parser--------------------//
 //cmd utils

@@ -10,7 +10,7 @@ int check_syntax(t_token *token)
         {
             if(!cur->next || cur->next->type == PIPE)
             {
-                printf("syntax error || \n");
+                printf("minishell$: syntax error near '|' \n");
                 return 1;
             }
         }
@@ -18,7 +18,7 @@ int check_syntax(t_token *token)
         {
             if(!cur->next || (cur->next->type != WORD && cur->next->type != SPACES && cur->next->type != S_QUOTE && cur->next->type != D_QUOTE))
             {
-                printf("syntax error > < \n");
+                printf("minishell$: syntax error near > < \n");
                 return 1;
             }
         }
@@ -41,12 +41,12 @@ int check_unclosed_quotes(char *input)
     }
     if (s_quotes)
     {
-        printf("singel quotes not closed\n");
+        printf("minishell$: singel quotes not closed\n");
         return 1;
     }
     if(d_quotes)
     {
-        printf("double quotes not closed\n");
+        printf("minishell$: double quotes not closed\n");
         return 1;
     }
     return 0;  
@@ -58,140 +58,6 @@ int check_unclosed_quotes(char *input)
 void leaks()
 {
     system("leaks minishell");
-}
-
-void print_cmd(t_command *command)
-{
-    t_command *cur = command;
-    while(cur)
-    {
-        int i = 0;
-        printf("cmd path: %s\n", cur->path);
-        while(cur->args[i])
-        {
-            printf("arg: %s\n", cur->args[i]);
-            i++;
-        }
-        t_red *tmp = cur->in;
-        t_red *out_tm = cur->out;
-        while(out_tm)
-        {
-            printf("ouput file: %s typt: %u\n", out_tm->value, out_tm->type);
-            out_tm = out_tm->next;
-        }
-        while(tmp)
-        {
-            printf("input file: %s typt: %u\n", tmp->value, tmp->type);
-            tmp = tmp->next;
-        }
-        printf("------- another cmd -------\n");
-        cur = cur->next;
-    }
-}
-
-void free_cmd(t_command *command)
-{
-    t_command *cur = command;
-    t_command *next ;
-    while(cur)
-    {
-        next = cur->next;
-        int i = 0;
-        while(cur->args[i])
-        {
-            free(cur->args[i]);
-            i++;
-        }
-        free(cur->args);
-        free(cur->path);
-        t_red *red_tmp = cur->in;
-        while(red_tmp)
-        {
-            t_red *next_red = red_tmp->next;
-            free(red_tmp->value);
-            free(red_tmp);
-            red_tmp = next_red;
-        }
-        t_red *red_out = cur->out;
-        while(red_out)
-        {
-            t_red *next_out = red_out->next;
-            free(red_out->value);
-            free(red_out);
-            red_out = next_out;
-        }
-        free(cur);
-        cur = next;
-    }
-}
-
-void free_path(char **path)
-{
-    int i = 0;
-    while(path[i])
-    {
-        free(path[i]);
-        i++;
-    }
-    free(path);
-}
-char *get_path(char *target)
-{
-    char *env_path = getenv("PATH");
-    if(!env_path)
-        return NULL;
-    char **path = ft_split(env_path,':');
-    if(!path)
-        return NULL;
-    int i = 0;
-    while(path[i])
-    {
-        char *slash_dir = ft_strjoin(path[i], "/");
-        if(!slash_dir)
-        {
-            free_path(path);
-            return NULL;
-        }
-        char *full_path = ft_strjoin(slash_dir, target);
-        free(slash_dir);
-        if(!full_path)
-        {
-            free_path(path);
-            return NULL;
-        }
-        if(access(full_path, X_OK) == 0)
-        {
-            free_path(path);
-            return full_path;
-        }
-        free(full_path);
-        i++;   
-    }
-    free_path(path);
-    return NULL;
-}
-void set_path(t_command **cmd)
-{
-    t_command *cur = *cmd;
-
-    while (cur)
-    {
-        if (cur->args && cur->args[0]) // Check if args and args[0] exist
-        {
-            char *path = get_path(cur->args[0]);
-            if (path != NULL)
-            {
-                cur->path = path;
-                free(cur->args[0]);
-                cur->args[0] = ft_strdup(cur->path);
-            }
-            else
-            {
-                cur->path = ft_strdup(cur->args[0]);
-            }
-        }
-        cur = cur->next;
-    }
 }
 
 
@@ -223,6 +89,7 @@ void handl_input(t_env **env)
             {
                 set_path(&cmd);
                 print_cmd(cmd);
+                // execution(&cmd, env);
                 free_cmd(cmd);
             }
         }
