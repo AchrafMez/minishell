@@ -5,6 +5,7 @@ int execute_cmds(t_command *cmd){
     // int prev_fd;
 
     // int pid;
+    
     printf("execute\n"); 
     while (cmd) {
         pipe(fds);

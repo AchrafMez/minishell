@@ -89,3 +89,4 @@ int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_
 
     return 0;
 }
+

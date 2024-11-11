@@ -40,10 +40,10 @@ t_command *fill_command(t_token *tokens)
     {
         if (!cur || tokens->type == PIPE)
         {
-            cur = create_cmd_assist(&cmd_list);
+            cur = fill_cmd_assit1(&cmd_list);
             arg_count = 0; 
         }
-        process_token(tokens, cur, &arg_count);
+        fill_cmd_assit(tokens, cur, &arg_count);
         if (tokens->type >= RED_IN && tokens->type <= HERE_DOC)
             tokens = tokens->next;
         tokens = tokens->next;

@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void ctrl_d()
+{
+    printf("exit\n");
+    exit(EXIT_SUCCESS);
+}
+
 void ctrl_c(int sig)
 {
     (void)sig;

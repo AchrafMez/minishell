@@ -16,10 +16,9 @@ int check_syntax(t_token *token)
         }
         else if(cur->type == RED_IN || cur->type == RED_OUT || cur->type == HERE_DOC ||cur->type == RED_APP)
         {
-            //cur.next != word || next != space
             if(!cur->next || (cur->next->type != WORD && cur->next->type != SPACES && cur->next->type != S_QUOTE && cur->next->type != D_QUOTE))
             {
-                printf("syntax errer > < \n");
+                printf("syntax error > < \n");
                 return 1;
             }
         }
@@ -32,7 +31,6 @@ int check_unclosed_quotes(char *input)
 {
     int s_quotes = 0;
     int d_quotes = 0;
-
     while (*input)
     {
         if (*input == '\'' && !d_quotes)
@@ -55,44 +53,7 @@ int check_unclosed_quotes(char *input)
 }
 
 
-void delete_space(t_token **token_list)
-{
-    t_token *cur = *token_list;
-    t_token *prev = NULL;
-    if(cur && (cur->type == SPACES || ft_strcmp(cur->value, "") == 0))
-    {
-        // printf("1\n");
-        *token_list = cur->next;
-        free(cur->value);
-        free(cur);
-        return ;
-    }
-    while(cur != NULL && (cur->type != SPACES && ft_strcmp(cur->value, "")))
-    {
-        // printf("2\n");
-        prev = cur;
-        cur = cur->next;
-    }
-    if(cur != NULL)
-    {
-        // printf("3\n");
-        prev->next = cur->next;
-        free(cur->value);
-        free(cur);
-    }
-}
 
-void tokens_edit(t_token **token_list)
-{
-    t_token *cur = *token_list;
-    // printf("0\n");
-    while(cur)
-    {
-        if(cur->type == SPACES || cur->value[0] == '\0')
-            delete_space(token_list);
-        cur = cur->next;
-    }
-}
 
 void leaks()
 {
@@ -123,7 +84,6 @@ void print_cmd(t_command *command)
             printf("input file: %s typt: %u\n", tmp->value, tmp->type);
             tmp = tmp->next;
         }
-            // printf("file type: |%u|\n", cur->red->type);
         printf("------- another cmd -------\n");
         cur = cur->next;
     }
@@ -213,35 +173,28 @@ char *get_path(char *target)
 void set_path(t_command **cmd)
 {
     t_command *cur = *cmd;
-    // int found = 0;
+
     while (cur)
     {
-        printf("seet path\n");
-        char *path = get_path(cur->args[0]);
-        if(path!= NULL)
+        if (cur->args && cur->args[0]) // Check if args and args[0] exist
         {
-            // found = 1;
-            cur->path = path;
-            free(cur->args[0]);
-            cur->args[0] = ft_strdup(cur->path);
-            if(!cur->args[0])
+            char *path = get_path(cur->args[0]);
+            if (path != NULL)
             {
-                printf("strdup errror\n");
-                exit(EXIT_FAILURE);
+                cur->path = path;
+                free(cur->args[0]);
+                cur->args[0] = ft_strdup(cur->path);
             }
-        }
-        else
-        {
-            cur->path = ft_strdup(cur->args[0]);
-            if(!cur->path)
+            else
             {
-                printf("srdup 2 error\n");
-                exit(EXIT_FAILURE);
+                cur->path = ft_strdup(cur->args[0]);
             }
         }
         cur = cur->next;
     }
 }
+
+
 
 void handl_input(t_env **env)
 {
@@ -252,39 +205,33 @@ void handl_input(t_env **env)
     {
         input = readline("minishell$ ");
         if (!input)
-            break ;
+            ctrl_d();
         if(check_unclosed_quotes(input))
         {
+            add_history(input);
             free(input);
             continue ;
         }
         add_history(input);
         token_list = tokenize_input(input, env);
-        // ft_free_env(env);
-        if(check_syntax(token_list) == 0)
-        {
-            // print_tokens(token_list);
-            // printf("------------ after deleted ------------\n");
+        if(token_list)
             tokens_edit(&token_list);
-            // print_tokens(token_list);
-            // int count = count_list(&token_list);
-            // printf("count list: %d\n", count);
+        if(token_list && check_syntax(token_list) == 0)
+        {
             cmd = fill_command(token_list);
-            set_path(&cmd);
-            print_cmd(cmd);
-            // free_cmd(cmd);
-            // execute_cmds(cmd);
-        // ft_tokens_free(token_list);
+            if(cmd)
+            {
+                set_path(&cmd);
+                print_cmd(cmd);
+                free_cmd(cmd);
+            }
         }
-        free_cmd(cmd);
-        ft_tokens_free(token_list);
         free(input);
-        system("leaks minishell");
+        ft_tokens_free(token_list);
+        // system("leaks minishell");
         // atexit(leaks);
     }
 }
-
-
 
 int main(int ac, char **av, char **envp)
 {
@@ -304,4 +251,3 @@ int main(int ac, char **av, char **envp)
     return 0;
 
 }
-

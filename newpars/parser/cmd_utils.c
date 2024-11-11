@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void add_red(t_red **red_list, char *value, t_token_type type)
 {
@@ -42,8 +42,8 @@ t_command *create_command()
     cmd->args = malloc(sizeof(char *));
     cmd->args[0] = NULL;
     cmd->path = NULL;
-    cmd->red = NULL;
+    cmd->in = NULL;
+    cmd->out = NULL;
     cmd->next = NULL;
     return cmd;
 }
-
