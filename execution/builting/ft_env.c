@@ -197,3 +197,7 @@ t_env ft_env(char **env, char **arg)
 	}
 }
 
+int main()
+{
+	
+}

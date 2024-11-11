@@ -43,7 +43,7 @@ void	process_heredoc(const char *delimiter, t_env *env)
 		exit(EXIT_FAILURE);
 	}
 
-	printf("Heredoc saved in: %s\n", tmp_filename);
+	// printf("Heredoc saved in: %s\n", tmp_filename);
 	while (1)
 	{
 		line = readline("heredoc> ");

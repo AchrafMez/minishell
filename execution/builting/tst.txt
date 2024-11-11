@@ -1,0 +1,15 @@
+Makefile
+a.out
+builtin.h
+ft_cd.c
+ft_echo.c
+ft_env.c
+ft_exit.c
+ft_export.c
+ft_heredoc.c
+ft_pwd.c
+ft_unset.c
+main.c
+test.txt
+tst.txt
+unset.c

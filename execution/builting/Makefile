@@ -8,7 +8,7 @@ SRCS = ft_echo.c ft_export.c ft_pwd.c ft_cd.c ft_unset.c ft_env.c ft_exit.c ft_h
 
 NAME = minishell
 OBJS = $(SRCS:.c=.o)
-LIBFT=libft/libft.a
+ LIBFT=#libft/libft.a
 
 
 all : $(NAME)
