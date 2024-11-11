@@ -25,6 +25,7 @@ void	print_arguments(char **arg)
 	{
 		if (arg[i + 1]) // If not the last argument
 			printf("%s ", arg[i]); // Print with a space
+			p
 		else
 			printf("%s", arg[i]); // Print the last argument without a space
 		i++; // Move to the next argument
@@ -32,7 +33,7 @@ void	print_arguments(char **arg)
 }
 
 // Echo function implementation
-void	ft_echo(char **arg)
+void	ft_echo(char **arg, int fd)
 {
 	int	i = 1; // Start from the first argument
 	int	no_line = 0; // Flag for new line
