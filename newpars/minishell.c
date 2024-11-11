@@ -69,53 +69,103 @@ int check_unclosed_quotes(char *input)
 //     return count;
 // }
 
-t_command *fill_command(t_token *token_list) {
-    t_command *command_list = NULL;
-    t_command *current_cmd = NULL;
-    t_token *tokens = token_list;
-    int arg_count = 0;
+// t_command *fill_command(t_token *token_list) {
+//     t_command *command_list = NULL;
+//     t_command *current_cmd = NULL;
+//     t_token *tokens = token_list;
+//     int arg_count = 0;
 
-    while (tokens)
-    {
-        // printf("test\n");
-        if (!current_cmd)
-        {
-            current_cmd = create_command();
+//     while (tokens)
+//     {
+//         // printf("test\n");
+//         if (!current_cmd)
+//         {
+//             current_cmd = create_command();
 
-            if (!command_list)
-                command_list = current_cmd;
-            else
-            {
-                t_command *temp = command_list;
-                while (temp->next)
-                    temp = temp->next;
-                temp->next = current_cmd;
-            }
-        }
+//             if (!command_list)
+//                 command_list = current_cmd;
+//             else
+//             {
+//                 t_command *temp = command_list;
+//                 while (temp->next)
+//                     temp = temp->next;
+//                 temp->next = current_cmd;
+//             }
+//         }
 
-        if (tokens->type == WORD || tokens->type == S_QUOTE || tokens->type == D_QUOTE || tokens->type == ENV)
-        {
-            // printf("here\n");
-            add_arg(&current_cmd->args, &arg_count, tokens->value);
-        }
-        else if (tokens->type >= RED_IN && tokens->type <= HERE_DOC)
-        {
-            // printf("here1\n");
-            if (tokens->next)
-            {
-                // printf("here2\n");
-                add_red(&current_cmd->red, tokens->next->value, tokens->type);
-            }
-            tokens = tokens->next;
-        }
+//         if (tokens->type == WORD || tokens->type == S_QUOTE || tokens->type == D_QUOTE || tokens->type == ENV)
+//         {
+//             // printf("here\n");
+//             add_arg(&current_cmd->args, &arg_count, tokens->value);
+//         }
+//         else if (tokens->type >= RED_IN && tokens->type <= HERE_DOC)
+//         {
+//             // printf("here1\n");
+//             if (tokens->next)
+//             {
+//                 // printf("here2\n");
+//                 add_red(&current_cmd->red, tokens->next->value, tokens->type);
+//             }
+//             tokens = tokens->next;
+//         }
         
-        else if (tokens->type == PIPE)
-            current_cmd = NULL; 
+//         else if (tokens->type == PIPE)
+//             current_cmd = NULL; 
 
-        tokens = tokens->next;
-    }
-    return command_list;
-}
+//         tokens = tokens->next;
+//     }
+//     return command_list;
+// }
+// t_command *fill_command(t_token *token_list)
+// {
+//     t_command *command_list = NULL;
+//     t_command *current_cmd = NULL;
+//     t_token *tokens = token_list;
+//     int arg_count = 0;
+
+//     while(tokens)
+//     {
+//         if(!current_cmd) {
+//             current_cmd = create_command();
+
+//             if(!command_list)
+//                 command_list = current_cmd;
+//             else
+//             {
+//                 t_command *temp = command_list;
+//                 while (temp->next)
+//                     temp = temp->next;
+//                 temp->next = current_cmd;
+//             }
+//         }
+//         if (tokens->type == WORD || tokens->type == S_QUOTE || tokens->type == D_QUOTE || tokens->type == ENV)
+//             add_arg(&current_cmd->args, &arg_count, tokens->value);
+//         else if (tokens->type == RED_IN || tokens->type == HERE_DOC)
+//         {
+//             if (tokens->next)
+//             {
+//                 add_red(&current_cmd->in, tokens->next->value, tokens->type);
+//                 tokens = tokens->next;
+//             }
+//         }
+//         else if (tokens->type == RED_OUT || tokens->type == RED_APP)
+//         {
+//             if (tokens->next) {
+//                 add_red(&current_cmd->out, tokens->next->value, tokens->type);
+//                 tokens = tokens->next;
+//             }
+//         }
+//         else if (tokens->type == PIPE)
+//         {
+//             current_cmd = NULL;
+//             arg_count = 0;
+//         }
+//         tokens = tokens->next;
+//     }
+//     return command_list;
+// }
+
+
 
 void delete_space(t_token **token_list)
 {
@@ -173,10 +223,16 @@ void print_cmd(t_command *command)
             printf("arg: %s\n", cur->args[i]);
             i++;
         }
-        t_red *tmp = cur->red;
+        t_red *tmp = cur->in;
+        t_red *out_tm = cur->out;
+        while(out_tm)
+        {
+            printf("ouput file: %s typt: %u\n", out_tm->value, out_tm->type);
+            out_tm = out_tm->next;
+        }
         while(tmp)
         {
-            printf("file: %s typt: %u\n", tmp->value, tmp->type);
+            printf("input file: %s typt: %u\n", tmp->value, tmp->type);
             tmp = tmp->next;
         }
             // printf("file type: |%u|\n", cur->red->type);
@@ -200,13 +256,21 @@ void free_cmd(t_command *command)
         }
         free(cur->args);
         free(cur->path);
-        t_red *red_tmp = cur->red;
+        t_red *red_tmp = cur->in;
         while(red_tmp)
         {
             t_red *next_red = red_tmp->next;
             free(red_tmp->value);
             free(red_tmp);
             red_tmp = next_red;
+        }
+        t_red *red_out = cur->out;
+        while(red_out)
+        {
+            t_red *next_out = red_out->next;
+            free(red_out->value);
+            free(red_out);
+            red_out = next_out;
         }
         free(cur);
         cur = next;
@@ -225,7 +289,10 @@ void free_path(char **path)
 }
 char *get_path(char *target)
 {
-    char **path = ft_split(getenv("PATH"),':');
+    char *env_path = getenv("PATH");
+    if(!env_path)
+        return NULL;
+    char **path = ft_split(env_path,':');
     if(!path)
         return NULL;
     int i = 0;
@@ -269,12 +336,23 @@ void set_path(t_command **cmd)
             cur->path = path;
             free(cur->args[0]);
             cur->args[0] = ft_strdup(cur->path);
+            if(!cur->args[0])
+            {
+                printf("strdup errror\n");
+                exit(EXIT_FAILURE);
+            }
         }
         else
+        {
             cur->path = ft_strdup(cur->args[0]);
+            if(!cur->path)
+            {
+                printf("srdup 2 error\n");
+                exit(EXIT_FAILURE);
+            }
+        }
         cur = cur->next;
     }
-    
 }
 
 void handl_input(t_env **env)
@@ -314,7 +392,7 @@ void handl_input(t_env **env)
         ft_tokens_free(token_list);
         free(input);
         system("leaks minishell");
-        atexit(leaks);
+        // atexit(leaks);
     }
 }
 

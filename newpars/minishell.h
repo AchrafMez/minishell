@@ -52,7 +52,8 @@ typedef struct s_red{
 typedef struct s_command{
     char **args;
     char *path;
-    t_red *red;
+    t_red *in;
+    t_red *out;
     struct s_command *next;
 } t_command;
 
