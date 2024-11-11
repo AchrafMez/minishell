@@ -1,6 +1,10 @@
 Makefile
 a.out
+allocptr.c
+allocptr.o
 builtin.h
+cleaning.c
+cleaning.o
 ft_cd.c
 ft_echo.c
 ft_env.c
@@ -9,7 +13,13 @@ ft_export.c
 ft_heredoc.c
 ft_pwd.c
 ft_unset.c
+handle_child.c
+handle_child.o
+libft.c
+libft.o
 main.c
+main.o
+minishell
 test.txt
 tst.txt
 unset.c
