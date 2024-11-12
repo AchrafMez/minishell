@@ -31,38 +31,38 @@ int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
     return 0;
 }
 
-void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env, int flag)
+void handle_dollar(t_content *content, int flag)
 {
-    (*cur)++;
+    (*content->cur)++;
     char key[256];
     int key_idx = 0;
-    while(**cur &&(ft_isalnum(**cur) || **cur == '_'))
-        key[key_idx++] = *(*cur)++;
+    while(**content->cur &&(ft_isalnum(**content->cur) || **content->cur == '_'))
+        key[key_idx++] = *(*content->cur)++;
     key[key_idx] = '\0';
     // printf("key: %s\n", key);
-    char *expanded = get_env_value(*env, key);
+    char *expanded = get_env_value(content->env, key);
     int i = 0;
     if(expanded)
     {
         while(expanded[i] != '\0')
-            buffer[(*buf_idx)++] = expanded[i++];
+            content->buffer[(*content->buf_idx)++] = expanded[i++];
         printf("expanded: %s\n", expanded);
         if(flag == 1)
         {
-            add_token(token_list, create_token(expanded, ENV));
-            *buf_idx = 0;
+            add_token(content->token_list, create_token(expanded, ENV));
+            *content->buf_idx = 0;
         }
     }
     else
     {
         i = 0;
-        buffer[(*buf_idx)] = '$';
+        content->buffer[(*content->buf_idx)] = '$';
         while(key[i] != '\0')
-            buffer[(*buf_idx)++] = key[i++];
+            content->buffer[(*content->buf_idx)++] = key[i++];
         if(flag == 1)
         {
-            add_token(token_list, create_token(buffer, WORD));
-            *buf_idx = 0;
+            add_token(content->token_list, create_token(content->buffer, WORD));
+            *content->buf_idx = 0;
         }
     }
 }
@@ -73,14 +73,15 @@ t_token *tokenize_input(char *input, t_env **env)
     char *cur = input;
     char buffer[1024];
     int buf_idx = 0;
-
+    
+    t_content content = {&cur, buffer, &buf_idx, &token_list, *env};
     while (*cur)
     {
         if (*cur == ' ')
             handle_space(&cur, buffer, &buf_idx, &token_list);
         else if (*cur == '"')
         {
-            int dq = handle_double_quote(&cur, buffer, &buf_idx, &token_list, *env);
+            int dq = handle_double_quote(&content);
             if(dq == 1)
             {
                 ft_tokens_free(token_list);
@@ -89,7 +90,7 @@ t_token *tokenize_input(char *input, t_env **env)
         }
         else if (*cur == '\'')
         {
-            int ret = handle_single_quote(&cur, buffer, &buf_idx, &token_list, *env);
+            int ret = handle_single_quote(&content);
             if(ret == 1)
             {
                 ft_tokens_free(token_list);
@@ -124,7 +125,7 @@ t_token *tokenize_input(char *input, t_env **env)
             }
         }
         else if (*cur == '$')
-            handle_dollar(&cur, buffer, &buf_idx, &token_list, env, 1);
+            handle_dollar(&content, 1);
         else
         {
             buffer[buf_idx++] = *cur;

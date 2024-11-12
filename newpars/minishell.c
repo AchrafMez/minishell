@@ -52,15 +52,10 @@ int check_unclosed_quotes(char *input)
     return 0;  
 }
 
-
-
-
 void leaks()
 {
     system("leaks minishell");
 }
-
-
 
 void handl_input(t_env **env)
 {

@@ -56,6 +56,16 @@ typedef struct s_command{
 } t_command;
 
 
+//just for the norm
+typedef struct s_content
+{
+    char **cur;
+    char *buffer;
+    int *buf_idx;
+    t_token **token_list;
+    t_env *env;
+} t_content;
+
 //token_utils
 t_token *create_token(char *value, t_token_type type);
 t_token *ret_last_token(t_token **token_list);
@@ -65,14 +75,24 @@ void ft_tokens_free(t_token *token_list);
 void tokens_edit(t_token **token_list);
 void delete_space(t_token **token_list);
 
+
 //----------------------------tokenizer-----------------//
+//quotes
+int check_single(char **cur, char *buffer, int *buf_idx);
+void check_single_for_helper(t_content *content);
+int handle_singlequote_helper(t_content *content);
+int handle_single_quote(t_content *content);
+
+
+void handle_double_quote_helper(t_content *content);
+int handle_double_quote(t_content *content);
+
+void handle_dollar(t_content *content, int flag);
+
 void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-int handle_double_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env *env);
-int handle_single_quote(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env *env);
 int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
-void handle_dollar(char **cur, char *buffer, int *buf_idx, t_token **token_list, t_env **env, int flag);
 t_token *tokenize_input(char *input, t_env **env);
 
 
