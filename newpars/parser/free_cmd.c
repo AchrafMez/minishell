@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/13 09:58:49 by amezioun          #+#    #+#             */
+/*   Updated: 2024/11/13 12:50:41 by amezioun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	print_cmd(t_command *command)
@@ -34,15 +46,41 @@ void	print_cmd(t_command *command)
 	}
 }
 
+void free_out(t_command *cur)
+{
+	t_red		*red_out;
+	t_red		*next_out;
+	
+	red_out = cur->out;
+	while (red_out)
+	{
+		next_out = red_out->next;
+		free(red_out->value);
+		free(red_out);
+		red_out = next_out;
+	}
+}
+
+void free_in(t_command *cur)
+{
+	t_red		*red_tmp;
+	t_red		*next_red;
+
+	red_tmp = cur->in;
+	while (red_tmp)
+	{
+		next_red = red_tmp->next;
+		free(red_tmp->value);
+		free(red_tmp);
+		red_tmp = next_red;
+	}
+		
+}
 void	free_cmd(t_command *command)
 {
 	t_command	*cur;
 	t_command	*next;
 	int			i;
-	t_red		*red_tmp;
-	t_red		*next_red;
-	t_red		*red_out;
-	t_red		*next_out;
 
 	cur = command;
 	while (cur)
@@ -56,22 +94,8 @@ void	free_cmd(t_command *command)
 		}
 		free(cur->args);
 		free(cur->path);
-		red_tmp = cur->in;
-		while (red_tmp)
-		{
-			next_red = red_tmp->next;
-			free(red_tmp->value);
-			free(red_tmp);
-			red_tmp = next_red;
-		}
-		red_out = cur->out;
-		while (red_out)
-		{
-			next_out = red_out->next;
-			free(red_out->value);
-			free(red_out);
-			red_out = next_out;
-		}
+		free_in(cur);
+		free_out(cur);
 		free(cur);
 		cur = next;
 	}

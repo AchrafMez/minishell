@@ -98,6 +98,7 @@ int	handle_red(t_content *content);
 t_token *tokenize_input(char *input, t_env **env);
 
 
+//----------------------------env-----------------------/
 //env
 void dup_env(char **envp, t_env **env);
 void display_env(t_env *tmp);
@@ -109,6 +110,8 @@ char *get_env_value(t_env *env, char *searsh);
 
 
 //---------------------------parser--------------------//
+int	check_syntax(t_token *token);
+int	check_unclosed_quotes(char *input);
 //cmd utils
 t_command *create_command();
 void add_arg(char ***args, int *arg_count, char *value);
