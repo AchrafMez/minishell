@@ -1,22 +1,22 @@
 #include "minishell.h"
 
-void ctrl_d()
+void	ctrl_d(void)
 {
-    printf("exit\n");
-    exit(EXIT_SUCCESS);
+	printf("exit\n");
+	exit(EXIT_SUCCESS);
 }
 
-void ctrl_c(int sig)
+void	ctrl_c(int sig)
 {
-    (void)sig;
-    rl_replace_line("", 0);
-    rl_on_new_line();
-    printf("\n");
-    rl_redisplay();
+	(void)sig;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	printf("\n");
+	rl_redisplay();
 }
 
-void handle_signals(void)
+void	handle_signals(void)
 {
-    signal(SIGINT, ctrl_c);
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 }

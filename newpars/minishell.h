@@ -87,12 +87,14 @@ int handle_single_quote(t_content *content);
 void handle_double_quote_helper(t_content *content);
 int handle_double_quote(t_content *content);
 
+void	handle_dollar_helper(t_content *content, char *expanded, int flag);
 void handle_dollar(t_content *content, int flag);
-
+int	handle_quotes(t_content *content);
 void handle_space(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_in(char **cur, char *buffer, int *buf_idx, t_token **token_list);
 int handle_red_out(char **cur, char *buffer, int *buf_idx, t_token **token_list);
+int	handle_red(t_content *content);
 t_token *tokenize_input(char *input, t_env **env);
 
 
