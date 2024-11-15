@@ -37,8 +37,7 @@ void cd(char **args, t_env *env)
     free(cwd);
     if(chdir(target) != 0)
     {
-        // printf("chdir fails");
-        perror("minishell: cd");
+        perror("cd");
         return;
     }
     new = getcwd(NULL, 0);

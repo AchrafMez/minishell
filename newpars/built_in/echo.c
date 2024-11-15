@@ -23,8 +23,3 @@ int echo(char **args)
     return 0;
 }
 
-int main()
-{
-    char *args[] = {"echo" ,"-n", "world","world","world","world","world","world","world","world","world","world","world","test", NULL};
-    echo(args);
-}

@@ -79,6 +79,14 @@ typedef struct s_content
 void cd(char **args, t_env *env);
 int echo(char **args);
 int pwd(void);
+int ft_env(char **args, t_env *env);
+//export
+void print_export(t_env *env);
+void print_export(t_env *env);
+t_env *find(t_env *env, char *key);
+void set_export_env(t_env **env, char *key, char *value);
+int export(char **args, t_env **env);
+
 
 //token_utils
 t_token *create_token(char *value, t_token_type type);
