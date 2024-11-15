@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+#include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -48,12 +49,19 @@ typedef struct s_red{
 } t_red;
 
 typedef struct s_command{
+    char *name;
     char **args;
     char *path;
     t_red *in;
     t_red *out;
     struct s_command *next;
 } t_command;
+
+//for the exit status
+typedef struct s_shell{
+    int exit_status;
+    t_env *env;
+} t_shell;
 
 
 //just for the norm
@@ -66,6 +74,12 @@ typedef struct s_content
     t_env *env;
 } t_content;
 
+//-----------------------------exec-----------------------------//
+//built_in
+void cd(char **args, t_env *env);
+int echo(char **args);
+int pwd(void);
+
 //token_utils
 t_token *create_token(char *value, t_token_type type);
 t_token *ret_last_token(t_token **token_list);
@@ -73,7 +87,7 @@ void add_token(t_token **token_list, t_token *new_token);
 void print_tokens(t_token *token_list);
 void ft_tokens_free(t_token *token_list);
 void tokens_edit(t_token **token_list);
-void delete_space(t_token **token_list);
+void delete_space(t_token **token_list); 
 
 
 //----------------------------tokenizer-----------------//
@@ -107,7 +121,7 @@ void ft_free_env(t_env **env);
 
 //expanding tools
 char *get_env_value(t_env *env, char *searsh);
-
+void set_env_value(t_env **env, char *searsh, char *set);
 
 //---------------------------parser--------------------//
 int	check_syntax(t_token *token);
@@ -130,13 +144,14 @@ char *get_path(char *target);
 void free_path(char **path);
 
 
-void handl_input(t_env **env);
+void handl_input(t_env **env, t_shell *shell);
 
 
 //signal
+int ft_strcmp(char *str, char *target);
 void ctrl_c(int sig);
 void ctrl_d();
 void handle_signals(void);
 
-int ft_strcmp(char *str, char *target);
+
 #endif
