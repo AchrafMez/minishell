@@ -30,13 +30,14 @@ void set_export_env(t_env **env, char *key, char *value)
         printf("modify the exist env value \n");
         free(exist->value);
         exist->value = ft_strdup(value);
+        return ;
     }
     else
     {
         printf("hahwa dkhel\n");
         t_env *new = malloc(sizeof(t_env));
-        printf("%s\n", key);
-        printf("%s\n", value);
+        printf("|key:%s|\n", key);
+        printf("|value:%s|\n", value);
         new->key = ft_strdup(key);
         new->value = ft_strdup(value);
         new->next = *env;
@@ -55,12 +56,14 @@ int export(char **args, t_env **env)
     while(args[counter])
     {
         char *arg = args[counter];
-        char *sign = ft_strchr(arg, '"');
+        char *sign = ft_strchr(arg, '=');
         if(sign)
         {
             *sign = '\0';
             char *key = arg;
+            printf("keeeey:|%s|\n", key);
             char *value = sign+1;
+            printf("vaaaalue:|%s|\n", value);
             set_export_env(env, key, value);
         }
         else
