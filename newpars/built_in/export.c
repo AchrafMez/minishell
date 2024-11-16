@@ -22,6 +22,26 @@ t_env *find(t_env *env, char *key)
     return NULL;
 }
 
+int is_valid_key(char *arg)
+{
+    if(!*arg && (ft_isalpha(arg[0]) != 1) && arg[0] != '_')
+    {
+        printf("first char is incorrect\n");
+        return 1;
+    }
+    int i = 0;
+    while(arg[i])
+    {
+        if((ft_isalnum(arg[i]) != 1) && arg[i] != '_')
+        {
+            printf("incorrect key\n");
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
+
 void set_export_env(t_env **env, char *key, char *value)
 {
     t_env *exist = find(*env, key);
@@ -47,12 +67,14 @@ void set_export_env(t_env **env, char *key, char *value)
 
 int export(char **args, t_env **env)
 {
-    if(!args[1])
+    if(!args[1] || ft_strcmp(args[1], "-p") == 0)
     {
         print_export(*env);
         return 0;
     }
     int counter = 1;
+    printf("arg: %s\n", args[1]);
+    
     while(args[counter])
     {
         char *arg = args[counter];
@@ -61,6 +83,12 @@ int export(char **args, t_env **env)
         {
             *sign = '\0';
             char *key = arg;
+            printf("key: %s\n", key);
+            if(is_valid_key(key) == 1)
+            {
+                printf("minishell: export: '%s': not a valid edentifier\n", args[1]);
+                return 1;
+            }
             printf("keeeey:|%s|\n", key);
             char *value = sign+1;
             printf("vaaaalue:|%s|\n", value);
