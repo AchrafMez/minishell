@@ -20,7 +20,8 @@ typedef enum e_token_type {
     RED_IN, //6
     RED_OUT, //7
     RED_APP, //8
-    HERE_DOC //9
+    HERE_DOC, //9
+    EXIT_STATUE
 } t_token_type;
 
 
@@ -75,6 +76,8 @@ typedef struct s_content
 } t_content;
 
 //-----------------------------exec-----------------------------//
+void exec_built(t_command *cmd, t_env **env);
+int is_built_in(t_command *command);
 //built_in
 void cd(char **args, t_env *env);
 int echo(char **args);
@@ -146,8 +149,8 @@ void free_cmd(t_command *command);
 
 void print_cmd(t_command *command);
 t_command *fill_cmd_assit1(t_command **cmd_list);
-void fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count);
-t_command *fill_command(t_token *tokens);
+void fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count, t_env *env);
+t_command *fill_command(t_token *tokens, t_env *env);
 
 
 //path
