@@ -89,6 +89,7 @@ void set_export_env(t_env **env, char *key, char *value);
 int export(char **args, t_env **env);
 //unset
 int unset(char **args, t_env **env);
+int ft_exit(char **args, int last_e_s);
 
 
 //token_utils
