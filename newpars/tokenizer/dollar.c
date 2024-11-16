@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:55:08 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 09:55:19 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/16 15:48:06 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void	handle_dollar(t_content *content, int flag)
 
 	(*content->cur)++;
 	key_idx = 0;
+	if(*(*content->cur) == '?')
+	{
+		// printf("buffer:%s\n", content->buffer);
+		add_token(content->token_list, create_token("$?", EXIT_STATUE));
+		(*content->cur)++;
+		return ;
+	}
 	while (**content->cur && (ft_isalnum(**content->cur)
 			|| **content->cur == '_'))
 		key[key_idx++] = *(*content->cur)++;

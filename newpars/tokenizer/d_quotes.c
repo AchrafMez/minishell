@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:48:16 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/12 10:36:23 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:00:42 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	handle_double_quote(t_content *content)
 	(*content->cur)++;
 	while (**content->cur && **content->cur != '"')
 	{
-		if (**content->cur == '$')
+		if(**content->cur == '$' && (**content->cur)+ 1 == '?')
+			handle_dollar(content, 0);
+		else if (**content->cur == '$')
 			handle_dollar(content, 0);
 		else
 			content->buffer[(*content->buf_idx)++] = *(*content->cur)++;

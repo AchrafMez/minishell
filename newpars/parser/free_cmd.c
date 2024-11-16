@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:58:49 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 12:50:41 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:12:02 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	print_cmd(t_command *command)
 	while (cur)
 	{
 		i = 0;
+		
+		printf("name: %s\n", cur->name);
 		printf("cmd path: %s\n", cur->path);
 		while (cur->args[i])
 		{
@@ -94,6 +96,7 @@ void	free_cmd(t_command *command)
 		}
 		free(cur->args);
 		free(cur->path);
+		free(cur->name);
 		free_in(cur);
 		free_out(cur);
 		free(cur);

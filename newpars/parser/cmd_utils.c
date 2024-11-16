@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:52:13 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/12 12:53:28 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:05:48 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_command	*create_command(void)
 	t_command	*cmd;
 
 	cmd = malloc(sizeof(t_command));
+	cmd->name = NULL;
 	cmd->args = malloc(sizeof(char *));
 	cmd->args[0] = NULL;
 	cmd->path = NULL;

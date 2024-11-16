@@ -20,11 +20,17 @@ t_command	*fill_cmd_assit1(t_command **cmd_list)
 	return (new);
 }
 
-void	fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count)
+void	fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count, t_env *env)
 {
+	char *value = NULL;
 	if (token->type == WORD || token->type == S_QUOTE || token->type == D_QUOTE
 		|| token->type == ENV)
 		add_arg(&cmd->args, arg_count, token->value);
+	else if(token->type == EXIT_STATUE)
+	{
+		value = get_env_value(env, "?");
+		add_arg(&cmd->args, arg_count, value);
+	}
 	else if (token->type >= RED_IN && token->type <= HERE_DOC)
 	{
 		if (token->next)
@@ -37,7 +43,7 @@ void	fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count)
 	}
 }
 
-t_command	*fill_command(t_token *tokens)
+t_command	*fill_command(t_token *tokens, t_env *env)
 {
 	t_command	*cmd_list;
 	t_command	*cur;
@@ -53,7 +59,7 @@ t_command	*fill_command(t_token *tokens)
 			cur = fill_cmd_assit1(&cmd_list);
 			arg_count = 0;
 		}
-		fill_cmd_assit(tokens, cur, &arg_count);
+		fill_cmd_assit(tokens, cur, &arg_count, env);
 		if (tokens->type >= RED_IN && tokens->type <= HERE_DOC)
 			tokens = tokens->next;
 		tokens = tokens->next;
