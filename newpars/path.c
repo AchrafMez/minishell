@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:09:51 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 10:09:55 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:11:05 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ void	set_path(t_command **cmd)
 	cur = *cmd;
 	while (cur)
 	{
-		if (cur->args && cur->args[0]) // Check if args and args[0] exist
+		if (cur->args && cur->args[0])
 		{
+			cur->name = ft_strdup(cur->args[0]);
 			path = get_path(cur->args[0]);
 			if (path != NULL)
 			{
