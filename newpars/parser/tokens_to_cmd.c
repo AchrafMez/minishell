@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 t_command	*fill_cmd_assit1(t_command **cmd_list)
 {
