@@ -79,7 +79,7 @@ typedef struct s_content
 void exec_built(t_command *cmd, t_env **env);
 int is_built_in(t_command *command);
 //built_in
-void cd(char **args, t_env *env);
+int cd(char **args, t_env *env);
 int echo(char **args);
 int pwd(void);
 int ft_env(char **args, t_env *env);
