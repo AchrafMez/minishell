@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:12:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 13:07:08 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:12:54 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ void	delete_space(t_token **token_list)
 
 	cur = *token_list;
 	prev = NULL;
+	
+	// if(cur->type == ENV && ((cur->value == NULL || ft_strlen(cur->value) == 0)))
+	// {
+	// 	printf("delte the empty env\n");
+	// 	*token_list = cur->next;
+	// 	free(cur->value);
+	// 	free(cur);
+	// 	return ;
+	// }
+	
 	if (cur && (cur->type == SPACES || ft_strcmp(cur->value, " ") == 0))
 	{
 		*token_list = cur->next;
@@ -39,6 +49,7 @@ void	delete_space(t_token **token_list)
 	}
 }
 
+
 void	tokens_edit(t_token **token_list)
 {
 	t_token	*cur;
@@ -46,7 +57,7 @@ void	tokens_edit(t_token **token_list)
 	cur = *token_list;
 	while (cur)
 	{
-		if (cur->type == SPACES)
+		if (cur->type == SPACE || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
 			delete_space(token_list);
 		cur = cur->next;
 	}

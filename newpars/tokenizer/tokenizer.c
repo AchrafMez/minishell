@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:35:56 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/17 18:43:14 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:18:16 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	tokenize_helper(t_content *content)
 			return (1);
 	}
 	else if (**content->cur == '$')
-		handle_dollar(content, 1);
+		handle_dollar(content, 0);
 	else
 		content->buffer[(*content->buf_idx)++] = *(*content->cur)++;
 	return (0);

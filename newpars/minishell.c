@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/17 18:43:21 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:43:21 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,19 @@ void handl_input(t_env **env, t_shell *shell)
         }
         add_history(input);
         token_list = tokenize_input(input, env);
+        print_tokens(token_list);
         if(token_list)
             tokens_edit(&token_list);
+        
         if(token_list && check_syntax(token_list) == 0)
         {
             cmd = fill_command(token_list, *env);
             if(cmd)
             {
                 set_path(&cmd);
-                // print_tokens(token_list);
+                print_tokens(token_list);
                 // shell->exit_status = execute_command(cmd, shell);
-                // print_cmd(cmd);
+                print_cmd(cmd);
                 if(is_built_in(cmd) == 1)
                     exec_built(cmd, env);
                 free_cmd(cmd);
@@ -54,7 +56,7 @@ void handl_input(t_env **env, t_shell *shell)
         }
         free(input);
         ft_tokens_free(token_list);
-        system("leaks minishell");
+        // system("leaks minishell");
         // atexit(leaks);
     }
 }
