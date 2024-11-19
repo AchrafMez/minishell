@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:12:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/18 12:12:54 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:24:52 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	tokens_edit(t_token **token_list)
 	cur = *token_list;
 	while (cur)
 	{
-		if (cur->type == SPACE || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
+		if (cur->type == SPACES || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
 			delete_space(token_list);
 		cur = cur->next;
 	}
