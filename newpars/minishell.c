@@ -36,21 +36,20 @@ void handl_input(t_env **env, t_shell *shell)
         }
         add_history(input);
         token_list = tokenize_input(input, env);
-        print_tokens(token_list);
         if(token_list)
             tokens_edit(&token_list);
-        
         if(token_list && check_syntax(token_list) == 0)
         {
             cmd = fill_command(token_list, *env);
             if(cmd)
             {
                 set_path(&cmd);
-                print_tokens(token_list);
+                // print_tokens(token_list);
                 // shell->exit_status = execute_command(cmd, shell);
-                print_cmd(cmd);
-                if(is_built_in(cmd) == 1)
-                    exec_built(cmd, env);
+                // print_cmd(cmd);
+                // if(is_built_in(cmd) == 1)
+                    // exec_built(cmd, env);
+                execution(&cmd, env);
                 free_cmd(cmd);
             }
         }
@@ -65,6 +64,7 @@ int main(int ac, char **av, char **envp)
 {
     (void)av;
     (void)ac;
+    handle_signals();
     // (void)envp;
     t_env *env = NULL;
     dup_env(envp, &env);
@@ -72,7 +72,6 @@ int main(int ac, char **av, char **envp)
     t_shell shell;
     shell.env = env;
     shell.exit_status = 0;
-    handle_signals();
     if(ac == 1)
         handl_input(&env, &shell);
     return 0;
