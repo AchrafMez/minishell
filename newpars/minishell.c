@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/18 11:43:21 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/23 07:02:38 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,16 @@ void handl_input(t_env **env, t_shell *shell)
                 // print_cmd(cmd);
                 // if(is_built_in(cmd) == 1)
                     // exec_built(cmd, env);
+                    // printf("built in\n");
+                    // printf("cmd->name = %s\n", cmd->name);
+                    // printf("cmd->args[0] = %s\n", cmd->args[0]);
+                    // printf("cmd->args[1] = %s\n", cmd->args[1]);
+                        // printf("cmd->out = %s\n", cmd->out->value);
+                    // printf("cmd->in->value = %s\n", cmd->in->value);
+                    // printf("cmd->out->value = %s\n", cmd->out->value);
+                    // printf("cmd->in->type = %d\n", cmd->in->type);
+                    // printf("cmd->out->type = %d\n", cmd->out->type);
+                    
                 execution(&cmd, env);
                 free_cmd(cmd);
             }

@@ -2,8 +2,8 @@
 
 int	**prc_allocation(int size)
 {
-	int i;
-	int **tube;
+	int	i;
+	int	**tube;
 
 	i = 0;
 	tube = malloc(sizeof(int *) * size);
@@ -30,10 +30,10 @@ void	check_Opwd(char **str)
 
 t_env	*get_env(char **env)
 {
-	char **str;
-	int i;
-	t_env *envp;
-	t_env *tmp;
+	char	**str;
+	int		i;
+	t_env	*envp;
+	t_env	*tmp;
 
 	i = 0;
 	str = NULL;
@@ -55,9 +55,22 @@ t_env	*get_env(char **env)
 }
 int	is_builting(t_command *cmd)
 {
-	if (ft_strcmp(cmd->args[0], "cd") || ft_strcmp(cmd->args[0], "pwd")
-		|| ft_strcmp(cmd->args[0], "export") || ft_strcmp(cmd->args[0], "unset")
-		|| ft_strcmp(cmd->args[0], "env") || ft_strcmp(cmd->args[0], "exit"))
+	// if (!ft_strcmp(cmd->args[0], "cd") || !ft_strcmp(cmd->args[0], "pwd")
+	// 	|| !ft_strcmp(cmd->args[0], "export") || !ft_strcmp(cmd->args[0], "unset")
+	// 	|| !ft_strcmp(cmd->args[0], "env") || !ft_strcmp(cmd->args[0], "exit"))
+	// 	return (1);
+	// return (0);
+	if(ft_strcmp(cmd->name, "cd") == 0)
+		return (1);
+	else if(ft_strcmp(cmd->name, "pwd")== 0)
+		return (1);
+	else if(ft_strcmp(cmd->name, "export")== 0)
+		return (1);
+	else if(ft_strcmp(cmd->name, "unset")== 0)
+		return (1);
+	else if(ft_strcmp(cmd->name, "env")== 0)
+		return (1);
+	else if(ft_strcmp(cmd->name, "exit")== 0)
 		return (1);
 	return (0);
 }
@@ -79,7 +92,7 @@ int	input_builtins(t_red *in)
 	}
 	return (1);
 }
-int out_fd_assign(t_red *tmp, int *fd)
+int	out_fd_assign(t_red *tmp, int *fd)
 {
 	if (tmp->type == RED_OUT)
 		*fd = open(tmp->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -98,9 +111,9 @@ void	duplicate_fd(int *ret, int fd)
 	dup2(fd, 1);
 	close(fd);
 }
-int output_builtins(t_red *out)
+int	output_builtins(t_red *out)
 {
-	t_red*tmp;
+	t_red	*tmp;
 	int		fd;
 	int		ret;
 
@@ -109,8 +122,9 @@ int output_builtins(t_red *out)
 	if (!tmp)
 		return (-2);
 	while (tmp)
-	{
-		if ((tmp->type == RED_OUT || tmp->type == RED_APP) && out_fd_assign(tmp, &fd))
+	{	
+		if ((tmp->type == RED_OUT || tmp->type == RED_APP) && out_fd_assign(tmp,
+				&fd))
 		{
 			if (tmp->next)
 				close(fd);
@@ -123,8 +137,10 @@ int output_builtins(t_red *out)
 	}
 	return (ret);
 }
-int	open_files(int *fd, t_command*cmd)
+int	open_files(int *fd, t_command *cmd)
 {
+		
+
 	if (!input_builtins(cmd->in))
 	{
 		g_glb.ex = 1;
@@ -138,50 +154,36 @@ int	open_files(int *fd, t_command*cmd)
 	}
 	return (1);
 }
-void	exec_builtins(t_command *cmd,t_env  **env)
+void	exec_builtins(t_command *cmd, t_env **env)
 {
 	int	fd;
-    // (void)env;
+
 	if (!open_files(&fd, cmd))
 		return ;
-	// if (ft_strcmp(cmd->args[0], "unset"))
-	// 	ft_unset(env, cmd->args);
-	// else if (ft_strcmp(cmd->args[0], "export"))
-	// 	ft_export(env, cmd->args);
-	// else if (ft_strcmp(cmd->args[0], "cd"))
-	// 	ft_cd(env, cmd->args);
-	// else if (ft_strcmp(cmd->args[0], "echo"))
-	// 	ft_echo(cmd->args);
-	// else if (ft_strcmp(cmd->args[0], "pwd"))
-	// 	ft_pwd(*env);
-	// else if (ft_strcmp(cmd->args[0], "exit"))
-	// 	ft_exit(cmd->args);
-	// else if (ft_strcmp(cmd->args[0], "env"))
-	// 	ft_env(env, cmd->args);
-	 if(ft_strcmp(cmd->name, "pwd") == 0)
-        pwd();
-    else if(ft_strcmp(cmd->name, "cd") == 0)
-        cd(cmd->args, *env);
-    else if(ft_strcmp(cmd->name, "env") == 0)
-        ft_env(cmd->args, *env);
-    else if(ft_strcmp(cmd->name, "export") == 0)
-        export(cmd->args, env);
-    else if(ft_strcmp(cmd->name, "echo") == 0)
-        echo(cmd->args);
-    else if(ft_strcmp(cmd->name, "unset") == 0)
-        unset(cmd->args, env);
-    else if(ft_strcmp(cmd->name, "exit") == 0)
-        ft_exit(cmd->args, 0);
+	if (ft_strcmp(cmd->name, "pwd") == 0)
+		pwd();
+	else if (ft_strcmp(cmd->name, "cd") == 0)
+		cd(cmd->args, *env);
+	else if (ft_strcmp(cmd->name, "env") == 0)
+		ft_env(cmd->args, *env);
+	else if (ft_strcmp(cmd->name, "export") == 0)
+		export(cmd->args, env);
+	else if (ft_strcmp(cmd->name, "echo") == 0)
+		echo(cmd->args);
+	else if (ft_strcmp(cmd->name, "unset") == 0)
+		unset(cmd->args, env);
+	else if (ft_strcmp(cmd->name, "exit") == 0)
+		ft_exit(cmd->args, 0);
 	if (fd != -2)
 	{
 		dup2(fd, 1);
 		close(fd);
 	}
 }
-int **alloc_tube(int size)
+int	**alloc_tube(int size)
 {
-	int **tube;
-	int i;
+	int	**tube;
+	int	i;
 
 	i = 0;
 	tube = malloc(sizeof(int *) * size);
@@ -196,9 +198,9 @@ int **alloc_tube(int size)
 	}
 	return (tube);
 }
-int open_pipes(int **tube, int size)
+int	open_pipes(int **tube, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
@@ -211,8 +213,9 @@ int open_pipes(int **tube, int size)
 }
 int	**builtins_tube(t_command **list, t_env **env, int size)
 {
-	int **tube;
-	t_command *cmd;
+	int			**tube;
+	t_command	*cmd;	
+	// printf("******************************r>??**************zbi********************************************\n");
 
 	cmd = *list;
 	if (size == 0 && cmd->args && is_builting(cmd))
@@ -232,13 +235,15 @@ int	**builtins_tube(t_command **list, t_env **env, int size)
 }
 void	execution(t_command **list, t_env **env)
 {
-	t_extra ptr;
-	t_command *cmd;
-	t_env *tmp;
+	t_extra		ptr;
+	t_command	*cmd;
+	t_env		*tmp;
+	
 
 	cmd = *list;
 	ptr.i = 0;
 	ptr.size = ft_size_list(*list) - 1;
+
 	ptr.tube = builtins_tube(list, env, ptr.size);
 	if (!ptr.tube)
 		return ;
@@ -254,29 +259,3 @@ void	execution(t_command **list, t_env **env)
 	ft_free_wait(ptr);
 }
 
-// int	main(int argc, char **argv, char **environ)
-// {
-// 	t_command *list;
-// 	t_env *env;
-// 	(void)argc;
-// 	(void)argv;
-// 	list = malloc(sizeof(t_command));
-// 	list->args = malloc(2 * sizeof(char *));
-// 	list->args[0] = ft_strdup("ls");
-
-// 	list->in = malloc(sizeof(t_red));
-// 	list->in->value = ft_strdup("test.txt");
-// 	list->in->type = RED_IN;
-// 	list->in->next = NULL;
-
-// 	list->out = malloc(sizeof(t_red));
-// 	list->out->value = ft_strdup("tst.txt");
-// 	list->out->type = RED_OUT;
-// 	list->out->next = NULL;
-
-// 	list->next = NULL;
-// 	env = get_env(environ);
-
-// 	execution(&list, &env);
-// 	return (0);
-// }

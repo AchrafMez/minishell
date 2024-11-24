@@ -22,13 +22,13 @@ void	unset_arguments(t_env **env, char **unset)
 		return ;
 	while (tmp)
 	{
-		if (tmp->next && ft_strcmp(tmp->next->key, *unset))
+		if (tmp->next && !ft_strcmp(tmp->next->key, *unset))
 		{
 			before = tmp->next->next;
 			env_del(tmp->next);
 			tmp->next = before;
 		}
-		else if (ft_strcmp(tmp->key, *unset))
+		else if (!ft_strcmp(tmp->key, *unset))
 		{
 			env_del(tmp);
 			*env = 0;

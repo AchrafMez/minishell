@@ -42,8 +42,9 @@ void	handle_exec(char **path, t_command	*list, t_env **env, char **envp)
 
 	if (is_builting(list))
 	{
+
 		free_tab(envp);
-		// exec_builtins(list, env);
+		exec_builtins(list, env);
 		exit(g_glb.ex);
 	}
 	else

@@ -66,10 +66,14 @@ t_env	*getEnvarement(t_env **env, char *key)
 		return (NULL);
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, key))
+		if (ft_strcmp(tmp->key, key)) // dir ! 
+		{
+
 			return (tmp);
+		}
 		tmp = tmp->next;
 	}
+
 	return (0);
 }
 void	allocptr(t_extra *ptr, t_env **tmp, t_env **env)
