@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:23:08 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/17 10:41:50 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/25 02:21:40 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void exec_built(t_command *cmd, t_env **env)
     else if(ft_strcmp(cmd->name, "cd") == 0)
         cd(cmd->args, *env);
     else if(ft_strcmp(cmd->name, "env") == 0)
-        ft_env(cmd->args, *env);
+        ft_enva(env,cmd->args);
     else if(ft_strcmp(cmd->name, "export") == 0)
         export(cmd->args, env);
     else if(ft_strcmp(cmd->name, "echo") == 0)

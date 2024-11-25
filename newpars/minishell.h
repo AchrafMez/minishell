@@ -88,7 +88,7 @@ int is_built_in(t_command *command);
 int cd(char **args, t_env *env);
 int echo(char **args);
 int pwd(void);
-int ft_env(char **args, t_env *env);
+// int ft_env(char **args, t_env *env);
 //export
 int is_valid_key(char *arg);
 void print_export(t_env *env);
@@ -135,9 +135,11 @@ t_token *tokenize_input(char *input, t_env **env);
 
 //----------------------------env-----------------------/
 //env
-void dup_env(char **envp, t_env **env);
-void display_env(t_env *tmp);
-void ft_free_env(t_env **env);
+// void dup_env(char **envp, t_env **env);
+// void display_env(t_env *tmp);
+// void ft_free_env(t_env **env);
+
+t_env	*convert_env(char **env);
 
 
 //expanding tools
@@ -294,4 +296,5 @@ void	env_del(t_env *lst);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 // char	*ft_substr(char const *s, unsigned int start, size_t len);
 // char	*ft_strchr(const char *str, int character);
+void	ft_enva(t_env **env, char **arg);
 #endif

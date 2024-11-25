@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:09:51 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/14 11:11:05 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/25 10:34:06 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*get_path(char *target)
 void	set_path(t_command **cmd)
 {
 	t_command	*cur;
-	char		*path;
+	char		*path  = NULL;
 
 	cur = *cmd;
 	while (cur)
@@ -78,7 +78,7 @@ void	set_path(t_command **cmd)
 		if (cur->args && cur->args[0])
 		{
 			cur->name = ft_strdup(cur->args[0]);
-			path = get_path(cur->args[0]);
+			// path = allocptr(&ptr, &tmp, env);
 			if (path != NULL)
 			{
 				cur->path = path;

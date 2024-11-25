@@ -18,7 +18,7 @@ void	ft_free_wait(t_extra ptr)
 	int	i;
 	int	status;
 
-	free_tab(ptr.path);
+	// free_tab(ptr.path);
 	free_tab(ptr.envp);
 	closingB(ptr.tube, ptr.size);
 	i = 0;

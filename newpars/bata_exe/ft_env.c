@@ -7,11 +7,12 @@ void	print_env_error(char *c)
 	write(2, ": No such file or directory\n", 28);
 }
 
-void	ft_env(t_env **env, char **arg)
+void	ft_enva(t_env **env, char **arg)
 {
 	t_env	*tmp;
 
 	tmp = *env;
+	printf("==>>>>>>>>>>>>>>>>%s=%s\n", tmp->key, tmp->value);
 	if (!getEnvarement(env, "PATH"))
 	{
 		write(2, "env: No such file or directory\n", 31);

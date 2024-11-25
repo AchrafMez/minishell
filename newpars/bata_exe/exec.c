@@ -55,22 +55,19 @@ t_env	*get_env(char **env)
 }
 int	is_builting(t_command *cmd)
 {
-	// if (!ft_strcmp(cmd->args[0], "cd") || !ft_strcmp(cmd->args[0], "pwd")
-	// 	|| !ft_strcmp(cmd->args[0], "export") || !ft_strcmp(cmd->args[0], "unset")
-	// 	|| !ft_strcmp(cmd->args[0], "env") || !ft_strcmp(cmd->args[0], "exit"))
-	// 	return (1);
-	// return (0);
-	if(ft_strcmp(cmd->name, "cd") == 0)
+	if (ft_strcmp(cmd->name, "cd") == 0)
 		return (1);
-	else if(ft_strcmp(cmd->name, "pwd")== 0)
+	else if (ft_strcmp(cmd->name, "pwd") == 0)
 		return (1);
-	else if(ft_strcmp(cmd->name, "export")== 0)
+	else if (ft_strcmp(cmd->name, "export") == 0)
 		return (1);
-	else if(ft_strcmp(cmd->name, "unset")== 0)
+	else if (ft_strcmp(cmd->name, "unset") == 0)
 		return (1);
-	else if(ft_strcmp(cmd->name, "env")== 0)
+	else if (ft_strcmp(cmd->name, "env") == 0)
 		return (1);
-	else if(ft_strcmp(cmd->name, "exit")== 0)
+	else if (ft_strcmp(cmd->name, "exit") == 0)
+		return (1);
+		else if (ft_strcmp(cmd->name, "echo") == 0)
 		return (1);
 	return (0);
 }
@@ -122,7 +119,7 @@ int	output_builtins(t_red *out)
 	if (!tmp)
 		return (-2);
 	while (tmp)
-	{	
+	{
 		if ((tmp->type == RED_OUT || tmp->type == RED_APP) && out_fd_assign(tmp,
 				&fd))
 		{
@@ -139,15 +136,15 @@ int	output_builtins(t_red *out)
 }
 int	open_files(int *fd, t_command *cmd)
 {
-		
-
 	if (!input_builtins(cmd->in))
 	{
+
 		g_glb.ex = 1;
 		return (0);
 	}
 	*fd = output_builtins(cmd->out);
 	if (*fd == -1)
+	// printf("******************************r>??**************zbi********************************************\n");
 	{
 		g_glb.ex = 1;
 		return (0);
@@ -165,7 +162,7 @@ void	exec_builtins(t_command *cmd, t_env **env)
 	else if (ft_strcmp(cmd->name, "cd") == 0)
 		cd(cmd->args, *env);
 	else if (ft_strcmp(cmd->name, "env") == 0)
-		ft_env(cmd->args, *env);
+		ft_enva(env, cmd->args);
 	else if (ft_strcmp(cmd->name, "export") == 0)
 		export(cmd->args, env);
 	else if (ft_strcmp(cmd->name, "echo") == 0)
@@ -214,18 +211,20 @@ int	open_pipes(int **tube, int size)
 int	**builtins_tube(t_command **list, t_env **env, int size)
 {
 	int			**tube;
-	t_command	*cmd;	
-	// printf("******************************r>??**************zbi********************************************\n");
+	t_command	*cmd;
 
 	cmd = *list;
+	// printf("%d %s\n", size, cmd->name);
 	if (size == 0 && cmd->args && is_builting(cmd))
 	{
+	
 		exec_builtins(cmd, env);
 		return (NULL);
 	}
 	tube = alloc_tube(size);
 	if (!open_pipes(tube, size) || !tube)
 	{
+
 		write(2, "ERROR : open_pipe ou allocation\n", 32);
 		g_glb.ex = -1;
 		closingB(tube, size);
@@ -238,16 +237,15 @@ void	execution(t_command **list, t_env **env)
 	t_extra		ptr;
 	t_command	*cmd;
 	t_env		*tmp;
-	
-
 	cmd = *list;
 	ptr.i = 0;
 	ptr.size = ft_size_list(*list) - 1;
-
 	ptr.tube = builtins_tube(list, env, ptr.size);
 	if (!ptr.tube)
 		return ;
+
 	allocptr(&ptr, &tmp, env);
+	// printf("ptr.size = %d\n ptr.path %s\n", ptr.size, ptr.path);
 	while (ptr.i <= ptr.size)
 	{
 		ptr.pid[ptr.i] = fork();
@@ -258,4 +256,3 @@ void	execution(t_command **list, t_env **env)
 	}
 	ft_free_wait(ptr);
 }
-

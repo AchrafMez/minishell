@@ -1,4 +1,4 @@
-#include"../minishell.h"
+#include "../minishell.h"
 
 void	command_not_found(char **arg, char *mes, int ret)
 {
@@ -31,32 +31,44 @@ int	there_is_slash(char *arg)
 	}
 	return (0);
 }
-void	handle_exec(char **path, t_command	*list, t_env **env, char **envp)
+void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
+
+	// printf("list->args[0] = %s\n", list->args[0]);
 	if (there_is_slash(list->args[0]))
 		slash_exec(list->args, envp);
-
 	if (is_builting(list))
 	{
-
+		printf("built in\n");
 		free_tab(envp);
 		exec_builtins(list, env);
 		exit(g_glb.ex);
 	}
 	else
-	{	
+	{
+		// print env
+		// printf("=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>envp\n");
+		// t_env	*tmp55= *env;
+		// for (int i = 0; tmp55; i++)
+		// {
+		// 	printf("env[%d] = %s\n", i, tmp55->key);
+		// 	tmp55 = tmp55->next;
+		// }
 		while (getEnvarement(env, "PATH") && path[i])
 		{
+	// printf("====================================\n");
+	// tmp = "/bin/ls";
 			tmp = ft_strjoin(path[i], list->args[0]);
+			// printf("tmp = %s list->command %s   \n", tmp, list->args[0]);
 			if (execve(tmp, list->args, envp) == -1)
 			{
 				i++;
 				free(tmp);
-			} 
+			}
 		}
 	}
 	command_not_found(list->args, ": command not found\n", 127);
@@ -73,7 +85,7 @@ int	closingB(int **tube, int pos)
 	free(tube);
 	return (0);
 }
-int	assining_out(t_red *tmp, int	*fd)
+int	assining_out(t_red *tmp, int *fd)
 {
 	if (tmp->type == RED_OUT)
 		*fd = open(tmp->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -104,7 +116,8 @@ void	output_cmd(t_red *out, t_extra ptr)
 	}
 	while (tmp)
 	{
-		if ((tmp->type == RED_OUT /*tmp->type == OUTP*/) && assining_out(tmp, &fd))
+		if ((tmp->type == RED_OUT  || tmp->type == RED_APP) && assining_out(tmp,
+				&fd))
 		{
 			if (tmp->next)
 				close(fd);
@@ -137,6 +150,7 @@ void	assaining_in(t_red *tmp)
 void	input_cmd(t_red *in, t_extra ptr, char **cmd)
 {
 	t_red	*tmp;
+
 	(void)cmd;
 	tmp = in;
 	if (!in)
@@ -154,15 +168,16 @@ void	input_cmd(t_red *in, t_extra ptr, char **cmd)
 		tmp = tmp->next;
 	}
 }
-void	handle_child(t_command	*cmd, t_env **env, t_extra ptr)
+void	handle_child(t_command *cmd, t_env **env, t_extra ptr)
 {
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
+
+	// signal(SIGQUIT, SIG_DFL);
+	// signal(SIGINT, SIG_DFL);
 	input_cmd(cmd->in, ptr, cmd->args);
-	output_cmd(cmd->out, ptr); 
+	output_cmd(cmd->out, ptr);
 	closingB(ptr.tube, ptr.size);
 	if (cmd->args)
 		handle_exec(ptr.path, cmd, env, ptr.envp);
 	else
-		exit (0);
+		exit(0);
 }

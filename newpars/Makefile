@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./libft
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g  -I./libft 
 LDFLAGS = -lreadline
 SRCS = $(wildcard *.c) ./tokenizer/tokenizer.c ./tokenizer/tokens_utils.c ./tokenizer/d_quotes.c ./tokenizer/s_quotes.c ./tokenizer/reds.c ./tokenizer/edit_tokens.c ./tokenizer/dollar.c ./tokenizer/special_chars.c ./parser/tokens_to_cmd.c ./parser/cmd_utils.c ./parser/free_cmd.c ./parser/check_syntax.c ./env/env_utils.c \
     ./env/set_env.c \

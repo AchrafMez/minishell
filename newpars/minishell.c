@@ -6,7 +6,7 @@
 /*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/23 07:02:38 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/11/25 09:11:44 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void handl_input(t_env **env, t_shell *shell)
     (void)shell;
     while (1)
     {
-        input = readline("minishell$ ");
+        // input = readline("minishell$ ");
+        input = readline("minizebiiiiiiiiiiiiiiii$ ");
+
         if (!input)
             ctrl_d();
         if(check_unclosed_quotes(input))
@@ -52,12 +54,13 @@ void handl_input(t_env **env, t_shell *shell)
                     // printf("built in\n");
                     // printf("cmd->name = %s\n", cmd->name);
                     // printf("cmd->args[0] = %s\n", cmd->args[0]);
-                    // printf("cmd->args[1] = %s\n", cmd->args[1]);
+                    // printf("cmd->path = %s\n", cmd->path);
                         // printf("cmd->out = %s\n", cmd->out->value);
                     // printf("cmd->in->value = %s\n", cmd->in->value);
                     // printf("cmd->out->value = %s\n", cmd->out->value);
                     // printf("cmd->in->type = %d\n", cmd->in->type);
                     // printf("cmd->out->type = %d\n", cmd->out->type);
+// printf("cmd->name = %s\n cmd->args %s\n cmd->args[1]%s\ncmd->path%s\n", cmd->name, cmd->args[0],cmd->args[1],cmd->path);
                     
                 execution(&cmd, env);
                 free_cmd(cmd);
@@ -77,7 +80,8 @@ int main(int ac, char **av, char **envp)
     handle_signals();
     // (void)envp;
     t_env *env = NULL;
-    dup_env(envp, &env);
+    // dup_env(envp, &env);
+    env =convert_env(envp);
     set_export_env(&env, "?", "0");
     t_shell shell;
     shell.env = env;
