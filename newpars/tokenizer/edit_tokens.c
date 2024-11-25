@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edit_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:12:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 12:13:29 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:22:19 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,6 @@ void	delete_space(t_token **token_list)
     }
 }
 
-// void	tokens_edit(t_token **token_list)
-// {
-// 	t_token	*cur;
-
-// 	cur = *token_list;
-// 	while (cur)
-// 	{
-// 		if (cur->type == SPACES || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
-// 			{delete_space(token_list);}
-// 			else
-// 			{cur = cur->next;}
-// 	}
-// }
 void	tokens_edit(t_token **token_list)
 {
     t_token	*cur;
@@ -101,11 +88,9 @@ void	tokens_edit(t_token **token_list)
         if (cur->type == SPACES || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
         {
             delete_space(token_list);
-            cur = *token_list; // Reset cur to the head of the list after deletion
+            cur = *token_list;
         }
         else
-        {
             cur = cur->next;
-        }
     }
 }
