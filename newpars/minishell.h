@@ -1,20 +1,20 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
-#include <unistd.h>
+// #include <fcntl.h>
+// #include <signal.h>
+// #include <unistd.h>
 #include <stdlib.h>
 #include "./libft/libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 #include<fcntl.h>
-#include <errno.h>
+// #include <errno.h>
 #include <signal.h>
-#include <ctype.h>
+// #include <ctype.h>
 #include <sys/wait.h>
 #include<sys/stat.h>
+#include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
+#include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
 // #include "../execution/builting/builtin.h"
 typedef enum e_token_type {
     WORD, //0
@@ -39,7 +39,7 @@ typedef struct s_token{
 } t_token;
 
 
-//for the environment
+// //for the environment
 typedef struct s_env {
 	char			*key;
 	char			*value;
@@ -64,7 +64,7 @@ typedef struct s_command{
     struct s_command *next;
 } t_command;
 
-//for the exit status
+// //for the exit status
 typedef struct s_shell{
     int exit_status;
     t_env *env;
@@ -76,7 +76,7 @@ typedef struct s_content
 {
     char **cur;
     char *buffer;
-    int *buf_idx;
+    int *buf_idx; 
     t_token **token_list;
     t_env *env;
 } t_content;
@@ -135,9 +135,9 @@ t_token *tokenize_input(char *input, t_env **env);
 
 //----------------------------env-----------------------/
 //env
-// void dup_env(char **envp, t_env **env);
-// void display_env(t_env *tmp);
-// void ft_free_env(t_env **env);
+void dup_env(char **envp, t_env **env);
+void display_env(t_env *tmp);
+void ft_free_env(t_env **env);
 
 t_env	*convert_env(char **env);
 
@@ -154,6 +154,7 @@ t_command *create_command();
 void add_arg(char ***args, int *arg_count, char *value);
 void add_red(t_red **red_list, char *value, t_token_type type);
 void free_cmd(t_command *command);
+void	print_cmd(t_command *command);
 
 void print_command(t_command *command);
 t_command *fill_cmd_assit1(t_command **cmd_list);
@@ -170,7 +171,7 @@ void free_path(char **path);
 void handl_input(t_env **env, t_shell *shell);
 
 
-//signal
+// //signal
 int ft_strcmp(char *str, char *target);
 void ctrl_c(int sig);
 void ctrl_d();
@@ -193,7 +194,7 @@ void handle_signals(void);
 
 
 
-//----------------------------baattaaaagi---------------------------------
+// //----------------------------baattaaaagi---------------------------------
 typedef struct t_extra
 {
 	int		i;

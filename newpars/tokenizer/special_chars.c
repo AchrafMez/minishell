@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:55:25 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 09:55:30 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:36:22 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	handle_space(char **cur, char *buffer, int *buf_idx,
 
 int	handle_pipe(char **cur, char *buffer, int *buf_idx, t_token **token_list)
 {
-	if (!*token_list)
-	{
-		printf("syntax error near unexpected token '|'\n");
-		return (1);
-	}
+	// if (!*token_list)
+	// {
+	// 	printf("syntax error near unexpected token '|'\n");
+	// 	return (1);
+	// }
 	if (*buf_idx > 0)
 	{
 		buffer[*buf_idx] = '\0';

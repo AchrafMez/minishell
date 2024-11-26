@@ -43,7 +43,7 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 		slash_exec(list->args, envp);
 	if (is_builting(list))
 	{
-		printf("built in\n");
+		// printf("built in\n");
 		free_tab(envp);
 		exec_builtins(list, env);
 		exit(g_glb.ex);

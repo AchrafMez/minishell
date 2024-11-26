@@ -64,7 +64,10 @@ int	is_builting(t_command *cmd)
 	else if (ft_strcmp(cmd->name, "unset") == 0)
 		return (1);
 	else if (ft_strcmp(cmd->name, "env") == 0)
+	{
+		printf("env builtin\n");
 		return (1);
+	}
 	else if (ft_strcmp(cmd->name, "exit") == 0)
 		return (1);
 		else if (ft_strcmp(cmd->name, "echo") == 0)
@@ -162,7 +165,10 @@ void	exec_builtins(t_command *cmd, t_env **env)
 	else if (ft_strcmp(cmd->name, "cd") == 0)
 		cd(cmd->args, *env);
 	else if (ft_strcmp(cmd->name, "env") == 0)
+	{
+		printf("env here\n");
 		ft_enva(env, cmd->args);
+	}
 	else if (ft_strcmp(cmd->name, "export") == 0)
 		export(cmd->args, env);
 	else if (ft_strcmp(cmd->name, "echo") == 0)
@@ -217,7 +223,7 @@ int	**builtins_tube(t_command **list, t_env **env, int size)
 	// printf("%d %s\n", size, cmd->name);
 	if (size == 0 && cmd->args && is_builting(cmd))
 	{
-	
+		printf("enter to exec built\n");
 		exec_builtins(cmd, env);
 		return (NULL);
 	}

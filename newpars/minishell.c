@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 09:11:44 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/11/26 20:57:30 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,27 @@ void leaks()
 
 void handl_input(t_env **env, t_shell *shell)
 {
-    char *input;
+    char *input = NULL;
     t_token *token_list = NULL;
     t_command *cmd = NULL;
     (void)shell;
+    (void)env;
     while (1)
     {
         // input = readline("minishell$ ");
+        handle_signals();
         input = readline("minizebiiiiiiiiiiiiiiii$ ");
 
-        if (!input)
-            ctrl_d();
+        if (input == NULL)
+            exit(0);
         if(check_unclosed_quotes(input))
         {
             add_history(input);
             free(input);
             continue ;
         }
-        add_history(input);
+        if(strlen(input) > 0)
+            add_history(input);
         token_list = tokenize_input(input, env);
         if(token_list)
             tokens_edit(&token_list);
@@ -46,22 +49,7 @@ void handl_input(t_env **env, t_shell *shell)
             if(cmd)
             {
                 set_path(&cmd);
-                // print_tokens(token_list);
-                // shell->exit_status = execute_command(cmd, shell);
                 // print_cmd(cmd);
-                // if(is_built_in(cmd) == 1)
-                    // exec_built(cmd, env);
-                    // printf("built in\n");
-                    // printf("cmd->name = %s\n", cmd->name);
-                    // printf("cmd->args[0] = %s\n", cmd->args[0]);
-                    // printf("cmd->path = %s\n", cmd->path);
-                        // printf("cmd->out = %s\n", cmd->out->value);
-                    // printf("cmd->in->value = %s\n", cmd->in->value);
-                    // printf("cmd->out->value = %s\n", cmd->out->value);
-                    // printf("cmd->in->type = %d\n", cmd->in->type);
-                    // printf("cmd->out->type = %d\n", cmd->out->type);
-// printf("cmd->name = %s\n cmd->args %s\n cmd->args[1]%s\ncmd->path%s\n", cmd->name, cmd->args[0],cmd->args[1],cmd->path);
-                    
                 execution(&cmd, env);
                 free_cmd(cmd);
             }
@@ -77,11 +65,10 @@ int main(int ac, char **av, char **envp)
 {
     (void)av;
     (void)ac;
-    handle_signals();
-    // (void)envp;
+    (void)envp;
     t_env *env = NULL;
-    // dup_env(envp, &env);
-    env =convert_env(envp);
+    // // dup_env(envp, &env);
+    env = convert_env(envp);
     set_export_env(&env, "?", "0");
     t_shell shell;
     shell.env = env;

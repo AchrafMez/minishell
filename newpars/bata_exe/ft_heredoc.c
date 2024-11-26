@@ -2,7 +2,6 @@
 
 void	process_heredoc(const char *delimiter, t_env *env);
 // static void	process_heredocs(t_command *cmd, t_env *env);
-char	*readline(const char *prompt);
 
 // int	main(void)
 // {
@@ -97,14 +96,3 @@ void	process_heredoc(const char *delimiter, t_env *env)
 // 		curr = curr->next;
 // 	}
 // }
-
-// Simulated readline function
-char	*readline(const char *prompt)
-{
-	char *line = NULL;
-	size_t len = 0;
-	printf("%s", prompt);
-	getline(&line, &len, stdin);
-	line[strcspn(line, "\n")] = 0;
-	return (line);
-}
