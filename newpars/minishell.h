@@ -145,6 +145,7 @@ t_env	*convert_env(char **env);
 //expanding tools
 char *get_env_value(t_env *env, char *searsh);
 void set_env_value(t_env **env, char *searsh, char *set);
+void update_exit_value(t_env **env, int status);
 
 //---------------------------parser--------------------//
 int	check_syntax(t_token *token);

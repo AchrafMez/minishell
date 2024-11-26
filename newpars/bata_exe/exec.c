@@ -70,7 +70,7 @@ int	is_builting(t_command *cmd)
 	}
 	else if (ft_strcmp(cmd->name, "exit") == 0)
 		return (1);
-		else if (ft_strcmp(cmd->name, "echo") == 0)
+	else if (ft_strcmp(cmd->name, "echo") == 0)
 		return (1);
 	return (0);
 }

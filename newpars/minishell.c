@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/26 20:57:30 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:10:33 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,20 @@ void handl_input(t_env **env, t_shell *shell)
     }
 }
 
+void update_exit_value(t_env **env, int status)
+{
+    char *value = ft_itoa(status);
+    set_env_value(env, "?", value);
+    printf("exit statu updated to %s\n", value);
+    free(value);
+}
+
 int main(int ac, char **av, char **envp)
 {
     (void)av;
     (void)ac;
     (void)envp;
     t_env *env = NULL;
-    // // dup_env(envp, &env);
     env = convert_env(envp);
     set_export_env(&env, "?", "0");
     t_shell shell;

@@ -46,6 +46,7 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 		// printf("built in\n");
 		free_tab(envp);
 		exec_builtins(list, env);
+		update_exit_value(env, g_glb.ex);
 		exit(g_glb.ex);
 	}
 	else
@@ -71,6 +72,8 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 			}
 		}
 	}
+	printf("handle exec\n");
+	update_exit_value(env, 127);
 	command_not_found(list->args, ": command not found\n", 127);
 }
 int	closingB(int **tube, int pos)

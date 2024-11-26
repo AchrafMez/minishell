@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:12:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 15:22:19 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/26 22:19:38 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void	tokens_edit(t_token **token_list)
     t_token	*cur;
 
     cur = *token_list;
+    if(cur->type == PIPE)
+    {
+        printf("syntax error near unexpected token '|'\n");
+        return ;
+    }
     while (cur)
     {
         if (cur->type == SPACES || (cur->type == ENV && (cur->value == NULL || ft_strlen(cur->value) == 0)))
