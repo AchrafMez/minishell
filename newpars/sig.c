@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:09:46 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/22 21:22:23 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:03:46 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ctrl_d(void)
 void	ctrl_c(int sig)
 {
 	(void)sig;
-	// rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	printf("\n");
 	rl_redisplay();
