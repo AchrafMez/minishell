@@ -13,8 +13,10 @@
 // #include <ctype.h>
 #include <sys/wait.h>
 #include<sys/stat.h>
-#include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
-#include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
+#include <readline/readline.h>
+#include <readline/history.h>
+// #include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
+// #include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
 // #include "../execution/builting/builtin.h"
 typedef enum e_token_type {
     WORD, //0
@@ -65,10 +67,10 @@ typedef struct s_command{
 } t_command;
 
 // //for the exit status
-typedef struct s_shell{
-    int exit_status;
-    t_env *env;
-} t_shell;
+// typedef struct s_shell{
+//     int exit_status;
+//     t_env *env;
+// } t_shell;
 
 
 //just for the norm
@@ -169,7 +171,7 @@ char *get_path(char *target);
 void free_path(char **path);
 
 
-void handl_input(t_env **env, t_shell *shell);
+void handl_input(t_env **env);
 
 
 // //signal
