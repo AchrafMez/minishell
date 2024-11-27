@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_sytax.c                                      :+:      :+:    :+:   */
+/*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:11:03 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 10:11:25 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:43:31 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	check_syntax(t_token *token)
 	t_token	*cur;
 
 	cur = token;
+	if(cur->type == PIPE)
+    {
+        printf("syntax error near unexpected token '|'\n");
+        return 1;
+    }
 	while (cur)
 	{
 		if (cur->type == PIPE)

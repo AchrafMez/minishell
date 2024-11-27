@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:21 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/26 22:11:10 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:07:28 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,15 @@ void set_export_env(t_env **env, char *key, char *value)
     t_env *exist = find(*env, key);
     if(exist)
     {
-        // printf("modify the exist env value \n");
         free(exist->value);
         exist->value = ft_strdup(value);
         return ;
     }
     else
     {
-        // printf("hahwa dkhel\n");
         t_env *new = malloc(sizeof(t_env));
-        // printf("|key:%s|\n", key);
-        // printf("|value:%s|\n", value);
         new->key = ft_strdup(key);
         new->value = ft_strdup(value);
-        printf("exported value\n\n\n\n%s\n", new->value);
         new->next = *env;
         *env = new;
     }
@@ -86,8 +81,6 @@ int export(char **args, t_env **env)
         return 0;
     }
     int counter = 1;
-    // printf("arg: %s\n", args[1]);
-    
     while(args[counter])
     {
         char *arg = args[counter];
@@ -102,9 +95,7 @@ int export(char **args, t_env **env)
                 printf("minishell: export: '%s': not a valid edentifier\n", args[1]);
                 return 1;
             }
-            // printf("keeeey:|%s|\n", key);
             char *value = sign+1;
-            // printf("vaaaalue:|%s|\n", value);
             set_export_env(env, key, value);
         }
         else

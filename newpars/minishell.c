@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/26 22:10:33 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:46:02 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,16 @@ void leaks()
     system("leaks minishell");
 }
 
-void handl_input(t_env **env, t_shell *shell)
+void handl_input(t_env **env)
 {
     char *input = NULL;
     t_token *token_list = NULL;
     t_command *cmd = NULL;
-    (void)shell;
-    (void)env;
+    // (void)env;
     while (1)
     {
-        // input = readline("minishell$ ");
-        handle_signals();
-        input = readline("minizebiiiiiiiiiiiiiiii$ ");
-
-        if (input == NULL)
+        input = readline("minishell$ ");
+        if (!input)
             exit(0);
         if(check_unclosed_quotes(input))
         {
@@ -77,10 +73,8 @@ int main(int ac, char **av, char **envp)
     t_env *env = NULL;
     env = convert_env(envp);
     set_export_env(&env, "?", "0");
-    t_shell shell;
-    shell.env = env;
-    shell.exit_status = 0;
+    handle_signals();
     if(ac == 1)
-        handl_input(&env, &shell);
+        handl_input(&env);
     return 0;
 }
