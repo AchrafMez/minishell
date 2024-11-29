@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: captain <captain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:35:56 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/29 03:57:32 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:47:16 by captain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,12 @@ t_token	*tokenize_input(char *input, t_env **env)
 {
 	t_token		*token_list;
 	char		*cur;
-	char		buffer[1024000];
+	// char		buffer[1024000];
+	int res = ft_strlen(input) + 1;
+	char *buffer = malloc(res);
+	if(!buffer)
+		return (NULL);
+	buffer[res] = '\0';
 	int			buf_idx;
 	t_content	content;
 
@@ -79,12 +84,16 @@ t_token	*tokenize_input(char *input, t_env **env)
 	cur = input;
 
 	if (test(&content) == 1) 
+	{
+		free(buffer);	
 		return (NULL);
+	}
 
 	if (buf_idx > 0) 
 	{
 		buffer[buf_idx] = '\0';
 		add_token(&token_list, create_token(buffer, WORD));
 	}
+	free(buffer);
 	return (token_list);
 }
