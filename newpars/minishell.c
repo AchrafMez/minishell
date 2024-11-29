@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/27 15:46:02 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/29 03:59:15 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,63 @@ void leaks()
     system("leaks minishell");
 }
 
-void handl_input(t_env **env)
+void read_and_tokenize(t_env **env, char **input, t_token **token_list)
+{
+    int res;
+    *input = readline("minishell$ ");
+    if (!*input)
+        exit(0);
+    if(check_unclosed_quotes(*input))
+    {
+        set_export_env(env, "?", "258");
+        add_history(*input);
+        return ;
+    }
+    if(ft_strlen(*input) > 0)
+        add_history(*input);
+    *token_list = tokenize_input(*input, env);
+    if(*token_list)
+        tokens_edit(token_list);
+    res = check_syntax(*token_list);
+    if(res == 258)
+    {
+        set_export_env(env, "?", "258");
+        ft_tokens_free(*token_list);
+        *token_list = NULL;
+    }
+}
+
+void main_process(t_env **env, t_token *token_list)
+{
+    t_command *cmd = NULL;
+    if(token_list)
+    {
+        cmd = fill_command(token_list, *env);
+        if(cmd)
+        {
+            set_path(&cmd);
+            execution(&cmd, env);
+            free_cmd(cmd);
+            cmd = NULL;
+        }
+    }
+}
+void main_loop(t_env **env)
 {
     char *input = NULL;
     t_token *token_list = NULL;
-    t_command *cmd = NULL;
-    // (void)env;
     while (1)
     {
-        input = readline("minishell$ ");
-        if (!input)
-            exit(0);
-        if(check_unclosed_quotes(input))
+        read_and_tokenize(env, &input, &token_list);
         {
-            add_history(input);
+            if(token_list)
+                main_process(env, token_list);
             free(input);
-            continue ;
-        }
-        if(strlen(input) > 0)
-            add_history(input);
-        token_list = tokenize_input(input, env);
-        if(token_list)
-            tokens_edit(&token_list);
-        if(token_list && check_syntax(token_list) == 0)
-        {
-            cmd = fill_command(token_list, *env);
-            if(cmd)
-            {
-                set_path(&cmd);
-                // print_cmd(cmd);
-                execution(&cmd, env);
-                free_cmd(cmd);
-            }
-        }
-        free(input);
-        ft_tokens_free(token_list);
-        // system("leaks minishell");
+            input = NULL;
+            ft_tokens_free(token_list);
+            token_list = NULL;
+        }   
+        system("leaks minishell");
         // atexit(leaks);
     }
 }
@@ -61,20 +82,17 @@ void update_exit_value(t_env **env, int status)
 {
     char *value = ft_itoa(status);
     set_env_value(env, "?", value);
-    printf("exit statu updated to %s\n", value);
     free(value);
 }
 
 int main(int ac, char **av, char **envp)
 {
     (void)av;
-    (void)ac;
-    (void)envp;
     t_env *env = NULL;
     env = convert_env(envp);
     set_export_env(&env, "?", "0");
     handle_signals();
     if(ac == 1)
-        handl_input(&env);
+        main_loop(&env);
     return 0;
 }

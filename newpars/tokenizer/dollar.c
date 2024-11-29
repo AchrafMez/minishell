@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:55:08 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/18 12:00:54 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:15:34 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,21 @@ void	handle_dollar_helper(t_content *content, char *expanded, int flag)
 void	handle_dollar(t_content *content, int flag)
 {
 	char	key[1024];
-	int		key_idx;
 	char	*expanded;
+	int		key_idx;
 
-	(*content->cur)++;
 	key_idx = 0;
-	if(*(*content->cur) == '?')
+	(*content->cur)++;
+	if (*(*content->cur) == '?')
 	{
 		expanded = get_env_value(content->env, "?");
 		(*content->cur)++;
 		while (*expanded)
-            content->buffer[(*content->buf_idx)++] = *expanded++;
-        return ;
+			content->buffer[(*content->buf_idx)++] = *expanded++;
+		return ;
 	}
 	while (**content->cur && (ft_isalnum(**content->cur)
-			|| **content->cur == '_'))
+			||**content->cur == '_'))
 		key[key_idx++] = *(*content->cur)++;
 	key[key_idx] = '\0';
 	expanded = get_env_value(content->env, key);

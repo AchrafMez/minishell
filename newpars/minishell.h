@@ -18,6 +18,7 @@
 // #include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
 // #include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
 // #include "../execution/builting/builtin.h"
+// #define BUFFER_SIZE 102400
 typedef enum e_token_type {
     WORD, //0
     S_QUOTE, //1
@@ -171,7 +172,7 @@ char *get_path(char *target);
 void free_path(char **path);
 
 
-void handl_input(t_env **env);
+void main_loop(t_env **env);
 
 
 // //signal

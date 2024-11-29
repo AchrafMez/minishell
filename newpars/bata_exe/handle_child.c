@@ -72,7 +72,7 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 			}
 		}
 	}
-	printf("handle exec\n");
+	// printf("handle exec\n");
 	update_exit_value(env, 127);
 	command_not_found(list->args, ": command not found\n", 127);
 }

@@ -9,7 +9,6 @@ void set_env_value(t_env **env, char *searsh, char *set)
         {
             free(cur->value);
             cur->value = ft_strdup(set);
-            printf("%s cur.value\n\n\n", cur->value);
             return ;
         }
         cur = cur->next;

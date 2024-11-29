@@ -6,14 +6,11 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 09:48:16 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/17 14:52:22 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:26:34 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#define BUFFER_SIZE 102400
-
-
 
 void	handle_double_quote_helper(t_content *content)
 {
@@ -42,7 +39,7 @@ int	handle_double_quote(t_content *content)
 	(*content->cur)++;
 	while (**content->cur && **content->cur != '"')
 	{
-		if(**content->cur == '$' && (**content->cur)+ 1 == '?')
+		if (**content->cur == '$' && (**content->cur) + 1 == '?')
 			handle_dollar(content, 0);
 		else if (**content->cur == '$')
 			handle_dollar(content, 0);

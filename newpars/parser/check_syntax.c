@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:11:03 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/27 15:43:31 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:22:55 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_syntax(t_token *token)
 	if(cur->type == PIPE)
     {
         printf("syntax error near unexpected token '|'\n");
-        return 1;
+        return 258;
     }
 	while (cur)
 	{
@@ -29,7 +29,7 @@ int	check_syntax(t_token *token)
 			if (!cur->next || cur->next->type == PIPE)
 			{
 				printf("minishell$: syntax error near '|' \n");
-				return (1);
+				return (258);
 			}
 		}
 		else if (cur->type == RED_IN || cur->type == RED_OUT
@@ -40,7 +40,7 @@ int	check_syntax(t_token *token)
 				&& cur->next->type != D_QUOTE))
 			{
 				printf("minishell$: syntax error near > < \n");
-				return (1);
+				return (258);
 			}
 		}
 		cur = cur->next;
@@ -63,12 +63,12 @@ int	check_unclosed_quotes(char *input)
 	if (s_quotes)
 	{
 		printf("minishell$: singel quotes not closed\n");
-		return (1);
+		return (258);
 	}
 	if (d_quotes)
 	{
 		printf("minishell$: double quotes not closed\n");
-		return (1);
+		return (258);
 	}
 	return (0);
 }
