@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/29 03:59:15 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/30 07:54:05 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,30 @@ void leaks()
     system("leaks minishell");
 }
 
-void read_and_tokenize(t_env **env, char **input, t_token **token_list)
+void read_and_tokenize(t_env **env, t_token **token_list)
 {
     int res;
-    *input = readline("minishell$ ");
-    if (!*input)
+    char *input = NULL;
+    input = readline("minishell$ ");
+    if (!input)
         exit(0);
-    if(check_unclosed_quotes(*input))
+    if(*input == '\0')
+        return ;
+    while(*input == ' ')
+        input++;
+    if(check_unclosed_quotes(input))
     {
         set_export_env(env, "?", "258");
-        add_history(*input);
+        add_history(input);
         return ;
     }
-    if(ft_strlen(*input) > 0)
-        add_history(*input);
-    *token_list = tokenize_input(*input, env);
+    if(ft_strlen(input) > 0)
+        add_history(input);
+    *token_list = tokenize_input(input, env);
     if(*token_list)
         tokens_edit(token_list);
+    else 
+        return ;
     res = check_syntax(*token_list);
     if(res == 258)
     {
@@ -41,7 +48,11 @@ void read_and_tokenize(t_env **env, char **input, t_token **token_list)
         ft_tokens_free(*token_list);
         *token_list = NULL;
     }
+    free(input);
 }
+
+
+
 
 void main_process(t_env **env, t_token *token_list)
 {
@@ -60,20 +71,23 @@ void main_process(t_env **env, t_token *token_list)
 }
 void main_loop(t_env **env)
 {
-    char *input = NULL;
+    // char *input = NULL;
     t_token *token_list = NULL;
     while (1)
     {
-        read_and_tokenize(env, &input, &token_list);
+        read_and_tokenize(env, &token_list);
         {
             if(token_list)
+            {
+
                 main_process(env, token_list);
-            free(input);
-            input = NULL;
+            // free(input);
+            // input = NULL;
             ft_tokens_free(token_list);
             token_list = NULL;
+            }
         }   
-        system("leaks minishell");
+        // system("leaks minishell");
         // atexit(leaks);
     }
 }
