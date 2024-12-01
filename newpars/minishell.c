@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/30 07:54:05 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/30 08:18:20 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ void read_and_tokenize(t_env **env, t_token **token_list)
     free(input);
 }
 
-
-
-
 void main_process(t_env **env, t_token *token_list)
 {
     t_command *cmd = NULL;
@@ -71,7 +68,6 @@ void main_process(t_env **env, t_token *token_list)
 }
 void main_loop(t_env **env)
 {
-    // char *input = NULL;
     t_token *token_list = NULL;
     while (1)
     {
@@ -81,10 +77,8 @@ void main_loop(t_env **env)
             {
 
                 main_process(env, token_list);
-            // free(input);
-            // input = NULL;
-            ft_tokens_free(token_list);
-            token_list = NULL;
+                ft_tokens_free(token_list);
+                token_list = NULL;
             }
         }   
         // system("leaks minishell");
@@ -110,3 +104,8 @@ int main(int ac, char **av, char **envp)
         main_loop(&env);
     return 0;
 }
+
+
+//still workgin on the exit status
+//and now one the cd function that should wordk without options
+//update the exit status

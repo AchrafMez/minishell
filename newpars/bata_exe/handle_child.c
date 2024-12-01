@@ -18,18 +18,18 @@ void	slash_exec(char **arg, char **envp)
 		command_not_found(arg, ": Permission denied\n", 126);
 	execve(arg[0], arg, envp);
 }
-int	there_is_slash(char *arg)
-{
-	int	i;
+int there_is_slash(char *arg) {
+    int i;
 
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == '/')
-			return (1);
-		i++;
-	}
-	return (0);
+    i = 0;
+    // if (arg[0] == '.' && arg[1] == '/')
+    //     return (1);
+    while (arg[i]) {
+        if (arg[i] == '/')
+            return (1);
+        i++;
+    }
+    return (0);
 }
 void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 {
@@ -39,8 +39,8 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 	i = 0;
 
 	// printf("list->args[0] = %s\n", list->args[0]);
-	if (there_is_slash(list->args[0]))
-		slash_exec(list->args, envp);
+	if (list->args[0] && there_is_slash(list->args[0]))
+        slash_exec(list->args, envp);
 	if (is_builting(list))
 	{
 		// printf("built in\n");
@@ -150,11 +150,159 @@ void	assaining_in(t_red *tmp)
 	else
 		dup2(fd, 0);
 }
-void	input_cmd(t_red *in, t_extra ptr, char **cmd)
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------
+
+
+void cleanup_heredocs(t_red *red)
+{
+    // In case the file was created for heredoc input, remove it
+    if (red->fd_in != -1)
+    {
+        close(red->fd_in);  // Close the file descriptor
+        red->fd_in = -1;    // Reset the fd to avoid reusing it
+        unlink(red->value); // Remove the temporary heredoc file
+    }
+}
+
+void execute_command(t_command *cmd)
+{
+    t_red *red = cmd->in;  // Start with the input redirection list
+
+    // Handle input redirection (including heredoc)
+    while (red)
+    {
+        if (red->type == HERE_DOC)
+        {
+            // Redirect input to the heredoc file
+            dup2(red->fd_in, STDIN_FILENO);
+            close(red->fd_in);  // Close the fd after using it
+        }
+        red = red->next;
+    }
+
+    // Execute the command (after redirection)
+    if (execve(cmd->path, cmd->args, NULL) == -1)
+    {
+        perror("execve");
+        exit(1);
+    }
+}
+
+
+
+
+
+
+void handle_herdc_inp(t_red *red)
+{
+    int fd;
+    char *line;
+    char *delimiter = red->value;  // The delimiter for the heredoc (e.g., 'EOF')
+
+    // Create a unique temporary filename for the heredoc content
+    char *tmp_file = malloc(256);
+    if (!tmp_file)
+    {
+        perror("malloc");
+        exit(1);
+    }
+    snprintf(tmp_file, 256, "/tmp/heredoc_%ld.tmp", time(NULL));
+
+    // Open the temporary file for writing
+    fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if (fd < 0)
+    {
+        perror("open");
+        free(tmp_file);
+        exit(1);
+    }
+
+    // Read input until the delimiter is encountered
+    while (1)
+    {
+        line = readline("> ");  // Prompt for user input
+        if (!line) break;  // Handle EOF or Ctrl-D
+
+        // If the input is the delimiter, stop reading
+        if (strcmp(line, delimiter) == 0)
+        {
+            free(line);
+            break;
+        }
+
+        // Write the line to the temporary file
+        write(fd, line, strlen(line));
+        write(fd, "\n", 1);  // Add a newline after each line
+
+        free(line);  // Free the line after processing
+    }
+
+    close(fd);  // Close the file after writing
+
+    // Update the redirection struct to point to the temporary file
+    red->fd_in = open(tmp_file, O_RDONLY);  // Open the file for reading
+    if (red->fd_in < 0)
+    {
+        perror("open");
+        free(tmp_file);
+        exit(1);
+    }
+
+    free(tmp_file);  // Clean up the temporary file path
+}
+
+void process_heredocs(t_command *cmd)
+{
+    t_red *red = cmd->in;  // Start with the input redirection list
+
+    // Iterate through each redirection to find heredocs
+    while (red)
+    {
+        if (red->type == HERE_DOC)  // If this is a heredoc redirection
+        {
+            handle_herdc_inp(red);  // Handle the heredoc input
+        }
+        red = red->next;  // Move to the next redirection
+    }
+}
+// void execute_command(t_command *cmd)
+// {
+//     t_red *red = cmd->in;  // Start with the input redirection list
+
+//     // Handle input redirection (including heredoc)
+//     while (red)
+//     {
+//         if (red->type == HEREDOC)
+//         {
+//             // Redirect input to the heredoc file
+//             dup2(red->fd_in, STDIN_FILENO);
+//             close(red->fd_in);  // Close the fd after using it
+//         }
+//         red = red->next;
+//     }
+
+//     // Execute the command (after redirection)
+//     if (execve(cmd->path, cmd->args, NULL) == -1)
+//     {
+//         perror("execve");
+//         exit(1);
+//     }
+// }
+
+
+
+
+
+
+void	input_cmd(t_red *in, t_extra ptr, char **cmd, t_env **env)
 {
 	t_red	*tmp;
 
 	(void)cmd;
+	(void)env;
 	tmp = in;
 	if (!in)
 	{
@@ -166,8 +314,8 @@ void	input_cmd(t_red *in, t_extra ptr, char **cmd)
 	{
 		if (tmp->type == RED_IN)
 			assaining_in(tmp);
-		// else if (tmp->type == HERDOC && !tmp->next)
-		// 	read_herdoc(cmd, tmp);
+		// else if (tmp->type == HERE_DOC && !tmp->next)
+		// 	handle_herdc_inp(tmp);
 		tmp = tmp->next;
 	}
 }
@@ -176,7 +324,7 @@ void	handle_child(t_command *cmd, t_env **env, t_extra ptr)
 
 	// signal(SIGQUIT, SIG_DFL);
 	// signal(SIGINT, SIG_DFL);
-	input_cmd(cmd->in, ptr, cmd->args);
+	input_cmd(cmd->in, ptr, cmd->args, env);
 	output_cmd(cmd->out, ptr);
 	closingB(ptr.tube, ptr.size);
 	if (cmd->args)

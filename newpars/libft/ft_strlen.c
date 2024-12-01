@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:05:09 by amezioun          #+#    #+#             */
-/*   Updated: 2024/01/01 13:57:24 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/11/30 06:51:52 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if(!s)
+		return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);

@@ -149,33 +149,44 @@ int	open_files(int *fd, t_command *cmd)
 		g_glb.ex = 1;
 		return (0);
 	}
+
 	return (1);
 }
-void	exec_builtins(t_command *cmd, t_env **env)
+int execute_builtin_command(t_command *cmd, t_env **env)
 {
-	int	fd;
+    if (ft_strcmp(cmd->name, "pwd") == 0)
+        return pwd(env);
+    else if (ft_strcmp(cmd->name, "cd") == 0)
+        return cd(cmd->args, *env);
+    else if (ft_strcmp(cmd->name, "env") == 0)
+        return ft_enva(env, cmd->args);
+    else if (ft_strcmp(cmd->name, "export") == 0)
+        return export(cmd->args, env);
+    else if (ft_strcmp(cmd->name, "echo") == 0)
+        return echo(cmd->args);
+    else if (ft_strcmp(cmd->name, "unset") == 0)
+        return unset(cmd->args, env);
+    else if (ft_strcmp(cmd->name, "exit") == 0)
+        return ft_exit(cmd->args, 0);
+    return 1; 
+}
 
-	if (!open_files(&fd, cmd))
-		return ;
-	if (ft_strcmp(cmd->name, "pwd") == 0)
-		pwd();
-	else if (ft_strcmp(cmd->name, "cd") == 0)
-		cd(cmd->args, *env);
-	else if (ft_strcmp(cmd->name, "env") == 0)
-		ft_enva(env, cmd->args);
-	else if (ft_strcmp(cmd->name, "export") == 0)
-		export(cmd->args, env);
-	else if (ft_strcmp(cmd->name, "echo") == 0)
-		echo(cmd->args);
-	else if (ft_strcmp(cmd->name, "unset") == 0)
-		unset(cmd->args, env);
-	else if (ft_strcmp(cmd->name, "exit") == 0)
-		ft_exit(cmd->args, 0);
-	if (fd != -2)
-	{
-		dup2(fd, 1);
-		close(fd);
-	}
+void exec_builtins(t_command *cmd, t_env **env)
+{
+    int fd;
+    int status;
+
+    if (!open_files(&fd, cmd))
+        return;
+
+    status = execute_builtin_command(cmd, env);
+	set_export_env(env, "?", ft_itoa(status));
+
+    if (fd != -2)
+    {
+        dup2(fd, 1);
+        close(fd);
+    }
 }
 int	**alloc_tube(int size)
 {

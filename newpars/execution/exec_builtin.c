@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:23:08 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 02:21:40 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/11/30 08:10:05 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ int is_built_in(t_command *command)
     return 0;
 }
 
-void exec_built(t_command *cmd, t_env **env)
-{
-    if(ft_strcmp(cmd->name, "pwd") == 0)
-        pwd();
-    else if(ft_strcmp(cmd->name, "cd") == 0)
-        cd(cmd->args, *env);
-    else if(ft_strcmp(cmd->name, "env") == 0)
-        ft_enva(env,cmd->args);
-    else if(ft_strcmp(cmd->name, "export") == 0)
-        export(cmd->args, env);
-    else if(ft_strcmp(cmd->name, "echo") == 0)
-        echo(cmd->args);
-    else if(ft_strcmp(cmd->name, "unset") == 0)
-        unset(cmd->args, env);
-    else if(ft_strcmp(cmd->name, "exit") == 0)
-        ft_exit(cmd->args, 0);
-}
+// void exec_built(t_command *cmd, t_env **env)
+// {
+//     if(ft_strcmp(cmd->name, "pwd") == 0)
+//         pwd();
+//     else if(ft_strcmp(cmd->name, "cd") == 0)
+//         cd(cmd->args, *env);
+//     else if(ft_strcmp(cmd->name, "env") == 0)
+//         ft_enva(env,cmd->args);
+//     else if(ft_strcmp(cmd->name, "export") == 0)
+//         export(cmd->args, env);
+//     else if(ft_strcmp(cmd->name, "echo") == 0)
+//         echo(cmd->args);
+//     else if(ft_strcmp(cmd->name, "unset") == 0)
+//         unset(cmd->args, env);
+//     else if(ft_strcmp(cmd->name, "exit") == 0)
+//         ft_exit(cmd->args, 0);
+// }

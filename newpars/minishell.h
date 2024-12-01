@@ -53,6 +53,7 @@ typedef struct s_env {
 
 typedef struct s_red{
     char *value;
+    int fd_in;
     t_token_type type;
     struct s_red *next;
     
@@ -90,7 +91,7 @@ int is_built_in(t_command *command);
 //built_in
 int cd(char **args, t_env *env);
 int echo(char **args);
-int pwd(void);
+int pwd(t_env **env);
 // int ft_env(char **args, t_env *env);
 //export
 int is_valid_key(char *arg);
@@ -224,7 +225,7 @@ typedef struct s_list
 }	t_list;
 
 void	handle_child(t_command	*cmd, t_env **env, t_extra ptr);
-void	input_command(t_red *in, t_extra ptr, char **cmd);
+void	input_cmd(t_red *in, t_extra ptr, char **cmd, t_env **env);
 void	output_command(t_red *out, t_extra ptr);
 void	assaining_in(t_red *tmp);
 int	assining_out(t_red *tmp, int	*fd);
@@ -301,5 +302,5 @@ void	env_del(t_env *lst);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 // char	*ft_substr(char const *s, unsigned int start, size_t len);
 // char	*ft_strchr(const char *str, int character);
-void	ft_enva(t_env **env, char **arg);
+int	ft_enva(t_env **env, char **arg);
 #endif

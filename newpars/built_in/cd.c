@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:13 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/17 11:15:47 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/01 04:29:06 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int cd(char **args, t_env *env)
     char *cwd = NULL;
     char *new;
 
-    if (!args[1] || ft_strcmp(args[1], "~") == 0)
+    if (!args[1])
     {
         target = get_env_value(env, "HOME");
         if (!target)
@@ -27,20 +27,8 @@ int cd(char **args, t_env *env)
             return 1;
         }
     }
-    else if (ft_strcmp(args[1], "-") == 0)
-    {
-        target = get_env_value(env, "OLDPWD");
-        if (!target)
-        {
-            printf("cd: OLDPWD not set\n");
-            return 1;
-        }
-        printf("%s\n", target);
-    }
     else
-    {
         target = args[1];
-    }
     cwd = getcwd(NULL, 0);
     if (!cwd)
     {
@@ -68,6 +56,6 @@ int cd(char **args, t_env *env)
         perror("cd: getcwd");
         return 1;
     }
-
     return 0;
 }
+

@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 16:19:21 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/01 05:51:10 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_env_error(char *c)
 	write(2, ": No such file or directory\n", 28);
 }
 
-void	ft_enva(t_env **env, char **arg)
+int	ft_enva(t_env **env, char **arg)
 {
 	t_env	*tmp;
 
@@ -48,14 +48,12 @@ void	ft_enva(t_env **env, char **arg)
 	if (!getEnvarement(env, "PATH"))
 	{
 		write(2, "env: No such file or directory\n", 31);
-		g_glb.ex = 1;
-		return ;
+		return 1;
 	}
 	if (arg[1])
 	{
-		g_glb.ex = 127;
 		print_env_error(arg[1]);
-		return ;
+		return 127;
 	}
 	while (tmp)
 	{
@@ -63,6 +61,6 @@ void	ft_enva(t_env **env, char **arg)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	g_glb.ex = 0;
+	return 0;
 }
 
