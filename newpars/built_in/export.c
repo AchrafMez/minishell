@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:21 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/27 16:07:28 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/01 05:32:44 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,16 @@ t_env *find(t_env *env, char *key)
 
 int is_valid_key(char *arg)
 {
-    if(!*arg && (ft_isalpha(arg[0]) != 1) && arg[0] != '_')
-    {
-        printf("first char is incorrect\n");
-        return 1;
-    }
-    int i = 0;
+    if(!arg[0] || (!ft_isalpha(arg[0]) && arg[0] != '_'))
+        return 0;
+    int i = 1;
     while(arg[i])
     {
-        if((ft_isalnum(arg[i]) != 1) && arg[i] != '_')
-        {
-            printf("incorrect key\n");
-            return 1;
-        }
+        if((!ft_isalnum(arg[i])) && arg[i] != '_')
+            return 0;
         i++;
     }
-    return 0;
+    return 1;
 }
 
 void set_export_env(t_env **env, char *key, char *value)
@@ -73,33 +67,45 @@ void set_export_env(t_env **env, char *key, char *value)
     }
 }
 
+int process_export_arg(char *arg, t_env **env)
+{
+    char *sign;
+    
+    sign = ft_strchr(arg, '=');
+    if (sign)
+    {
+        *sign = '\0';
+        char *key = arg;
+        char *value = sign + 1;
+        if (!is_valid_key(key))
+            return 1;
+        set_export_env(env, key, value);
+    }
+    else
+    {
+        if (!is_valid_key(arg))
+            return 1;
+        set_export_env(env, arg, "");
+    }
+    return 0;
+}
+
 int export(char **args, t_env **env)
 {
-    if(!args[1] || ft_strcmp(args[1], "-p") == 0)
+    if (!args[1])
     {
         print_export(*env);
         return 0;
     }
+
     int counter = 1;
-    while(args[counter])
+    while (args[counter])
     {
-        char *arg = args[counter];
-        char *sign = ft_strchr(arg, '=');
-        if(sign)
+        if (process_export_arg(args[counter], env) != 0)
         {
-            *sign = '\0';
-            char *key = arg;
-            printf("key: %s\n", key);
-            if(is_valid_key(key) == 1)
-            {
-                printf("minishell: export: '%s': not a valid edentifier\n", args[1]);
-                return 1;
-            }
-            char *value = sign+1;
-            set_export_env(env, key, value);
+            printf("minishell: export: `%s': not a valid identifier\n", args[counter]);
+            return 1;
         }
-        else
-            set_export_env(env, arg, "");
         counter++;
     }
     return 0;
