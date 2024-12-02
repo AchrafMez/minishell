@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:11:03 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/27 18:22:55 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:02:51 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_syntax(t_token *token)
 	t_token	*cur;
 
 	cur = token;
-	if(cur->type == PIPE)
+	if(cur && cur->type == PIPE)
     {
         printf("syntax error near unexpected token '|'\n");
         return 258;
