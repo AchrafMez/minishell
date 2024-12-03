@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 18:43:16 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/03 05:14:08 by abattagi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	print_env_error(char *c)
@@ -12,8 +24,7 @@ void	ft_enva(t_env **env, char **arg)
 	t_env	*tmp;
 
 	tmp = *env;
-	printf("==>>>>>>>>>>>>>>>>%s=%s\n", tmp->key, tmp->value);
-	if (!getEnvarement(env, "PATH"))
+	if (!get_envarement(env, "PATH"))
 	{
 		write(2, "env: No such file or directory\n", 31);
 		g_glb.ex = 1;
@@ -33,4 +44,3 @@ void	ft_enva(t_env **env, char **arg)
 	}
 	g_glb.ex = 0;
 }
-

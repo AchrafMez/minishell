@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 18:44:06 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/03 05:15:51 by abattagi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	unset_the_head(t_env *tmp, t_env *before, char **unset, t_env **env)
@@ -15,8 +27,9 @@ int	unset_the_head(t_env *tmp, t_env *before, char **unset, t_env **env)
 void	unset_arguments(t_env **env, char **unset)
 {
 	t_env	*tmp;
-	t_env	*before = NULL;
+	t_env	*before;
 
+	before = NULL;
 	tmp = *env;
 	if (!unset_the_head(tmp, before, unset, env))
 		return ;

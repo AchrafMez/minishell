@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 18:43:50 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/03 05:14:41 by abattagi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	*get_value(char *args)
@@ -9,6 +21,7 @@ char	*get_value(char *args)
 		return (NULL);
 	return (ft_strdup(equals + 1));
 }
+
 char	*get_name(char *args)
 {
 	char	*equals;
@@ -29,10 +42,10 @@ char	*get_name(char *args)
 
 int	add_env_var(t_env **head, char *key, char *value)
 {
-	t_env *new;
-	t_env *tmp;
-	tmp = *head;
+	t_env	*new;
+	t_env	*tmp;
 
+	tmp = *head;
 	while (tmp)
 	{
 		if (strcmp(tmp->key, key) == 0)
@@ -60,18 +73,24 @@ int	add_env_var(t_env **head, char *key, char *value)
 	tmp->next = new;
 	return (1);
 }
+
 int	ft_charfind(char *str, char c)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (str[i] != c && str[i])
 		i++;
 	return (i);
 }
+
 void	ft_create_env(t_env **head, char **env)
 {
-	char *name;
-	char *value;
-	int i = 0;
+	char	*name;
+	char	*value;
+	int		i;
+
+	i = 0;
 	while (env[i])
 	{
 		value = ft_strchr(env[i], '=') + 1;
@@ -80,9 +99,11 @@ void	ft_create_env(t_env **head, char **env)
 		i++;
 	}
 }
+
 void	ft_print_env(t_env **head)
 {
-	t_env *tmp;
+	t_env	*tmp;
+
 	tmp = *head;
 	while (tmp)
 	{
@@ -91,29 +112,27 @@ void	ft_print_env(t_env **head)
 	}
 }
 
+
 void	ft_export(t_env **env, char **argv)
 {
-	t_env *env_list;
+	t_env	*env_list;
+	int		i;
+	char	*name;
+	char	*value;
+
 	env_list = *env;
-
-
-	int i = 1;
-
+	i = 1;
 	if (argv[i] == NULL)
 	{
 		ft_print_env(&env_list);
-		return;
+		return ;
 	}
-
 	while (argv[i])
 	{
-		char *name = get_name(argv[i]);
-		char *value = get_value(argv[i]);
+		name = get_name(argv[i]);
+		value = get_value(argv[i]);
 		add_env_var(&env_list, name, value);
 		i++;
 	}
-		ft_print_env(&env_list);
-
-	
-
+	ft_print_env(&env_list);
 }

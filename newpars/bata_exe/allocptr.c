@@ -1,6 +1,18 @@
-#include"../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   allocptr.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 18:42:32 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/03 05:07:21 by abattagi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	Tslash(char **path)
+#include "../minishell.h"
+
+void	t_slash(char **path)
 {
 	char	*tmp;
 	int		i;
@@ -14,7 +26,8 @@ void	Tslash(char **path)
 		i++;
 	}
 }
-int	size_env(t_env	**env)
+
+int	size_env(t_env **env)
 {
 	t_env	*tmp;
 	int		cnt;
@@ -31,6 +44,7 @@ int	size_env(t_env	**env)
 	}
 	return (cnt);
 }
+
 char	**env_to_envp(t_env **env)
 {
 	char	**envp;
@@ -56,8 +70,9 @@ char	**env_to_envp(t_env **env)
 	}
 	envp[i] = 0;
 	return (envp);
-}	
-t_env	*getEnvarement(t_env **env, char *key)
+}
+
+t_env	*get_envarement(t_env **env, char *key)
 {
 	t_env	*tmp;
 
@@ -66,28 +81,26 @@ t_env	*getEnvarement(t_env **env, char *key)
 		return (NULL);
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->key, key)) // dir ! 
+		if (!ft_strcmp(tmp->key, key))
 		{
-
 			return (tmp);
 		}
 		tmp = tmp->next;
 	}
-
 	return (0);
 }
+
 void	allocptr(t_extra *ptr, t_env **tmp, t_env **env)
 {
 	t_env	*mis;
 
-	*tmp = getEnvarement(env, "PATH");
-	// printf("tmp = %s\n", (*tmp)->value);
+	*tmp = get_envarement(env, "PATH");
 	mis = *tmp;
 	ptr->envp = env_to_envp(env);
 	if (mis)
 	{
 		ptr->path = ft_split(mis->value, ':');
-		Tslash(ptr->path);
+		t_slash(ptr->path);
 	}
 	ptr->pid = malloc(sizeof(int) * (ptr->size + 1));
 }

@@ -65,6 +65,7 @@ typedef struct s_command{
     char *path;
     t_red *in;
     t_red *out;
+	int					fd;
     struct s_command *next;
 } t_command;
 
@@ -202,20 +203,21 @@ void handle_signals(void);
 // //----------------------------baattaaaagi---------------------------------
 typedef struct t_extra
 {
-	int		i;
-	int		size;
-	int		*pid;
-	int		**tube;
-	char	**path;
-	char	**envp;
-}	t_extra;
+	int					i;
+	int					size;
+	int					*pid;
+	int					**tube;
+	char				**path;
+	char				**envp;
+	t_env				**env;
+}						t_extra;
 
 typedef struct ex_er
 {
 	int	ex;
 	int	er;
 }	t_exer;
-t_exer g_glb;
+extern t_exer g_glb;
 
 typedef struct s_list
 {
@@ -224,17 +226,17 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-void	handle_child(t_command	*cmd, t_env **env, t_extra ptr);
-void	input_cmd(t_red *in, t_extra ptr, char **cmd, t_env **env);
-void	output_command(t_red *out, t_extra ptr);
-void	assaining_in(t_red *tmp);
-int	assining_out(t_red *tmp, int	*fd);
-void	condition_dup(t_extra ptr);
-int	closingB(int **tube, int pos);
-void	handle_exec(char **path, t_command	*list, t_env **env, char **envp);
-int	there_is_slash(char *arg);
-void	slash_exec(char **arg, char **envp);
-void	command_not_found(char **arg, char *str, int ex);
+void					handle_child(t_command *cmd, t_env **env, t_extra ptr);
+void					input_cmd(t_red *in, t_extra ptr, char **cmd, int fd, t_env **env);
+void					output_cmd(t_red *out, t_extra ptr);
+void					assaining_in(t_red *tmp,int fd, t_env **env);
+int						assining_out(t_red *tmp, int *fd);
+void					condition_dup(t_extra ptr);
+int						closingb(int **tube, int pos);//1
+void					handle_exec(char **path, t_command *list, t_env **env,
+							char **envp);
+int						there_is_slash(char *arg);
+void					slash_exec(char **arg, char **envp, t_env **env);
 
 
 // ...................................................
@@ -242,24 +244,27 @@ void	command_not_found(char **arg, char *str, int ex);
 void	allocptr(t_extra *ptr, t_env **tmp, t_env **env);
 char	**env_to_envp(t_env **env);
 t_env	*getEnvarement(t_env **env, char *key);
+t_env					*get_envarement(t_env **env, char *key);//2
+
 void	Tslash(char **path);
 int	size_env(t_env	**env);
 // ...................................................
 //main.............................................
-t_env	*get_env(char **env);
-void	check_Opwd(char **str);
-int	**prc_allocation(int size);
-void	execution(t_command **list, t_env **env);
-int	**builtins_tube(t_command **list, t_env **env, int size);
-int	is_builting(t_command *cmd);
-void	exec_builtins(t_command *cmd,t_env  **env);
-int	open_files(int *fd, t_command*cmd);
-int	output_builtins(t_red *out);
-int	input_builtins(t_red *in);
-int out_fd_assign(t_red *tmp, int *fd);
-void	duplicate_fd(int *ret, int fd);
-int **alloc_tube(int size);
-int	open_pipes(int **tube, int size);
+t_env					*get_env(char **env);
+void					check_o_pwd(char **str);//4
+int						**prc_allocation(int size);
+void					execution(t_command **list, t_env **env);
+int						**builtins_tube(t_command **list, t_env **env,
+							int size);
+int						is_builting(t_command *cmd);
+void					exec_builtins(t_command *cmd, t_env **env);
+int						open_files(int *fd, t_command *cmd);
+int						output_builtins(t_red *out);
+int						input_builtins(t_red *in);
+int						out_fd_assign(t_red *tmp, int *fd);
+void					duplicate_fd(int *ret, int fd);
+int						**alloc_tube(int size);
+int						open_pipes(int **tube, int size);
 
 // ...................................................
 // builtins.............................................
@@ -274,7 +279,9 @@ int	open_pipes(int **tube, int size);
 // ...................................................
 //cleaning.............................................
 void	free_tab(char **tab);
-void	ft_free_wait(t_extra ptr);
+// void	ft_free_wait(t_extra ptr);
+void					ft_free_wait(t_extra ptr, t_env **env);
+
 // ...................................................
 // libft.............................................
 // int	ft_strcmp(const char *s1, char *s2);
@@ -285,6 +292,8 @@ void	frealltab(char **str);
 // static int	checkimpli(char const *s, char **str, char c);
 // char	**ft_split(char const *s, char c);
 // char	*ft_strjoin(char const *s1, char const *s2);
+void					command_not_found(char **arg, char *str, int ex, t_env **env);
+// void					frealltab(char **str);
 int	ft_size_list(t_command *list);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_front_env(t_env **lst, t_env *new);
@@ -302,5 +311,18 @@ void	env_del(t_env *lst);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 // char	*ft_substr(char const *s, unsigned int start, size_t len);
 // char	*ft_strchr(const char *str, int character);
+// int	ft_enva(t_env **env, char **arg);
 int	ft_enva(t_env **env, char **arg);
+
+
+void					get_herdoc(t_command **p_cmd, t_env *env);
+int						handle_here_doc(char *limiter, t_env *env);
+
+void					ft_error(char *message, int exit_code, int f);
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+// static char				*read_from_fd(int fd, char *reminder, char *buffer);
+// static char				*next_line_remind(char *line);
+char					*get_next_line(int fd);
 #endif

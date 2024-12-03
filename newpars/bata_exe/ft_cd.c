@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 18:43:04 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/03 05:13:08 by abattagi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	change_pwd_oldpwd(t_env **env)
@@ -6,8 +18,8 @@ void	change_pwd_oldpwd(t_env **env)
 	t_env	*tmp2;
 	char	*ret;
 
-	tmp = getEnvarement(env, "PWD");
-	tmp2 = getEnvarement(env, "OLDPWD");
+	tmp = get_envarement(env, "PWD");
+	tmp2 = get_envarement(env, "OLDPWD");
 	if (!tmp || !tmp2)
 		return ;
 	if (tmp2->value)
@@ -32,7 +44,7 @@ int	cd_variable(char *var, t_env **env)
 {
 	t_env	*tmp;
 
-	tmp = getEnvarement(env, var);
+	tmp = get_envarement(env, var);
 	if (!tmp || !*tmp->value)
 	{
 		g_glb.ex = 1;
