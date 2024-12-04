@@ -15,11 +15,10 @@
 
 #include "../minishell.h"
 
-
 static char	*read_from_fd(int fd, char *reminder, char *buffer)
 {
-	int read_counter;
-	char *temp;
+	int			read_counter;
+	char		*temp;
 
 	read_counter = 1;
 	while (read_counter > 0)
@@ -44,8 +43,8 @@ static char	*read_from_fd(int fd, char *reminder, char *buffer)
 
 static char	*next_line_remind(char *line)
 {
-	size_t i;
-	char *reminder;
+	size_t	i;
+	char	*reminder;
 
 	i = 0;
 	while (line[i] != '\0' && line[i] != '\n')
@@ -64,9 +63,9 @@ static char	*next_line_remind(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char *reminder;
-	char *line;
-	char *buffer;
+	static char		*reminder;
+	char			*line;
+	char			*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{

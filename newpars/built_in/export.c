@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:21 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/01 05:32:44 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 01:29:53 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int process_export_arg(char *arg, t_env **env)
     return 0;
 }
 
-int export(char **args, t_env **env)
+int ft_export(char **args, t_env **env)
 {
     if (!args[1])
     {

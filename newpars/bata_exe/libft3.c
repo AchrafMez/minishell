@@ -15,7 +15,6 @@
 
 #include "../minishell.h"
 
-
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
 	if (!*lst)
@@ -28,7 +27,7 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 
 t_env	*ft_lstnew_env(char *key, char *value)
 {
-	t_env *lst;
+	t_env	*lst;
 
 	lst = malloc(sizeof(t_env));
 	if (!lst)
@@ -41,9 +40,9 @@ t_env	*ft_lstnew_env(char *key, char *value)
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t i;
-	char *ptr_d;
-	char *ptr_s;
+	size_t	i;
+	char	*ptr_d;
+	char	*ptr_s;
 
 	i = 0;
 	ptr_d = (char *)dest;
@@ -60,9 +59,9 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 char	**ft_strplit(char *env)
 {
-	int i;
-	char **str;
-	int len;
+	int		i;
+	char	**str;
+	int		len;
 
 	str = NULL;
 	i = -1;

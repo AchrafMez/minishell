@@ -3,51 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: captain <captain@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:42:47 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/03 23:02:01 by captain          ###   ########.fr       */
+/*   Updated: 2024/12/04 00:52:51 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-t_exer					g_glb = {0, 0};
 
-int execute_builtin_command(t_command *cmd, t_env **env)
+t_exer	g_glb = {0, 0};
+
+void	exec_builtins(t_command *cmd, t_env **env)
 {
-    if (ft_strcmp(cmd->name, "pwd") == 0)
-        return pwd(env);
-    else if (ft_strcmp(cmd->name, "cd") == 0)
-        return cd(cmd->args, *env);
-    else if (ft_strcmp(cmd->name, "env") == 0)
-        return ft_enva(env, cmd->args);
-    else if (ft_strcmp(cmd->name, "export") == 0)
-        return export(cmd->args, env);
-    else if (ft_strcmp(cmd->name, "echo") == 0)
-        return echo(cmd->args);
-    else if (ft_strcmp(cmd->name, "unset") == 0)
-        return unset(cmd->args, env);
-    else if (ft_strcmp(cmd->name, "exit") == 0)
-        return ft_exit(cmd->args, 0);
-    return 1; 
-}
+	int	fd;
+	int	status;
 
-void exec_builtins(t_command *cmd, t_env **env)
-{
-    int fd;
-    int status;
-
-    if (!open_files(&fd, cmd))
-        return;
-
-    status = execute_builtin_command(cmd, env);
+	if (!open_files(&fd, cmd))
+		return ;
+	status = execute_builtin_command(cmd, env);
 	set_export_env(env, "?", ft_itoa(status));
-
-    if (fd != -2)
-    {
-        dup2(fd, 1);
-        close(fd);
-    }
+	if (fd != -2)
+	{
+		dup2(fd, 1);
+		close(fd);
+	}
 }
 
 int	**alloc_tube(int size)

@@ -15,10 +15,9 @@
 
 #include "../minishell.h"
 
-
 void	frealltab(char **str)
 {
-	int l;
+	int	l;
 
 	l = 0;
 	while (str[l])
@@ -30,8 +29,8 @@ void	frealltab(char **str)
 
 int	ft_size_list(t_command *list)
 {
-	int cnt;
-	t_command *tmp;
+	int						cnt;
+	t_command				*tmp;
 
 	tmp = list;
 	cnt = 0;

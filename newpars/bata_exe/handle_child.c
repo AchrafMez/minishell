@@ -6,7 +6,7 @@
 /*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:44:17 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/03 07:21:41 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/04 01:12:51 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	condition_dup(t_extra ptr)
 	if (ptr.i != ptr.size)
 		dup2(ptr.tube[ptr.i][1], 1);
 }
+
 void	output_cmd(t_red *out, t_extra ptr)
 {
 	t_red	*tmp;
@@ -30,8 +31,7 @@ void	output_cmd(t_red *out, t_extra ptr)
 	}
 	while (tmp)
 	{
-		if ((tmp->type == RED_OUT || tmp->type == RED_APP) && assining_out(tmp,
-				&fd))
+		if ((tmp->type == RED_OUT || tmp->type == RED_APP) && ass_out(tmp, &fd))
 		{
 			if (tmp->next)
 				close(fd);
@@ -42,11 +42,7 @@ void	output_cmd(t_red *out, t_extra ptr)
 			}
 		}
 		else
-			{
-				exit(1);
-				}
-					printf("fd = %d\n", fd);
-	set_export_env(ptr.env, "?", "999");
+			exit(1);
 		tmp = tmp->next;
 	}
 }
@@ -67,7 +63,7 @@ void	assaining_in(t_red *tmp, int fd, t_env **env)
 		dup2(fd, 0);
 }
 
-void	input_cmd(t_red *in, t_extra ptr, char **cmd, int fd, t_env **env)
+void	input_cmd(t_red *in, t_extra ptr, char **cmd, int fd)
 {
 	t_red	*tmp;
 
@@ -82,10 +78,9 @@ void	input_cmd(t_red *in, t_extra ptr, char **cmd, int fd, t_env **env)
 	while (tmp)
 	{
 		if (tmp->type == RED_IN)
-			assaining_in(tmp, -2, env);
+			assaining_in(tmp, -2, ptr.env);
 		else if (tmp->type == HERE_DOC && !tmp->next)
-			assaining_in(tmp, fd, env);
-		// 	read_herdoc(cmd, tmp);
+			assaining_in(tmp, fd, ptr.env);
 		tmp = tmp->next;
 	}
 }
@@ -94,7 +89,7 @@ void	handle_child(t_command *cmd, t_env **env, t_extra ptr)
 {
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	input_cmd(cmd->in, ptr, cmd->args, cmd->fd, env);
+	input_cmd(cmd->in, ptr, cmd->args, cmd->fd);
 	output_cmd(cmd->out, ptr);
 	closingb(ptr.tube, ptr.size);
 	if (cmd->args)

@@ -45,10 +45,10 @@ void	check_o_pwd(char **str)
 
 t_env	*get_env(char **env)
 {
-	char		**str;
-	int			i;
-	t_env		*envp;
-	t_env		*tmp;
+	int				i;
+	char			**str;
+	t_env			*envp;
+	t_env			*tmp;
 
 	i = 0;
 	str = NULL;
@@ -86,4 +86,23 @@ int	is_builting(t_command *cmd)
 	else if (ft_strcmp(cmd->name, "echo") == 0)
 		return (1);
 	return (0);
+}
+
+int	execute_builtin_command(t_command *cmd, t_env **env)
+{
+	if (ft_strcmp(cmd->name, "pwd") == 0)
+		return (pwd(env));
+	else if (ft_strcmp(cmd->name, "cd") == 0)
+		return (cd(cmd->args, *env));
+	else if (ft_strcmp(cmd->name, "env") == 0)
+		return (ft_enva(env, cmd->args));
+	else if (ft_strcmp(cmd->name, "export") == 0)
+		return (ft_export(cmd->args, env));
+	else if (ft_strcmp(cmd->name, "echo") == 0)
+		return (ft_echo(cmd->args));
+	else if (ft_strcmp(cmd->name, "unset") == 0)
+		return (unset(cmd->args, env));
+	else if (ft_strcmp(cmd->name, "exit") == 0)
+		return (ft_exit(cmd->args, 0));
+	return (1);
 }

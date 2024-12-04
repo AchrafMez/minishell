@@ -15,10 +15,9 @@
 
 #include "../minishell.h"
 
-
 void	slash_exec(char **arg, char **envp, t_env **env)
 {
-	struct stat m;
+	struct stat	m;
 
 	if (stat(arg[0], &m) == -1)
 		return ;
@@ -31,7 +30,7 @@ void	slash_exec(char **arg, char **envp, t_env **env)
 
 int	there_is_slash(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arg[i])
@@ -45,19 +44,17 @@ int	there_is_slash(char *arg)
 
 void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 {
-	int i;
-	char *tmp;
+	int			i;
+	char		*tmp;
 
 	i = 0;
-
 	if (there_is_slash(list->args[0]))
 		slash_exec(list->args, envp, env);
 	if (is_builting(list))
 	{
 		free_tab(envp);
 		exec_builtins(list, env);
-		update_exit_value(env, g_glb.ex);
-		exit(g_glb.ex);
+		exit(0);
 	}
 	else
 	{
@@ -71,7 +68,6 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 			}
 		}
 	}
-	set_env_value(env,"?", "127");
 	command_not_found(list->args, ": command not found\n", 127, env);
 }
 
@@ -88,7 +84,7 @@ int	closingb(int **tube, int pos)
 	return (0);
 }
 
-int	assining_out(t_red *tmp, int *fd)
+int	ass_out(t_red *tmp, int *fd)
 {
 	if (tmp->type == RED_OUT)
 		*fd = open(tmp->value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
