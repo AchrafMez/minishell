@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:05:09 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:40:18 by amezioun         ###   ########.fr       */
+/*   Created: 2024/11/13 10:09:38 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 02:30:36 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strlen(const char *s)
+int	ft_strcmp(char *str, char *target)
 {
-	int	i;
-
-	i = 0;
-	if (!s)
+	if (!str && !target)
 		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	if (!str)
+		return (-1);
+	if (!target)
+		return (1);
+	while (*str && (*str == *target))
+	{
+		str++;
+		target++;
+	}
+	return (*str - *target);
 }

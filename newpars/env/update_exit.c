@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   update_exit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:05:09 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:40:18 by amezioun         ###   ########.fr       */
+/*   Created: 2024/12/04 04:50:34 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 04:50:35 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_strlen(const char *s)
+void	update_exit_value(t_env **env, int status)
 {
-	int	i;
+	char	*value;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	value = ft_itoa(status);
+	set_env_value(env, "?", value);
+	free(value);
 }

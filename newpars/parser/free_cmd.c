@@ -6,12 +6,12 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:58:49 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/26 00:02:39 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 02:33:06 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 void	print_cmd(t_command *command)
 {
 	t_command	*cur;
@@ -23,9 +23,6 @@ void	print_cmd(t_command *command)
 	while (cur)
 	{
 		i = 0;
-		
-		// printf("name: %s\n", cur->name);
-		// printf("cmd path: %s\n", cur->path);
 		while (cur->args[i])
 		{
 			printf("arg: %s\n", cur->args[i]);
@@ -46,13 +43,13 @@ void	print_cmd(t_command *command)
 		printf("------- another cmd -------\n");
 		cur = cur->next;
 	}
-}
+}*/
 
-void free_out(t_command *cur)
+void	free_out(t_command *cur)
 {
-	t_red		*red_out;
-	t_red		*next_out;
-	
+	t_red	*red_out;
+	t_red	*next_out;
+
 	red_out = cur->out;
 	while (red_out)
 	{
@@ -63,10 +60,10 @@ void free_out(t_command *cur)
 	}
 }
 
-void free_in(t_command *cur)
+void	free_in(t_command *cur)
 {
-	t_red		*red_tmp;
-	t_red		*next_red;
+	t_red	*red_tmp;
+	t_red	*next_red;
 
 	red_tmp = cur->in;
 	while (red_tmp)
@@ -76,8 +73,8 @@ void free_in(t_command *cur)
 		free(red_tmp);
 		red_tmp = next_red;
 	}
-		
 }
+
 void	free_cmd(t_command *command)
 {
 	t_command	*cur;

@@ -89,3 +89,24 @@ char	*get_next_line(int fd)
 	reminder = next_line_remind(line);
 	return (line);
 }
+
+void	execute_command(char **path, t_command *list, t_env **env, char **envp)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (get_envarement(env, "PATH") && path[i])
+	{
+		tmp = ft_strjoin(path[i], list->args[0]);
+		if (execve(tmp, list->args, envp) == -1)
+		{
+			i++;
+			free(tmp);
+		}
+	}
+	if (list->args[0] == NULL)
+		exit(0);
+	else
+		command_not_found(list->args, ": command not found\n", 127, env);
+}

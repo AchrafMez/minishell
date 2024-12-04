@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   sig.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:05:09 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:40:18 by amezioun         ###   ########.fr       */
+/*   Created: 2024/11/13 10:09:46 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 02:30:20 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strlen(const char *s)
+void	ctrl_d(void)
 {
-	int	i;
+	printf("exit\n");
+	exit(EXIT_SUCCESS);
+}
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+void	ctrl_c(int sig)
+{
+	(void)sig;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	printf("\n");
+	rl_redisplay();
+}
+
+void	handle_signals(void)
+{
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 }

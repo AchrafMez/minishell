@@ -77,11 +77,3 @@ char	**ft_strplit(char *env)
 	str[2] = 0;
 	return (str);
 }
-
-void	export_error(char *exp)
-{
-	write(2, "export : ", 9);
-	write(2, exp, ft_strlen(exp));
-	write(2, " : not a valid identifier\n", 26);
-	g_glb.ex = 1;
-}

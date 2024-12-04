@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:05:09 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:40:18 by amezioun         ###   ########.fr       */
+/*   Created: 2024/12/04 02:28:59 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 02:29:10 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strlen(const char *s)
+char	*get_env_value(t_env *env, char *searsh)
 {
-	int	i;
+	t_env	*temp;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	temp = env;
+	if (!searsh || *searsh == '\0')
+		return ("");
+	while (temp && temp != NULL)
+	{
+		if (searsh == NULL || temp->key == NULL)
+			return ("");
+		if (!ft_strcmp(temp->key, searsh))
+			return (temp->value);
+		temp = temp->next;
+	}
+	return ("");
 }

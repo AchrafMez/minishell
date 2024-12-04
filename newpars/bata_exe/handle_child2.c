@@ -19,6 +19,8 @@ void	slash_exec(char **arg, char **envp, t_env **env)
 {
 	struct stat	m;
 
+	if (arg[0] == NULL)
+		return ;
 	if (stat(arg[0], &m) == -1)
 		return ;
 	if (S_ISDIR(m.st_mode))
@@ -33,6 +35,8 @@ int	there_is_slash(char *arg)
 	int	i;
 
 	i = 0;
+	if (arg == NULL)
+		return (0);
 	while (arg[i])
 	{
 		if (arg[i] == '/')
@@ -44,10 +48,6 @@ int	there_is_slash(char *arg)
 
 void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 {
-	int			i;
-	char		*tmp;
-
-	i = 0;
 	if (there_is_slash(list->args[0]))
 		slash_exec(list->args, envp, env);
 	if (is_builting(list))
@@ -58,17 +58,12 @@ void	handle_exec(char **path, t_command *list, t_env **env, char **envp)
 	}
 	else
 	{
-		while (get_envarement(env, "PATH") && path[i])
-		{
-			tmp = ft_strjoin(path[i], list->args[0]);
-			if (execve(tmp, list->args, envp) == -1)
-			{
-				i++;
-				free(tmp);
-			}
-		}
+		execute_command(path, list, env, envp);
 	}
-	command_not_found(list->args, ": command not found\n", 127, env);
+	if (list->args[0] == NULL)
+		exit(0);
+	else
+		command_not_found(list->args, ": command not found\n", 127, env);
 }
 
 int	closingb(int **tube, int pos)

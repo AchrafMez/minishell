@@ -6,38 +6,13 @@
 /*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:16 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 00:18:56 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/04 02:50:04 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// int echo(char **args)
-// {
-//     int counter;
-//     int n_flag = 0;
-//     // printf("here\n");
-
-//     counter = 1;
-//     if(args[counter] && ft_strcmp(args[counter], "-n") == 0)
-//     {
-//         counter++;
-//         n_flag = 1;
-//     }
-//     // printf("here1\n");
-//     while(args[counter])
-//     {
-//         // printf("here2\n");
-//         printf("%s", args[counter]);
-//         if(args[counter + 1] != NULL)
-//             printf(" ");
-//         counter++;
-//     }
-//     if(n_flag == 0)
-//         printf("\n");
-//     return 0;
-// }
-int	check_n_Flag(char *tab)
+int	check_n_flag(char *tab)
 {
 	if (*tab != '-')
 		return (0);
@@ -72,13 +47,12 @@ int	ft_echo(char **arg)
 	int	n_flag;
 
 	i = 1;
-	// g_glb.ex = 0;
 	if (!arg[1])
 	{
 		printf("\n");
-		return(1) ;
+		return (1);
 	}
-	if (check_n_Flag(arg[1]))
+	if (check_n_flag(arg[1]))
 		n_flag = 1;
 	else
 		n_flag = 0;
@@ -87,6 +61,5 @@ int	ft_echo(char **arg)
 	print_arguments(&arg[i]);
 	if (!n_flag)
 		printf("\n");
-        return 0;
+	return (0);
 }
-

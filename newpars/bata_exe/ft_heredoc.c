@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:43:55 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 00:56:49 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/04 04:50:43 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ int	handle_here_doc(char *limiter, t_env *env)
 {
 	int		fd;
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	fd = -1;
 	pid = fork();
 	fd = open("/tmp/heredocx", O_RDWR | O_CREAT | O_TRUNC, 0774);
@@ -77,7 +79,7 @@ int	handle_here_doc(char *limiter, t_env *env)
 	if (pid == 0)
 		write_to_heredoc_file(fd, limiter, env);
 	else
-		waitpid(pid, &g_glb.ex, 0);
+		waitpid(pid, &status, 0);
 	return (fd);
 }
 

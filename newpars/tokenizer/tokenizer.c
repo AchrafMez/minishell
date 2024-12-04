@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:35:56 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/30 04:55:19 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 02:28:28 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,36 +64,24 @@ t_token	*tokenize_input(char *input, t_env **env)
 {
 	t_token		*token_list;
 	char		*cur;
-	// char		buffer[1024000];
-	int res = ft_strlen(input);
-	char *buffer = malloc(res + 1);
-	if(!buffer)
-		return (NULL);
-	buffer[res] = '\0';
+	char		buffer[1024000];
 	int			buf_idx;
 	t_content	content;
 
 	buf_idx = 0;
 	token_list = NULL;
 	cur = input;
-
 	content.cur = &cur;
 	content.buffer = buffer;
 	content.buf_idx = &buf_idx;
 	content.token_list = &token_list;
 	content.env = *env;
-
-	if (test(&content) == 1) 
-	{
-		free(buffer);	
+	if (test(&content) == 1)
 		return (NULL);
-	}
-
-	if (buf_idx > 0) 
+	if (buf_idx > 0)
 	{
 		buffer[buf_idx] = '\0';
 		add_token(&token_list, create_token(buffer, WORD));
 	}
-	free(buffer);
 	return (token_list);
 }

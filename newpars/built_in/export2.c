@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 10:09:38 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/25 15:44:21 by amezioun         ###   ########.fr       */
+/*   Created: 2024/12/04 03:03:59 by abattagi          #+#    #+#             */
+/*   Updated: 2024/12/04 03:04:09 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	ft_strcmp(char *str, char *target)
+void	print_export(t_env *env)
 {
-	if(!str && !target)
-		return 0;
-	if(!str)
-		return -1;
-	if(!target)
-		return 1;
-	while (*str && (*str == *target))
+	t_env	*cur;
+
+	cur = env;
+	while (cur)
 	{
-		str++;
-		target++;
+		printf("dexlare -x %s=\"%s\"\n", cur->key, cur->value);
+		cur = cur->next;
 	}
-	return (*str - *target);
 }

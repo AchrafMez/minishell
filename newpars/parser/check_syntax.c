@@ -6,43 +6,59 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:11:03 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/02 22:02:51 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 02:35:34 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	check_pipe_syntax(t_token *cur)
+{
+	if (cur->type == PIPE)
+	{
+		if (!cur->next || cur->next->type == PIPE)
+		{
+			printf("minishell$: syntax error near '|' \n");
+			return (258);
+		}
+	}
+	return (0);
+}
+
+int	check_redirection_syntax(t_token *cur)
+{
+	if (cur->type == RED_IN || cur->type == RED_OUT || cur->type == HERE_DOC
+		|| cur->type == RED_APP)
+	{
+		if (!cur->next || (cur->next->type != WORD && cur->next->type != SPACES
+				&& cur->next->type != S_QUOTE && cur->next->type != D_QUOTE))
+		{
+			printf("minishell$: syntax error near > < \n");
+			return (258);
+		}
+	}
+	return (0);
+}
+
 int	check_syntax(t_token *token)
 {
 	t_token	*cur;
+	int		result;
 
 	cur = token;
-	if(cur && cur->type == PIPE)
-    {
-        printf("syntax error near unexpected token '|'\n");
-        return 258;
-    }
+	if (cur && cur->type == PIPE)
+	{
+		printf("syntax error near unexpected token '|'\n");
+		return (258);
+	}
 	while (cur)
 	{
-		if (cur->type == PIPE)
-		{
-			if (!cur->next || cur->next->type == PIPE)
-			{
-				printf("minishell$: syntax error near '|' \n");
-				return (258);
-			}
-		}
-		else if (cur->type == RED_IN || cur->type == RED_OUT
-			|| cur->type == HERE_DOC || cur->type == RED_APP)
-		{
-			if (!cur->next || (cur->next->type != WORD
-				&& cur->next->type != SPACES && cur->next->type != S_QUOTE
-				&& cur->next->type != D_QUOTE))
-			{
-				printf("minishell$: syntax error near > < \n");
-				return (258);
-			}
-		}
+		result = check_pipe_syntax(cur);
+		if (result != 0)
+			return (result);
+		result = check_redirection_syntax(cur);
+		if (result != 0)
+			return (result);
 		cur = cur->next;
 	}
 	return (0);
@@ -50,8 +66,11 @@ int	check_syntax(t_token *token)
 
 int	check_unclosed_quotes(char *input)
 {
-	int s_quotes = 0;
-	int d_quotes = 0;
+	int	s_quotes;
+	int	d_quotes;
+
+	s_quotes = 0;
+	d_quotes = 0;
 	while (*input)
 	{
 		if (*input == '\'' && !d_quotes)

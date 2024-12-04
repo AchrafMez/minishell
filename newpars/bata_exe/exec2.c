@@ -82,17 +82,17 @@ int	output_builtins(t_red *out)
 	return (ret);
 }
 
-int	open_files(int *fd, t_command *cmd)
+int	open_files(int *fd, t_command *cmd, t_env **env)
 {
 	if (!input_builtins(cmd->in))
 	{
-		g_glb.ex = 1;
+		set_export_env(env, "?", "1");
 		return (0);
 	}
 	*fd = output_builtins(cmd->out);
 	if (*fd == -1)
 	{
-		g_glb.ex = 1;
+		set_export_env(env, "?", "1");
 		return (0);
 	}
 	return (1);

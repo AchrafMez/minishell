@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig.c                                              :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 10:09:46 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 00:04:27 by abattagi         ###   ########.fr       */
+/*   Created: 2024/12/04 04:39:44 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 04:40:02 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ctrl_d(void)
+int	main(int ac, char **av, char **envp)
 {
-	printf("exit\n");
-	exit(EXIT_SUCCESS);
-}
+	t_env	*env;
 
-void	ctrl_c(int sig)
-{
-	(void)sig;
-	// rl_replace_line("", 0);
-	rl_on_new_line();
-	printf("\n");
-	rl_redisplay();
-}
-
-void	handle_signals(void)
-{
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	(void)av;
+	env = NULL;
+	env = convert_env(envp);
+	set_export_env(&env, "?", "0");
+	handle_signals();
+	if (ac == 1)
+		main_loop(&env);
+	return (0);
 }

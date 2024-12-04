@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 01:43:18 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/13 10:59:14 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 02:40:29 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	count(char const *s, char c)
 			i++;
 	}
 	return (wcount);
-}  
+}
 
 static int	word_len(char const *s, char c, int i)
 {

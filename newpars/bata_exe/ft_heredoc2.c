@@ -6,7 +6,7 @@
 /*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 00:48:18 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 00:59:24 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/04 04:13:09 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 void	ft_error(char *message, int exit_code, int f)
 {
-	g_glb.ex = exit_code;
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("\n", 2);
 	if (f == 0)
-		exit(g_glb.ex);
+		exit(exit_code);
 }
 
 int	ft_strncmpp(const char *s1, const char *s2, size_t n)

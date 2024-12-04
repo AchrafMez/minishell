@@ -6,20 +6,18 @@
 /*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:42:47 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 00:52:51 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/04 04:07:54 by abattagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-t_exer	g_glb = {0, 0};
 
 void	exec_builtins(t_command *cmd, t_env **env)
 {
 	int	fd;
 	int	status;
 
-	if (!open_files(&fd, cmd))
+	if (!open_files(&fd, cmd, env))
 		return ;
 	status = execute_builtin_command(cmd, env);
 	set_export_env(env, "?", ft_itoa(status));
@@ -78,7 +76,7 @@ int	**builtins_tube(t_command **list, t_env **env, int size)
 	if (!open_pipes(tube, size) || !tube)
 	{
 		write(2, "ERROR : open_pipe ou allocation\n", 32);
-		g_glb.ex = -1;
+		set_export_env(env, "?", "-1");
 		closingb(tube, size);
 		return (NULL);
 	}

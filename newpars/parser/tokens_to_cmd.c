@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_to_cmd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/04 02:33:31 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 02:33:32 by amezioun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 t_command	*fill_cmd_assit1(t_command **cmd_list)
@@ -20,13 +32,16 @@ t_command	*fill_cmd_assit1(t_command **cmd_list)
 	return (new);
 }
 
-void	fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count, t_env *env)
+void	fill_cmd_assit(t_token *token, t_command *cmd, int *arg_count,
+		t_env *env)
 {
-	char *value = NULL;
+	char	*value;
+
+	value = NULL;
 	if (token->type == WORD || token->type == S_QUOTE || token->type == D_QUOTE
 		|| token->type == ENV)
 		add_arg(&cmd->args, arg_count, token->value);
-	else if(token->type == EXIT_STATUE)
+	else if (token->type == EXIT_STATUE)
 	{
 		value = get_env_value(env, "?");
 		add_arg(&cmd->args, arg_count, value);

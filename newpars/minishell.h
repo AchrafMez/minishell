@@ -1,36 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/04 04:35:32 by amezioun          #+#    #+#             */
+/*   Updated: 2024/12/04 04:49:40 by amezioun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# include <stdio.h>
-// #include <fcntl.h>
-// #include <signal.h>
-// #include <unistd.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
 # include "./libft/libft.h"
+# include <stdio.h>
+# include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
+# include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
 # include <fcntl.h>
-# include <stdlib.h>
-// #include <errno.h>
-# include <signal.h>
-// #include <ctype.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-// #include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
-// #include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
-// #include "../execution/builting/builtin.h"
-// #define BUFFER_SIZE 102400
+# include <unistd.h>
+
+char					*get_next_line(int fd);
+
 typedef enum e_token_type
 {
-	WORD,     // 0
-	S_QUOTE,  // 1
-	D_QUOTE,  // 2
-	SPACES,   // 3
-	ENV,      // 4
-	PIPE,     // 5
-	RED_IN,   // 6
-	RED_OUT,  // 7
-	RED_APP,  // 8
-	HERE_DOC, // 9
+	WORD,
+	S_QUOTE,
+	D_QUOTE,
+	SPACES,
+	ENV,
+	PIPE,
+	RED_IN,
+	RED_OUT,
+	RED_APP,
+	HERE_DOC,
 	EXIT_STATUE
 }						t_token_type;
 
@@ -71,13 +82,6 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_command;
 
-// //for the exit status
-// typedef struct s_shell{
-//     int exit_status;
-//     t_env *env;
-// } t_shell;
-
-// just for the norm
 typedef struct s_content
 {
 	char				**cur;
@@ -92,12 +96,9 @@ void					exec_built(t_command *cmd, t_env **env);
 int						is_built_in(t_command *command);
 // built_in
 int						cd(char **args, t_env *env);
-// int echo(char **args);
 int						pwd(t_env **env);
-// int ft_env(char **args, t_env *env);
 // export
 int						is_valid_key(char *arg);
-void					print_export(t_env *env);
 void					print_export(t_env *env);
 t_env					*find(t_env *env, char *key);
 void					set_export_env(t_env **env, char *key, char *value);
@@ -117,6 +118,7 @@ void					delete_space(t_token **token_list);
 
 //----------------------------tokenizer-----------------//
 // quotes
+void					read_and_tokenize(t_env **env, t_token **token_list);
 int						check_single(char **cur, char *buffer, int *buf_idx);
 void					check_single_for_helper(t_content *content);
 int						handle_singlequote_helper(t_content *content);
@@ -174,16 +176,19 @@ t_command				*fill_command(t_token *tokens, t_env *env);
 void					set_path(t_command **cmd);
 char					*get_path(char *target);
 void					free_path(char **path);
+char					*join_path(char *dir, char *target);
+int						check_access(char *full_path);
+char					**get_env_path(void);
+char					*find_exec(char **path, char *target);
 
 void					main_loop(t_env **env);
 
 // //signal
-int						ft_strcmp(char *str, char *target);
 void					ctrl_c(int sig);
 void					ctrl_d(void);
 void					handle_signals(void);
 
-// //----------------------------baattaaaagi---------------------------------
+//----------------------------execution---------------------------------//
 typedef struct t_extra
 {
 	int					i;
@@ -194,13 +199,6 @@ typedef struct t_extra
 	char				**envp;
 	t_env				**env;
 }						t_extra;
-
-typedef struct ex_er
-{
-	int					ex;
-	int					er;
-}						t_exer;
-extern t_exer			g_glb;
 
 typedef struct s_list
 {
@@ -215,32 +213,32 @@ void					output_cmd(t_red *out, t_extra ptr);
 void					assaining_in(t_red *tmp, int fd, t_env **env);
 int						ass_out(t_red *tmp, int *fd);
 void					condition_dup(t_extra ptr);
-int	closingb(int **tube, int pos); // 1
+int						closingb(int **tube, int pos);
 void					handle_exec(char **path, t_command *list, t_env **env,
 							char **envp);
 int						there_is_slash(char *arg);
 void					slash_exec(char **arg, char **envp, t_env **env);
+void					execute_command(char **path, t_command *list,
+							t_env **env, char **envp);
 
 // ...................................................
-// allocptr.............................................
 void					allocptr(t_extra *ptr, t_env **tmp, t_env **env);
 char					**env_to_envp(t_env **env);
 t_env					*get_envarement(t_env **env, char *key);
-t_env	*get_envarement(t_env **env, char *key); // 2
+t_env					*get_envarement(t_env **env, char *key); // 2
 
 void					t_slash(char **path);
 int						size_env(t_env **env);
 // ...................................................
-// main.............................................
 t_env					*get_env(char **env);
-void	check_o_pwd(char **str); // 4
+void					check_o_pwd(char **str); // 4
 int						**prc_allocation(int size);
 void					execution(t_command **list, t_env **env);
 int						**builtins_tube(t_command **list, t_env **env,
 							int size);
 int						is_builting(t_command *cmd);
 void					exec_builtins(t_command *cmd, t_env **env);
-int						open_files(int *fd, t_command *cmd);
+int						open_files(int *fd, t_command *cmd, t_env **env);
 int						output_builtins(t_red *out);
 int						input_builtins(t_red *in);
 int						out_fd_assign(t_red *tmp, int *fd);
@@ -251,33 +249,19 @@ int						execute_builtin_command(t_command *cmd, t_env **env);
 
 // ...................................................
 // builtins.............................................
-// void	ft_cd(t_env **env, char **arg);
 int						ft_echo(char **arg);
-// void	ft_env(t_env **env, char **arg);
-// void	ft_exit(char **cmd);
-// void	ft_export(t_env **env, char **args);
-// void	ft_pwd(t_env *env);
-// void	ft_unset(t_env **env, char **unset);
+int						cd_update_environment(t_env *env);
 
 // ...................................................
 // cleaning.............................................
 void					free_tab(char **tab);
-// void	ft_free_wait(t_extra ptr);
 void					ft_free_wait(t_extra ptr, t_env **env);
 
 // ...................................................
 // libft.............................................
-// int	ft_strcmp(const char *s1, char *s2);
-// size_t	ft_strlen(const char *s);
-// static int	nbrarray(char const *s, char c) ;
 void					frealltab(char **str);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// static int	checkimpli(char const *s, char **str, char c);
-// char	**ft_split(char const *s, char c);
-// char	*ft_strjoin(char const *s1, char const *s2);
 void					command_not_found(char **arg, char *str, int ex,
 							t_env **env);
-// void					frealltab(char **str);
 int						ft_size_list(t_command *list);
 t_list					*ft_lstlast(t_list *lst);
 void					ft_lstadd_front_env(t_env **lst, t_env *new);
@@ -285,26 +269,16 @@ t_env					*ft_lstlast_env(t_env *lst);
 void					ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env					*ft_lstnew_env(char *key, char *value);
 void					*ft_memcpy(void *dest, const void *src, size_t n);
-// char	*ft_strdup(const char *s);
 char					**ft_strplit(char *env);
-// int	ft_atoi(const char *str);
-void					export_error(char *exp);
 int						condition_name(char *c);
 void					free_env(t_env *node);
 void					env_del(t_env *lst);
 char					*ft_strncpy(char *dest, char *src, unsigned int n);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char	*ft_strchr(const char *str, int character);
-// int	ft_enva(t_env **env, char **arg);
 int						ft_enva(t_env **env, char **arg);
 // heredoc.............................................
 void					get_herdoc(t_command **p_cmd, t_env *env);
 int						handle_here_doc(char *limiter, t_env *env);
-// static int				write_to_heredoc_file(int fd, char *limiter,
-							// t_env *env);
 void					herdoc_sig(int sig);
-// static int				write_to_file(char *limiter_newline, int fd,
-							// t_env *env);
 int						help_heredoc(char *line, int i, int fd, t_env *env);
 void					ft_dollar(char *str, int *i, int fd, t_env *env);
 int						ft_chr(const char *s, int c);
@@ -312,8 +286,4 @@ int						ft_strncmpp(const char *s1, const char *s2, size_t n);
 void					ft_error(char *message, int exit_code, int f);
 // ...................................................
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
-char					*get_next_line(int fd);
 #endif
