@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:51:19 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/05 08:00:30 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 08:22:26 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,33 @@ void	r_t_assit(char *input, t_env **env)
 	{
 		update_exit_value(env, 258);
 		add_history(input);
-		free(input);
 		return ;
 	}
 	if (ft_strlen(input) > 0)
 		add_history(input);
 }
 
+int	check_unclosed(char *input)
+{
+	int	s_quotes;
+	int	d_quotes;
+
+	s_quotes = 0;
+	d_quotes = 0;
+	while (*input)
+	{
+		if (*input == '\'' && !d_quotes)
+			s_quotes = !s_quotes;
+		else if (*input == '"' && !s_quotes)
+			d_quotes = !d_quotes;
+		input++;
+	}
+	if (s_quotes)
+		return (258);
+	if (d_quotes)
+		return (258);
+	return (0);
+}
 void	read_and_tokenize(t_env **env, t_token **token_list)
 {
 	int		res;
@@ -45,17 +65,19 @@ void	read_and_tokenize(t_env **env, t_token **token_list)
 	input = NULL;
 	input = readline(COLOR "minishell$ " COLOR_RESET);
 	r_t_assit(input, env);
-	if (!input || *input == '\0')
+	if (!input || *input == '\0' || check_unclosed(input))
 	{
-		if (input)
-			free(input);
+		free(input);
 		return ;
 	}
 	*token_list = tokenize_input(input, env);
 	if (*token_list)
 		tokens_edit(token_list);
 	else
+	{
+		free(input);
 		return ;
+	}
 	res = check_syntax(*token_list);
 	if (res == 258)
 	{

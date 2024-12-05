@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/05 07:44:59 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 09:12:42 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ void	main_process(t_env **env, t_token *token_list)
 		}
 	}
 }
-void leak()
-{
-	system("leaks minishell");
-}
+
 void	main_loop(t_env **env)
 {
 	t_token	*token_list;
@@ -49,7 +46,5 @@ void	main_loop(t_env **env)
 				token_list = NULL;
 			}
 		}
-		system("leaks minishell");
-		// atexit(leak);
 	}
 }
