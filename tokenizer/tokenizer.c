@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 12:35:56 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:28:28 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:47:31 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	test(t_content *content)
 		{
 			if (tokenize_helper(content) == 1)
 			{
-				set_export_env(&content->env, "?", "258");
+				// set_export_env(&content->env, "?", "258");
+				update_exit_value(&content->env, 258);
 				ft_tokens_free(*(content->token_list));
 				return (1);
 			}

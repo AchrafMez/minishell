@@ -86,13 +86,15 @@ int	open_files(int *fd, t_command *cmd, t_env **env)
 {
 	if (!input_builtins(cmd->in))
 	{
-		set_export_env(env, "?", "1");
+		update_exit_value(env, 1);
+		// set_export_env(env, "?", "1");
 		return (0);
 	}
 	*fd = output_builtins(cmd->out);
 	if (*fd == -1)
 	{
-		set_export_env(env, "?", "1");
+		update_exit_value(env, 1);
+		// set_export_env(env, "?", "1");
 		return (0);
 	}
 	return (1);

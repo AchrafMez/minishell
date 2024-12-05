@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:44:28 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 01:23:13 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:51:30 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	command_not_found(char **arg, char *mes, int ret, t_env **env)
 {
 	write(2, arg[0], ft_strlen(arg[0]));
 	write(2, mes, ft_strlen(mes));
-	set_env_value(env, "?", ft_itoa(ret));
+	update_exit_value(env, ret);
+	// set_env_value(env, "?", ft_itoa(ret));
 	exit(ret);
 }

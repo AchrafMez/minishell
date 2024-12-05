@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:42:47 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 04:07:54 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:51:00 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	exec_builtins(t_command *cmd, t_env **env)
 	if (!open_files(&fd, cmd, env))
 		return ;
 	status = execute_builtin_command(cmd, env);
-	set_export_env(env, "?", ft_itoa(status));
+	update_exit_value(env, status);
+	// set_export_env(env, "?", ft_itoa(status));
 	if (fd != -2)
 	{
 		dup2(fd, 1);
@@ -76,7 +77,8 @@ int	**builtins_tube(t_command **list, t_env **env, int size)
 	if (!open_pipes(tube, size) || !tube)
 	{
 		write(2, "ERROR : open_pipe ou allocation\n", 32);
-		set_export_env(env, "?", "-1");
+		update_exit_value(env, -1);
+		// set_export_env(env, "?", "-1");
 		closingb(tube, size);
 		return (NULL);
 	}

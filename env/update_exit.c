@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:50:34 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 04:50:35 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:46:50 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@ void	update_exit_value(t_env **env, int status)
 	char	*value;
 
 	value = ft_itoa(status);
-	set_env_value(env, "?", value);
+	set_export_env(env, "?", value);
 	free(value);
 }

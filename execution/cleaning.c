@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 18:42:40 by abattagi          #+#    #+#             */
-/*   Updated: 2024/12/04 02:25:17 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:49:02 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ void	ft_free_wait(t_extra ptr, t_env **env)
 		if (WIFSIGNALED(status))
 		{
 			res = 128 + WEXITSTATUS(status);
-			set_export_env(env, "?", ft_itoa(res));
+			update_exit_value(env, res);
+			// set_export_env(env, "?", ft_itoa(res));
 		}
 		else
 		{
 			res = WEXITSTATUS(status);
-			set_export_env(env, "?", ft_itoa(res));
+			update_exit_value(env, res);
+			// set_export_env(env, "?", ft_itoa(res));
 		}
 		i++;
 	}

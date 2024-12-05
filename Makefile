@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 LIBS = -L/Users/amezioun/.brew/opt/readline/lib -lreadline
 INCLUDES = -I/Users/amezioun/.brew/opt/readline/include
 LIBFT_SRCS = ./libft/ft_split.c ./libft/ft_itoa.c  ./libft/ft_strdup.c ./libft/ft_substr.c ./libft/ft_atoi.c ./libft/ft_strtrim.c ./libft/ft_strjoin.c \
