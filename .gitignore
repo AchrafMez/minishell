@@ -1,5 +1,4 @@
 .DS_Store
-
 execution/a.ou
 execution/*.out
 execution/*.o
@@ -10,3 +9,4 @@ newpars/CMakelists.txt
 newpars/CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
+.vscode/
