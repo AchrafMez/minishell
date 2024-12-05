@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:51:19 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 04:52:00 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:06:57 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	read_and_tokenize(t_env **env, t_token **token_list)
 	input = NULL;
 	input = readline("minishell$ ");
 	r_t_assit(input, env);
-	if (!input || *input == '\0' || check_unclosed_quotes(input))
+	if (!input || *input == '\0')
 		return ;
 	*token_list = tokenize_input(input, env);
 	if (*token_list)

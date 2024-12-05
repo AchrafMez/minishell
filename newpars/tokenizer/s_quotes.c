@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:15:25 by amezioun          #+#    #+#             */
-/*   Updated: 2024/11/12 11:15:35 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:08:55 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ int	check_single(char **cur, char *buffer, int *buf_idx)
 	while (**cur && **cur != '\'')
 		buffer[(*buf_idx)++] = *(*cur)++;
 	if (**cur == '\0')
-	{
-		printf("Error -> unclosed single quote\n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -52,10 +49,7 @@ int	handle_singlequote_helper(t_content *content)
 		{
 			check_single_for_helper(content);
 			if (**content->cur == '\0')
-			{
-				printf("Error -> unclosed double quote\n");
 				return (1);
-			}
 			(*content->cur)++;
 		}
 		else
