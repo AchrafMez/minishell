@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:35:32 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/05 07:02:01 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:21:10 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#define COLOR "\033[1;36m"
+#define COLOR_RESET "\033[0m"
 
 char					*get_next_line(int fd);
 

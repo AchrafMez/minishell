@@ -8,11 +8,11 @@ LIBFT_SRCS = ./libft/ft_split.c ./libft/ft_itoa.c  ./libft/ft_strdup.c ./libft/f
 ./libft/ft_strlen.c ./libft/ft_strncmp.c ./libft/ft_strlcat.c ./libft/ft_putstr_fd.c ./libft/ft_putendl_fd.c ./libft/ft_strcmp.c
 SRCS = main.c minishell.c  ./tokenizer/tokenizer.c ./tokenizer/tokens_utils.c ./tokenizer/d_quotes.c ./tokenizer/s_quotes.c \
 	./tokenizer/reds.c ./tokenizer/edit_tokens.c ./tokenizer/dollar.c ./tokenizer/special_chars.c ./parser/tokens_to_cmd.c \
-	./parser/cmd_utils.c ./parser/free_cmd.c ./parser/check_syntax.c ./env/env_utils.c ./env/set_env.c ./bata_exe/libc.c \
-	./bata_exe/libft2.c ./bata_exe/libft3.c ./built_in/unset.c ./built_in/export.c ./built_in/env.c ./built_in/cd.c \
-	./built_in/pwd.c  ./built_in/echo.c  ./built_in/exit.c  ./bata_exe/allocptr.c ./bata_exe/exec.c  ./bata_exe/handle_child.c \
-	./bata_exe/cleaning.c ./bata_exe/ft_heredoc.c   ./bata_exe/exec2.c ./bata_exe/exec3.c ./bata_exe/get_next_line.c ./bata_exe/handle_child2.c \
-	./bata_exe/ft_heredoc2.c ./env/set_path.c ./env/get_path.c ./env/expand.c ./built_in/export2.c  ./env/update_exit.c ./bata_exe/sig.c ./tokenizer/read_and_tokenize.c
+	./parser/cmd_utils.c ./parser/free_cmd.c ./parser/check_syntax.c ./env/env_utils.c ./env/set_env.c ./execution/libc.c \
+	./execution/libft2.c ./execution/libft3.c ./built_in/unset.c ./built_in/export.c ./built_in/env.c ./built_in/cd.c \
+	./built_in/pwd.c  ./built_in/echo.c  ./built_in/exit.c  ./execution/allocptr.c ./execution/exec.c  ./execution/handle_child.c \
+	./execution/cleaning.c ./execution/ft_heredoc.c   ./execution/exec2.c ./execution/exec3.c ./execution/get_next_line.c ./execution/handle_child2.c \
+	./execution/ft_heredoc2.c ./env/set_path.c ./env/get_path.c ./env/expand.c ./built_in/export2.c  ./env/update_exit.c ./execution/sig.c ./tokenizer/read_and_tokenize.c
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o) 
 OBJS = $(SRCS:.c=.o)
 
