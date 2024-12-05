@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sig.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: captain <captain@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:09:46 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:30:20 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 08:01:54 by captain          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ctrl_d(void)
 {
