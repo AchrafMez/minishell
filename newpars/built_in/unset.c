@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abattagi <abattagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:15:25 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 02:48:27 by abattagi         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:01:00 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	remove_keys(char *key, t_env **env)
 	{
 		if (ft_strcmp(cur->key, key) == 0)
 		{
-			printf("here\n");
 			if (prev == NULL)
 				*env = cur->next;
 			else
@@ -31,7 +30,6 @@ void	remove_keys(char *key, t_env **env)
 			free(cur->key);
 			free(cur->value);
 			free(cur);
-			printf("removed");
 			return ;
 		}
 		prev = cur;
@@ -51,15 +49,13 @@ int	unset(char **args, t_env **env)
 	counter = 1;
 	while (args[counter])
 	{
-		if (is_valid_key(args[counter]) == 1)
+		if (!is_valid_key(args[counter]))
 		{
 			printf("%s nor a valid identifier\n", args[counter]);
 			return (1);
 		}
 		else
-		{
 			remove_keys(args[counter], env);
-		}
 		counter++;
 	}
 	return (0);

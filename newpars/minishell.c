@@ -6,16 +6,11 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:13:12 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 04:51:31 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/04 06:48:33 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	leaks(void)
-{
-	system("leaks minishell");
-}
 
 void	main_process(t_env **env, t_token *token_list)
 {

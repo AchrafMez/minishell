@@ -6,7 +6,7 @@
 /*   By: amezioun <amezioun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:35:32 by amezioun          #+#    #+#             */
-/*   Updated: 2024/12/04 04:49:40 by amezioun         ###   ########.fr       */
+/*   Updated: 2024/12/05 07:02:01 by amezioun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # endif
 # include "./libft/libft.h"
 # include <stdio.h>
-# include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
-# include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
+// # include "/Users/amezioun/.brew/opt/readline/include/readline/history.h"
+// # include "/Users/amezioun/.brew/opt/readline/include/readline/readline.h"
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
